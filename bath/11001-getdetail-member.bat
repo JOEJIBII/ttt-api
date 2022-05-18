@@ -1,0 +1,1 @@
+nodemon C:\API\11001-getdetail-member\11001-getdetail-member.js

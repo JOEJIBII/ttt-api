@@ -1,0 +1,20 @@
+{
+    "Papon" : {
+        "name" : "Papon",
+        "Password" : "456789123",
+        "Occupation" : "Developer",
+        "id" : 1
+    },
+    "JOEJIBI" : {
+        "name" : "JOEJIBI",
+        "Password" : "987654321",
+        "Occupation" : "Developer",
+        "id" : 2
+    },
+    "Wutwanich" : {
+        "name" : "Wutwanich",
+        "Password" : "123456789",
+        "Occupation" : "Developer",
+        "id" : 3
+    }
+}

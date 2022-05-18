@@ -1,0 +1,3 @@
+npm i -s install express
+npm i -s install mongodb
+npm i -s install node-fetch@2

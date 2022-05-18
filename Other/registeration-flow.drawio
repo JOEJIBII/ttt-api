@@ -1,0 +1,176 @@
+<mxfile host="65bd71144e">
+    <diagram id="qduowc7tr7HX0BWLe7qw" name="Page-1">
+        <mxGraphModel dx="2200" dy="1431" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="17" value="" style="edgeStyle=none;html=1;fontSize=14;" edge="1" parent="1" source="15" target="16">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="&#10;&#10;&lt;span style=&quot;color: rgb(240, 240, 240); font-family: helvetica; font-size: 14px; font-style: normal; font-weight: 400; letter-spacing: normal; text-align: center; text-indent: 0px; text-transform: none; word-spacing: 0px; background-color: rgb(42, 42, 42); display: inline; float: none;&quot;&gt;Input registeration data&lt;/span&gt;&#10;&#10;" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="210" width="210" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="" style="edgeStyle=none;html=1;fontSize=14;" edge="1" parent="1" source="16" target="18">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="" style="edgeStyle=none;html=1;fontSize=14;" edge="1" parent="1" source="16" target="41">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="115" y="470" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="16" value="Insert member data to database" style="whiteSpace=wrap;html=1;fontSize=14;strokeWidth=2;rounded=1;arcSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="55" y="340" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="-90" y="340" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="" style="edgeStyle=none;html=1;fontSize=14;" edge="1" parent="1" source="40" target="15">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="115" y="150" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="24" value="" style="endArrow=none;dashed=1;html=1;fontSize=14;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="720" y="800" as="sourcePoint"/>
+                        <mxPoint x="720" y="120" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="25" value="Existing Process" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="-70" width="150" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="Requesting Process" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="960" y="40" width="150" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="Start" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="65" y="60" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="41" value="End" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="65" y="440" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="51" value="" style="edgeStyle=none;html=1;fontSize=14;" edge="1" parent="1" source="52" target="55">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="52" value="&#10;&#10;&lt;span style=&quot;color: rgb(240, 240, 240); font-family: helvetica; font-size: 14px; font-style: normal; font-weight: 400; letter-spacing: normal; text-align: center; text-indent: 0px; text-transform: none; word-spacing: 0px; background-color: rgb(42, 42, 42); display: inline; float: none;&quot;&gt;Input registeration data&lt;/span&gt;&#10;&#10;" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="890" y="270" width="210" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="53" value="" style="edgeStyle=none;html=1;fontSize=14;" edge="1" parent="1" source="55" target="56">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="61" value="" style="edgeStyle=none;html=1;fontSize=18;" edge="1" parent="1" source="55" target="60">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="55" value="Insert member data to database" style="whiteSpace=wrap;html=1;fontSize=14;strokeWidth=2;rounded=1;arcSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="935" y="400" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="56" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="790" y="400" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="57" value="" style="edgeStyle=none;html=1;fontSize=14;" edge="1" parent="1" source="58" target="52">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="995" y="210" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="58" value="Start" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="945" y="120" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="59" value="End" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="945" y="680" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="62" value="" style="edgeStyle=none;html=1;fontSize=18;" edge="1" parent="1" source="60" target="59">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="64" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=18;startArrow=classicThin;startFill=1;" edge="1" parent="1" source="60" target="63">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="60" value="Send request to create at provider" style="whiteSpace=wrap;html=1;fontSize=14;strokeWidth=2;rounded=1;arcSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="935" y="540" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="63" value="Provider&lt;br&gt;Create member" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="1280" y="520" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="65" value="Request &amp; Response" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="1080" y="535" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="66" value="" style="edgeStyle=none;html=1;fontSize=14;" edge="1" parent="1" target="76">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="115" y="850.0000000000002" as="sourcePoint"/>
+                        <mxPoint x="115" y="920.0000000000002" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="81" style="edgeStyle=none;html=1;fontSize=18;startArrow=none;startFill=0;" edge="1" parent="1" source="73" target="79">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="73" value="Start" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="65" y="640" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="75" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=18;startArrow=classicThin;startFill=1;" edge="1" parent="1" source="76" target="77">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="84" value="" style="edgeStyle=none;html=1;fontSize=18;startArrow=none;startFill=0;" edge="1" parent="1" source="76" target="83">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="76" value="Send request to create at provider" style="whiteSpace=wrap;html=1;fontSize=14;strokeWidth=2;rounded=1;arcSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="55" y="920" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="77" value="Provider&lt;br&gt;Create member" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="410" y="900" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="78" value="Request &amp; Response" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="200" y="915" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="79" value="member login game" style="whiteSpace=wrap;html=1;fontSize=18;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="55" y="800" width="120" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="89" value="" style="edgeStyle=none;html=1;fontSize=18;startArrow=none;startFill=0;" edge="1" parent="1" source="83" target="88">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="83" value="&lt;span&gt;Send request to get url&lt;/span&gt;" style="whiteSpace=wrap;html=1;fontSize=14;strokeWidth=2;rounded=1;arcSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="55" y="1060" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="85" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=18;startArrow=classicThin;startFill=1;" edge="1" parent="1" target="86" source="83">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="165" y="1090" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="86" value="Provider&lt;br&gt;Login Game" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="410" y="1040" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="87" value="Request &amp; Response" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="200" y="1055" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="94" value="" style="edgeStyle=none;html=1;fontSize=18;startArrow=none;startFill=0;" edge="1" parent="1" source="88" target="93">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="88" value="Transfer to provider" style="whiteSpace=wrap;html=1;fontSize=14;strokeWidth=2;rounded=1;arcSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="55" y="1200" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="90" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=18;startArrow=classicThin;startFill=1;" edge="1" parent="1" target="91" source="88">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="175" y="1230" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="91" value="Provider&lt;br&gt;Deposit" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="410" y="1180" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="92" value="Request &amp; Response" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="200" y="1195" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="96" value="" style="edgeStyle=none;html=1;fontSize=18;startArrow=none;startFill=0;" edge="1" parent="1" source="93" target="95">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="93" value="Response url to user" style="whiteSpace=wrap;html=1;fontSize=14;strokeWidth=2;rounded=1;arcSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="55" y="1340" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="95" value="End" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="65" y="1460" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="97" value="When user login and clicked play game" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="-110" y="570" width="450" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="98" value="When user register" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="-5" width="240" height="40" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

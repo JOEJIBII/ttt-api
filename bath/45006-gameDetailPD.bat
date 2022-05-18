@@ -1,0 +1,1 @@
+nodemon C:\API\45006-gameDetailPD\45006-gameDetailPD.js
