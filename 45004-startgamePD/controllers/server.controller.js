@@ -6,6 +6,7 @@ const {Key,prefix,domain,agentUsername,whiteLabel} = require('../../Config/key-c
 //const _ = require("lodash");
 
 module.exports.startgame = async (req,res) => {
+    console.log("IN OUT ")
     let {header, body, params, query} = req;
     let { gameID,gameType,provider,tab,username,whiteLabel } = body;
     let option ={
@@ -30,6 +31,7 @@ module.exports.startgame = async (req,res) => {
 
     await fetch(URL , option)
         .then(async res => await res.json())
+        
         .then(result => {
             if(result["code"] === 0){
                 res.send({ status: "200" ,message: "success", result}).end();

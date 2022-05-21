@@ -24,6 +24,7 @@ module.exports.decode = token => {
 }
 
 module.exports.verify = (token, sKey) => {
+
     return new Promise(async (resolve, reject) => {
         try {
             jwt.verify(token, sKey, error => {
@@ -43,6 +44,8 @@ module.exports.send = (request, payload) => {
             headers["payload"] = JSON.stringify(payload);
             let uQuery = (method !== "POST") ? "?" + Object.keys(query).map(e => e + "=" + query[e]).join("&") : "";
             let option = (method === "GET" || method === "HEAD" || method === "DELETE") ? { method: method, headers: headers } : { method: method, headers: headers, body: JSON.stringify(body) }
+            //console.log("http://localhost" + ":" + GATEWAY_API_PORT[module][route] + uQuery, option)
+            //console.log("M && R",GATEWAY_API_PORT[module][route])
             await fetch("http://localhost" + ":" + GATEWAY_API_PORT[module][route] + uQuery, option)
                 .then(async response => await response.json())
                 .then(result => resolve(result))

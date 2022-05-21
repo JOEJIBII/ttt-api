@@ -1,12 +1,14 @@
 const { MongoDB } = require('../configs/connection_mongodb');
+const objectId = require('mongodb').ObjectId;
 const dayjs = require('dayjs');
-const { ObjectId } = require('mongodb');
+const jwt = require('jsonwebtoken');
 const today = dayjs();
 const moment = require('moment');
+const { ObjectId } = require('mongodb');
 const collectionmember = "member-Test"
 const collectionCONFIGURATION ="configuration"
 const collectionhistory_log_api ="history_log_api"
-module.exports.getallmember = (body) => {
+module.exports.login = (body,host) => {
     console.log(body);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(collectionmember)
@@ -16,9 +18,8 @@ module.exports.getallmember = (body) => {
                         $and : [
                             //{ou_id : ObjectId(payload.ou)},
                           //{branch_id : ObjectId(payload.branch)},
-                            { 
-                                agent_id : ObjectId(body.agent_id)
-                            }
+                            {tel : body.tel},
+                            {pin : body.pin}
 
                         ]
                     }
@@ -48,33 +49,21 @@ module.exports.getallmember = (body) => {
                             
                     }
                 },
-                {$lookup:{
-                    from:"member_provider_account",
-                    localField:"_id",
-                    foreignField:"memb_id",
-                    as:"provideracct"
-            }}, 
-            {
-                $unwind:{ path:"$provideracct" }
-                  },
-                {
-                $project:{
-                    _id:1,
-                        username:"$username",
-                        line_id:"$line_id",
-                        username_provider:"$provideracct.username",
-                        profile:"$profile",
-                        banking_account:"$banking_account",
-                        financial:"$financial",
-                        status:"$status",
-                        status_newmember:"$status_newmember",
-                        create_date:"$create_date",
-                        update_date:"$update_date",
-                        update_by:"$update_by",
-                }
-            },
+               
             ]).toArray()
-            .then(result => resolve(result))
+            .then(result => {
+                //console.log("RE",result[0]._id)
+                let jwtSecretKey = "bp888";
+                
+                let data = { 
+                    time:Date(),
+                    username : result[0].username,
+                    user_id : ObjectId(result[0]._id)
+                    //exp:moment.fomat()
+                }
+                const token = jwt.sign(data,jwtSecretKey,{expiresIn:'12H'})
+                //console.log("token",token)
+                resolve(token)})
             .catch(error => reject(error));
     });
 }
