@@ -27,6 +27,7 @@ module.exports.getallmember = (body) => {
                     $project:{
                         _id:1,
                             username:"$username",
+                            agent_id:"$agent_id",
                             line_id:"$line_id",
                             profile:{
                                 name:"$name",
@@ -61,6 +62,8 @@ module.exports.getallmember = (body) => {
                 $project:{
                     _id:1,
                         username:"$username",
+                        agent_id:"$agent_id",
+                        webname:"$name",
                         line_id:"$line_id",
                         username_provider:"$provideracct.username",
                         profile:"$profile",
@@ -72,7 +75,31 @@ module.exports.getallmember = (body) => {
                         update_date:"$update_date",
                         update_by:"$update_by",
                 }
-            },
+            },{$lookup:{
+                from:"agent",
+                localField:"agent_id",
+                foreignField:"_id",
+                as:"Tbagent"
+        }},{
+            $unwind:{ path:"$Tbagent" }
+              },
+        {
+            $project:{
+                _id:1,
+                prefix:"$Tbagent.name",
+                    username:"$username",
+                    line_id:"$line_id",
+                    username_provider:"$provideracct.username",
+                    profile:"$profile",
+                    banking_account:"$banking_account",
+                    financial:"$financial",
+                    status:"$status",
+                    status_newmember:"$status_newmember",
+                    create_date:"$create_date",
+                    update_date:"$update_date",
+                    update_by:"$update_by",
+            }
+        },
             ]).toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));
