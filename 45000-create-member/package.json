@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve" : "nodemon 45000-create-member.js"
+    "serve": "nodemon 45000-create-member.js"
   },
   "keywords": [],
   "author": "",

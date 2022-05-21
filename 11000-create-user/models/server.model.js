@@ -62,76 +62,8 @@ module.exports.register = (body,ip) => {
     });
 }
 
-// module.exports.CheckMobileandacct = (body) => {
-//     return new Promise(async (resolve, reject) => {
-//         await MongoDB.collection(collectionmember)
-
-//             .aggregate([
-//                 {
-//                     $match: {
-//                         $and: [{
-//                             agent_id: ObjectId(body.agent_id)
-//                         }, {
-//                             $or: [{
-//                                 username: body.username
-//                             }, {
-//                                 tel: body.tel
-//                             }, {
-//                                 $and: [{
-//                                     "banking_account.bank_id": ObjectID(body.banking_account.bank_id)
-//                                 }, {
-//                                     "banking_account.bank_acct": body.banking_account.bank_acct
-//                                 }]
-//                             }]
-//                         }]
-//                     }
-//                 },
-//                 {
-//                     $unwind: { path: "$banking_account", preserveNullAndEmptyArrays: true }
-//                 },
-//                 {
-//                     $project: {
-//                         duplicate_username: { $cond: [{ $eq: ["$username", body.username] }, 1, 0] },
-//                         duplicate_tel: { $cond: [{ $eq: ["$tel", body.tel] }, 1, 0] },
-//                         duplicate_x: { $cond: [{ $eq: ["$banking_account.bank_id", ObjectID(body.banking_account.bank_id)] }, 1, 0] },
-//                         duplicate_bank: {
-//                             $cond: [{
-//                                 $eq: ["$banking_account.bank_acct", body.banking_account.map(e => {
-//                                     return {
-//                                         bank_acct: e.bank_acct
-//                                     }
-//                                 })
-//                                 ]
-//                             }, 1, 0]
-//                         },
-
-
-//                     }
-//                 },
-//                 {
-//                     $group: {
-//                         _id: 1,
-//                         duplicate_username: { $sum: "$duplicate_username" },
-//                         duplicate_tel: { $sum: "$duplicate_tel" },
-//                         duplicate_bank: { $sum: "$duplicate_bank" }
-//                     }
-//                 },
-//                 {
-//                     $project: {
-//                         duplicate_username: { $cond: [{ $gt: ["$duplicate_username", 0] }, true, false] },
-//                         duplicate_tel: { $cond: [{ $gt: ["$duplicate_tel", 0] }, true, false] },
-//                         duplicate_bank: { $cond: [{ $gt: ["$duplicate_bank", 0] }, true, false] },
-//                     }
-//                 }
-
-//             ]).toArray()
-//             .then(result => resolve(result))
-//             .catch(error => reject(error));
-//     });
-// }
-
 module.exports.findConF = (body) => {
-    console.log(JSON.stringify(body))
+    //console.log(JSON.stringify(body))
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(collectionCONFIGURATION)
             .findOneAndUpdate(
@@ -159,7 +91,7 @@ module.exports.createaccountprovider = (body, _id, CONF) => {
             .insertOne({
                 memb_id: _id,
                 username: CONF.value.provider.prov_agentusername + CONF.value.prefix + CONF.value.member.running_number,
-                password: "",
+                password: CONF.value.prefix + "123456",
                 prov_id: CONF.value.provider.prov_id,
                 flagregister: "N",
                 cr_by :  "11000-create-user",
@@ -223,6 +155,27 @@ module.exports.get_acct_pd = (_id) => {
                      { agent_id: ObjectId(_id) },
                  ]},
                 }]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+module.exports.removemember = (_id) => {
+    return new Promise(async (resolve, reject) => {
+         await MongoDB.collection(collectionmember).deleteOne({
+            _id:ObjectId(_id)}
+         )
+            
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
+module.exports.removememberpd = (_id) => {
+    return new Promise(async (resolve, reject) => {
+         await MongoDB.collection('member_provider_account')
+         .deleteOne({
+            _id:ObjectId(_id)}
+         )
             .then(result => resolve(result))
             .catch(error => reject(error));
     });
