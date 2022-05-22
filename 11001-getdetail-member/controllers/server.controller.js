@@ -6,11 +6,12 @@ const functions = require('../functions/server.function');
 //const _ = require("lodash");
 module.exports.getdetailmember = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
+    console.log(JSON.parse(req.headers.payload))
     try {
             if (req.body.username !== null && req.body.username !== '') {
                 // let CONF = await model.findConF(req.body).catch(() => {throw err});
                 // console.log(CONF)
-                let ResultMEMBER = await model.getdetailmember( req.body).catch(() => { throw err });
+                let ResultMEMBER = await model.getdetailmember( req.body,JSON.parse(req.headers.payload)).catch(() => { throw err });
                     if (ResultMEMBER && ResultMEMBER.length) {
                         console.log('Result',ResultMEMBER)
                         const log = await functions.logs(req.body,ResultMEMBER[0]._id).catch(() => {throw err});

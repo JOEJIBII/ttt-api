@@ -6,14 +6,14 @@ const moment = require('moment');
 const today = dayjs();
 const collectionmember = "member-Test"
 const collectionCONFIGURATION = "agent"
-module.exports.register = (body,ip) => {
+module.exports.register = (body,ip,_user) => {
     return new Promise(async (resolve, reject) => {
 
         //console.log(CONF);
         await MongoDB.collection(collectionmember)
             .insertOne({
                 agent_id: objectId(body.agent_id),
-                username: body.username,
+                username: _user,
                 password: body.password,
                 tel: body.tel,
                 pin: body.pin,
@@ -85,12 +85,12 @@ module.exports.findConF = (body) => {
 
 
 
-module.exports.createaccountprovider = (body, _id, CONF) => {
+module.exports.createaccountprovider = (body, _id, CONF,_user) => {
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('member_provider_account')
             .insertOne({
                 memb_id: _id,
-                username: CONF.value.provider.prov_agentusername + CONF.value.prefix + CONF.value.member.running_number,
+                username: _user,
                 password: CONF.value.prefix + "123456",
                 prov_id: CONF.value.provider.prov_id,
                 flagregister: "N",

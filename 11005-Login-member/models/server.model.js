@@ -28,6 +28,7 @@ module.exports.login = (body,host) => {
                     $project:{
                         _id:1,
                             username:"$username",
+                            agent_id:"$agent_id",
                             line_id:"$line_id",
                             profile:{
                                 name:"$name",
@@ -58,7 +59,8 @@ module.exports.login = (body,host) => {
                 let data = { 
                     time:Date(),
                     username : result[0].username,
-                    user_id : ObjectId(result[0]._id)
+                    user_id : ObjectId(result[0]._id),
+                    agent_id:ObjectId(result[0].agent_id)
                     //exp:moment.fomat()
                 }
                 const token = jwt.sign(data,jwtSecretKey,{expiresIn:'12H'})

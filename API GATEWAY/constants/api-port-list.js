@@ -1,7 +1,7 @@
 module.exports = {
     "member" : {
         "create-user": "11000",
-        "get-profileuser" : "11001",
+        "getprofileuser" : "11001",
         "update-password" : "11002",
         "getallmember" : "11003",
         "getbanking" : "11004",

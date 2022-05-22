@@ -1,23 +1,26 @@
 const { MongoDB } = require('../configs/connection_mongodb');
 const objectId = require('mongodb').ObjectId;
 const dayjs = require('dayjs');
+const { ObjectId } = require('mongodb');
 const today = dayjs();
 const collectionmember = "member-Test"
 const collectionCONFIGURATION ="configuration"
 const collectionhistory_log_api ="history_log_api"
-module.exports.getdetailmember = (body) => {
+module.exports.getdetailmember = (body,payload) => {
     console.log(body);
     return new Promise(async (resolve, reject) => {
 //console.log(CONF[0]._id);
+console.log(payload.user_id);
         await MongoDB.collection(collectionmember)
+       
             .aggregate([
                 {
                     $match : {
                         $and : [
                             //{ou_id : ObjectId(payload.ou)},
                           //{branch_id : ObjectId(payload.branch)},
-                            { username : body.username,
-                                agent_id : objectId(body.agent_id)
+                            { _id : ObjectId(payload.user_id),
+                                agent_id : ObjectId(payload.agent_id)
                             }
 
                         ]
@@ -46,7 +49,13 @@ module.exports.getdetailmember = (body) => {
                              update_by:"$upd_by"
                             
                     }
-                }
+                },
+            //     {$lookup:{
+            //         from:"member_provider_account",
+            //         localField:"_id",
+            //         foreignField:"memb_id",
+            //         as:"memb"
+            // }}
                 
             ]).toArray()
             .then(result => resolve(result))
