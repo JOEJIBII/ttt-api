@@ -5,7 +5,8 @@
     "json": "^11.0.0",
     "moment": "^2.29.3",
     "momment": "^0.0.1",
-    "mongodb": "^4.5.0"
+    "mongodb": "^4.5.0",
+    "node-fetch": "^2.6.7"
   },
   "name": "11001-getdetail-member",
   "version": "1.0.0",

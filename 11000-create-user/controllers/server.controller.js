@@ -22,7 +22,7 @@ module.exports.registermember = async function (req,res) {
                 console.log(userTemp);
                    let Result = await model.register(req.body,req.headers.host,userTemp).catch(() => {throw err});
                    if(Result.insertedId !== null && Result.insertedId !== '') {
-                        const createacct = await model.createaccountprovider(req.body,Result.insertedId,CONF,userTemp).catch(() => {throw err});
+                        const createacct = await model.createaccountprovider(req.body,Result.insertedId,CONF,CONF.value.prefix + CONF.value.member.running_number).catch(() => {throw err});
                         const acct_pd = await model.get_acct_pd(createacct.insertedId).catch(() => {throw err});
                         console.log(acct_pd)
                         const log = await functions.logs(req.body,Result.insertedId,req.headers.host).catch(() => {throw err});

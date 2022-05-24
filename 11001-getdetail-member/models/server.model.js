@@ -1,16 +1,14 @@
 const { MongoDB } = require('../configs/connection_mongodb');
 const objectId = require('mongodb').ObjectId;
-const dayjs = require('dayjs');
 const { ObjectId } = require('mongodb');
-const today = dayjs();
 const collectionmember = "member-Test"
 const collectionCONFIGURATION ="configuration"
-const collectionhistory_log_api ="history_log_api"
+//const collectionhistory_log_api ="history_log_api"
 module.exports.getdetailmember = (body,payload) => {
-    console.log(body);
+   // console.log(body);
     return new Promise(async (resolve, reject) => {
 //console.log(CONF[0]._id);
-console.log(payload.user_id);
+//console.log(payload.user_id);
         await MongoDB.collection(collectionmember)
        
             .aggregate([

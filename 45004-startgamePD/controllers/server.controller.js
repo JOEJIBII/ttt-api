@@ -1,32 +1,36 @@
 //const { json } = require('express');
 //const { ObjectId } = require('mongodb');
 const fetch = require('node-fetch');
-//const model = require('../models/server.model');
+const model = require('../model/server.model');
 const {Key,prefix,domain,agentUsername,whiteLabel} = require('../../Config/key-config');
 //const _ = require("lodash");
 
 module.exports.startgame = async (req,res) => {
-    console.log("IN OUT ")
+    //console.log(JSON.parse(req.headers.payload))
+    let conf = await model.getconf(JSON.parse(req.headers.payload)).catch(() => { throw err });
+    //console.log(conf)
     let {header, body, params, query} = req;
-    let { gameID,gameType,provider,tab,username,whiteLabel } = body;
+    let { gameID,gameType,provider,tab } = body;
+    let payload = req.headers.payload;
+    //console.log(payload[0].username)
     let option ={
         method :"POST",
         headers:{ "content-type": "application/json" },
         body: JSON.stringify({
-            "agentUsername": agentUsername,
-            "key": Key,
-            "username": username, 
+            "agentUsername": conf[0].prov_agentusername,
+            "key": conf[0].prov_key,
+            "username": conf[0].username,
             "gameID": gameID,
             "gameType": gameType,
             "provider": provider,
             "redirectUrl": "https://www.google.com",
             "language": "en",
-            "tab": "Card",
-            "web":  whiteLabel  
+            "tab": tab,
+            "web":  conf[0].prov_whitelabel  
         })
         
     }
-    const URL = domain + 'ext/startGame/' + prefix + '/' + agentUsername
+    const URL = conf[0].prov_domain + 'ext/startGame/' + conf[0].prov_prefix + '/' + conf[0].prov_agentusername
     console.log(URL , option);
 
     await fetch(URL , option)

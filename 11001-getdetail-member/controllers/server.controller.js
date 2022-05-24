@@ -1,25 +1,40 @@
 const model = require('../models/server.model');
 const functions = require('../functions/server.function');
+const { json } = require('express');
 
 //const { urlencoded } = require("express");
 
 //const _ = require("lodash");
 module.exports.getdetailmember = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    console.log(JSON.parse(req.headers.payload))
+    //console.log(JSON.parse(req.headers.payload))Mappingdata
+   
     try {
             if (req.body.username !== null && req.body.username !== '') {
                 // let CONF = await model.findConF(req.body).catch(() => {throw err});
                 // console.log(CONF)
                 let ResultMEMBER = await model.getdetailmember( req.body,JSON.parse(req.headers.payload)).catch(() => { throw err });
                     if (ResultMEMBER && ResultMEMBER.length) {
-                        console.log('Result',ResultMEMBER)
+                        //console.log('Result',ResultMEMBER)
                         const log = await functions.logs(req.body,ResultMEMBER[0]._id).catch(() => {throw err});
-                        res.send({
-                            status: "200",
-                            message: "success",
-                            result: ResultMEMBER[0]
-                        }).end();
+                        const ProfilePD = await functions.ProfilePD(ResultMEMBER[0].username).catch(() => {throw err});
+                        console.log("PD",ProfilePD)
+                        if(ProfilePD.result.result.code === 0){
+                            console.log(JSON.stringify(ProfilePD.result.result.data))
+                            //let resultpd = json(ProfilePD.result.result.data)
+                            let responses = await functions.Mappingdata(ResultMEMBER[0],ProfilePD.result.result.data).catch(() => {throw err});
+                            //console.log(T)
+                            res.send({
+                                status: "200",
+                                message: "success",
+                                username: ProfilePD.name,
+                                result: responses
+                            }).end();
+                        }else{
+                            console.log(err)
+                            res.send({ status: "201", message: 'not found data'  }).end();
+                        }
+                       
                     } else {
                         res.send({ status: "201", message: 'not found data' }).end();
                     }

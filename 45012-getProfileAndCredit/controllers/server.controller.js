@@ -6,8 +6,10 @@ const {Key,prefix,domain,agentUsername,whiteLabel} = require('../../Config/key-c
 //const _ = require("lodash");
 
 module.exports.getProfileAndCredit = async (req,res) => {
+    
     let {header, body, params, query} = req;
     let { username } = body;
+    console.log(username)
     let option ={
         method :"POST",
         headers:{ "content-type": "application/json" },
