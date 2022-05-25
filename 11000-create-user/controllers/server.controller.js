@@ -17,14 +17,14 @@ module.exports.registermember = async function (req,res) {
             if(Cktel.length == 0 && Ckbank.length == 0){
                 const CONF = await model.findConF(req.body).catch(() => {throw err});
                if(CONF.value !== null){
-                console.log(CONF);
+                //console.log(CONF);
                 const userTemp = CONF.value.provider.prov_agentusername + CONF.value.prefix + CONF.value.member.running_number
-                console.log(userTemp);
-                   let Result = await model.register(req.body,req.headers.host,userTemp).catch(() => {throw err});
+                //console.log(userTemp);
+                   let Result = await model.register(req.body,req.headers.host,CONF.value.prefix + CONF.value.member.running_numbernode ).catch(() => {throw err});
                    if(Result.insertedId !== null && Result.insertedId !== '') {
-                        const createacct = await model.createaccountprovider(req.body,Result.insertedId,CONF,CONF.value.prefix + CONF.value.member.running_number).catch(() => {throw err});
+                        const createacct = await model.createaccountprovider(req.body,Result.insertedId,CONF,userTemp).catch(() => {throw err});
                         const acct_pd = await model.get_acct_pd(createacct.insertedId).catch(() => {throw err});
-                        console.log(acct_pd)
+                        //console.log(acct_pd)
                         const log = await functions.logs(req.body,Result.insertedId,req.headers.host).catch(() => {throw err});
                         const regis = await functions.registermemberPD(CONF,userTemp).catch(() => {throw err});
                          console.log("regis",regis)
