@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "dayjs": "^1.11.2",
+    "express": "^4.18.1",
+    "install": "^0.13.0",
+    "json": "^11.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.3",
+    "mongodb": "^4.6.0"
+  },
+  "name": "11001-getdetail-member",
+  "version": "1.0.0",
+  "main": "11001-getdetail-member.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

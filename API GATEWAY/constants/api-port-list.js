@@ -5,7 +5,8 @@ module.exports = {
         "update-password" : "11002",
         "getallmember" : "11003",
         "getbanking" : "11004",
-        "login" : "11005"
+        "login" : "11005",
+        "logoff" : "11006"
     },
     "panel" : {
         "create-user": "11000",

@@ -16,12 +16,12 @@ module.exports = async (request, response) => {
                         //         let { sKey } = exists;
                                     let sKey  = "bp888";
                                     //console.log("verify")
-                                    console.log(token,sKey);
+                                    //console.log(token,sKey);
                                  let verify = await fx.verify(token, sKey);
-                                 console.log("verify",verify)
+                                 //console.log("verify",verify)
                                  if(_.isEqual(verify.status, true)) {
-                                          console.log("request",request)
-                                          console.log("payload",payload)
+                                         // console.log("request",request)
+                                          //console.log("payload",payload)
                                     let result = await fx.send(request, payload);
                                     //console.log("result",result)
                                     response.send(result).end();

@@ -6,19 +6,18 @@ const today = dayjs();
 const collectionbank = "bank"
 const collectionCONFIGURATION ="configuration"
 const collectionhistory_log_api ="history_log_api"
-module.exports.getbanking = (body) => {
-    console.log(body);
+module.exports.getbanking = (body,payload) => {
+    //console.log(body);
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection(collectionbank)
+        if(body.status === "Active"){
+            await MongoDB.collection(collectionbank)
             .aggregate([
                 {
                     $match : {
                         $and : [
                             //{ou_id : ObjectId(payload.ou)},
                           //{branch_id : ObjectId(payload.branch)},
-                            { 
-                                status : body.status
-                            }
+                            { status : body.status }
 
                         ]
                     }
@@ -36,6 +35,39 @@ module.exports.getbanking = (body) => {
             ]).toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));
+        }
+        else{
+            await MongoDB.collection(collectionbank)
+            .aggregate([
+                // {
+                //     $match : {
+                //         $and : [
+                //             //{ou_id : ObjectId(payload.ou)},
+                //           //{branch_id : ObjectId(payload.branch)},
+                //             { 
+                //                 status : body.status
+                //             }
+
+                //         ]
+                //     }
+                // },
+                {
+                    $project:{
+                        _id:1,
+                            banknameth:"$nameth",
+                            banknameen:"$nameen",
+                            bankcode:"$code",
+                            status:"$status"
+                    }
+                }
+                
+            ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+
+        }
+        
+            
     });
 }
 

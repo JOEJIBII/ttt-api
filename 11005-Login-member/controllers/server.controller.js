@@ -10,20 +10,49 @@ module.exports.login = async function (req, res) {
     try {
         let ResultToken = await model.login(req.body,req.headers).catch(() => { throw err });
         // console.log(ResultMEMBER)
-        if (ResultToken && ResultToken.length) {
-            // console.log('Result',ResultMEMBER)
-            const log = await functions.logs(req.body, req.headers.host).catch(() => { throw err });
-            res.send({
-                status: "200",
-                message: "success",
-                 token: ResultToken
-
-            }).end();
+        //console.log("Test",ResultToken.profile_mem._id)
+        if (ResultToken.token && ResultToken.token.length) {
+             //console.log('Result',ResultToken)
+            //const log = await functions.logs(req.body, req.headers.host).catch(() => { throw err });
+            
+            const find = await model.find_session(ResultToken.profile_mem._id).catch(() => { throw err });
+           // console.log(find[0]._id)
+            if(find.length > 0){
+                const remove =   await model.remove_session(find[0]._id).catch(() => { throw err }); 
+                if (remove.deletedCount > 0){
+                    const inst_token =  await model.inserttoken(ResultToken).catch(() => { throw err });
+                    if(inst_token.insertedId){
+                            res.send({
+                                status: "200",
+                                message: "success",
+                                ResultToken
+                
+                            }).end();
+                        }else
+                        {
+                            res.send({ status: "201", message: 'Cannot Create Token Please try again' }).end();
+                        }
+                }
+            }else{
+                const inst_token =  await model.inserttoken(ResultToken).catch(() => { throw err });
+                if(inst_token.insertedId){
+                        res.send({
+                            status: "200",
+                            message: "success",
+                            ResultToken
+            
+                        }).end();
+                    }else
+                    {
+                        res.send({ status: "201", message: 'Cannot Create Token Please try again' }).end();
+                    }
+            }
+            
         } else {
-            res.send({ status: "201", message: 'not found data' }).end();
+            res.send({ status: "202", message: 'not found data' }).end();
         }
     } catch (error) {
-        console.error(error);
+        //console.error(error);
         res.send({ status: "300", message: 'internal error' }).end();
     }
 }

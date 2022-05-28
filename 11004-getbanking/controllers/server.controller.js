@@ -10,7 +10,7 @@ module.exports.getbanking = async function (req, res) {
     try {
             
         let Result = await model.getbanking( req.body).catch(() => { throw err });
-        console.log(Result)
+        //console.log(Result)
         if (Result && Result.length) {
             const log = await functions.logs(req.body,req.headers.host).catch(() => {throw err});
             res.send({
