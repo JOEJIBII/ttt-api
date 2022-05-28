@@ -7,15 +7,20 @@ const { json } = require('express');
 //const _ = require("lodash");
 module.exports.getdetailmember = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
+    const payload = JSON.parse(req.headers.payload)
+    console.log(payload)
     //console.log(JSON.parse(req.headers.payload))Mappingdata
    
     try {
-            if (req.body.username !== null && req.body.username !== '') {
+            console.log(req.body.username)
+            if (payload.username !== null && payload.username !== '') {
                 // let CONF = await model.findConF(req.body).catch(() => {throw err});
                 // console.log(CONF)
                 let ResultMEMBER = await model.getdetailmember( req.body,JSON.parse(req.headers.payload)).catch(() => { throw err });
+                console.log(ResultMEMBER)
                     if (ResultMEMBER && ResultMEMBER.length) {
                         //console.log('Result',ResultMEMBER)
+                        console.log(ResultMEMBER[0].username)
                         const log = await functions.logs(req.body,ResultMEMBER[0]._id).catch(() => {throw err});
                         const ProfilePD = await functions.ProfilePD(ResultMEMBER[0].username).catch(() => {throw err});
                         console.log("PD",ProfilePD)
