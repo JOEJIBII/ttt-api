@@ -91,7 +91,7 @@ module.exports.inserttoken = (body) => {
 
 module.exports.remove_session = async (_id) => {
     return new Promise(async (resolve, reject) => {
-         await MongoDB.collection('memb_session').deleteOne({
+         await MongoDB.collection('memb_session').deleteMany({
             _id:ObjectId(_id)}
          )
             .then(result => resolve(result))
