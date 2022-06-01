@@ -23,8 +23,10 @@ module.exports.verify = async (request, response) => {
             let result = await model.get(captchaID);
             if (_.isEqual(result["value"], value)) {
                 await model.remove(captchaID);
+                
                 response.send({ status: "200", message: "success" }).end();
             } else {
+               
                 response.send({ status: "300", message: "wrong captcha" }).end();
             }
         } else {

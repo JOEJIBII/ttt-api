@@ -73,3 +73,24 @@ module.exports.registermemberPD2 = async (req) => {
     
     
 }
+
+module.exports.verifycaptcha = async (captchaID,value) => {
+    return new Promise(async (resolve, reject) => {
+        let option ={
+            method :"POST",
+            headers:{ "content-type": "application/json" },
+            body: JSON.stringify({
+                "captchaID":captchaID,
+                "value" : value 
+            })
+            
+        }
+            
+            await fetch("http://localhost" + ":" + "11008/" , option)
+            .then(async res => await res.json())
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+        })
+}
+
+

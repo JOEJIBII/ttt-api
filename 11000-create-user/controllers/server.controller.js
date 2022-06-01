@@ -1,5 +1,5 @@
 //const { ObjectID } = require('bson');
-const { ObjectId } = require('mongodb');
+const { ObjectId, Logger } = require('mongodb');
 const model = require('../models/server.model');
 const functions = require('../functions/server.function');
 
@@ -14,6 +14,11 @@ module.exports.registermember = async function (req,res) {
         req.headers["x-real-ip"]
         let Ckbank = await model.CheckBankAccount(req.body).catch(() => {throw err});
         let Cktel = await model.CheckTel(req.body).catch(() => {throw err});
+        
+        const verifyCap = await functions.verifycaptcha(req.body.captchaID,req.body.value).catch(() => {throw err});
+       // console.log(err)
+       // console.log(verifyCap)
+        if(verifyCap.status === "200"){
             if(Cktel.length == 0 && Ckbank.length == 0){
                 const CONF = await model.findConF(req.body).catch(() => {throw err});
                if(CONF.value !== null){
@@ -94,9 +99,16 @@ module.exports.registermember = async function (req,res) {
                 }
                 
             }
+        }else{
+            res.send({
+                status:verifyCap.status,
+                message:verifyCap.message
+            }).end();
+        }
+            
         }catch (error){
-            console.error(error);
-            res.send({ status: "300", message: error}).end();
+            //console.log(error);
+            res.send({ status: "400", message: error}).end();
         }
 
 }
