@@ -6,7 +6,12 @@ const functions = require('../functions/server.function');
 //const _ = require("lodash");
 module.exports.login = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-//console.log(JSON.parse(req.headers.payload))
+//console.log("payload",JSON.parse(req.headers.payload))
+//console.log("headers",req.headers)
+console.log(req.headers['user-agent'])
+let boo = req.headers['user-agent'].includes("Mobile")
+
+console.log("boo",boo)
     try {
         let ResultToken = await model.login(req.body,req.headers).catch(() => { throw err });
         // console.log(ResultMEMBER)

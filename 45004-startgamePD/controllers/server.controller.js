@@ -15,8 +15,18 @@ module.exports.startgame = async (req,res) => {
     let payload = JSON.parse(req.headers.payload);
     let username = payload.username
     console.log(payload)
-    console.log(username)
+    
+    
+    console.log(req.headers['user-agent'])
+    //let boo = req.headers['user-agent'].includes("Mobile")
+    let boo = true
+    let device = ""
     let option = {}
+    if(boo === true){
+        device = "mobile"
+    }else{
+        device = "desktop"
+    }
     if(req.body.tab === "Sports"){
         option ={
             method :"POST",
@@ -41,6 +51,7 @@ module.exports.startgame = async (req,res) => {
                 "provider": provider,
                 "redirectUrl": "https://www.google.com",
                 "language": "en",
+                "device":device,
                 "tab": tab,
                 "web":  conf[0].prov_whitelabel  
             }) 
@@ -65,8 +76,14 @@ module.exports.startgame = async (req,res) => {
                 let uri = ""
                 console.log(result)
                 if(req.body.tab === "Sports"){
-                    uri = result.url + "&rdPage=sports"
+                    if(boo === true){
+                        uri = result.url.replace("https://","https://m.") + "&rdPage=sports"
+                    }else{
+                        uri = result.url + "&rdPage=sports"
+                    }
+                   
                 }else{
+                    
                     uri = result.data.uri
                 }
                 res.send({ status: "200" ,message: "success", uri}).end();
