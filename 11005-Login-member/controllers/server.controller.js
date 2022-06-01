@@ -8,16 +8,13 @@ module.exports.login = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
 //console.log("payload",JSON.parse(req.headers.payload))
 //console.log("headers",req.headers)
-console.log(req.headers['user-agent'])
-let boo = req.headers['user-agent'].includes("Mobile")
-
-console.log("boo",boo)
+//console.log(req.headers['user-agent'])
     try {
         let ResultToken = await model.login(req.body,req.headers).catch(() => { throw err });
-        // console.log(ResultMEMBER)
+        // console.log(ResultToken)
         //console.log("Test",ResultToken.profile_mem._id)
         if (ResultToken.token && ResultToken.token.length) {
-            // console.log('Result',ResultToken)
+             console.log('Result',ResultToken)
             const credit = await functions.ProfilePD(ResultToken.profile_mem.username).catch(() => { throw err });
             //console.log(credit)
             if(credit.result.status === "200"){
