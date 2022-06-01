@@ -30,8 +30,6 @@ module.exports.login = async function (req, res) {
                                      message: "success",
                                      result:responses
                                      //credit:credit.result.result.data.balance
-                                     
-                     
                                  }).end();
                              }else
                              {
