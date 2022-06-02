@@ -64,7 +64,9 @@ module.exports.Mappingdata = async (Resulttoken,balance) => {
             },
             "banking_account": Resulttoken.profile_mem.banking_account,
             "financial": Resulttoken.profile_mem.financial,
-            "credit":balance,
+            PD:{
+                "credit":balance
+            },
             "status": Resulttoken.profile_mem.status,
             "status_newmember": Resulttoken.profile_mem.status_newmember,
             "create_date": Resulttoken.profile_mem.create_date,

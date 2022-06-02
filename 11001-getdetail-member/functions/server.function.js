@@ -50,54 +50,49 @@ module.exports.Mappingdata = async (memb,provider) => {
         //let memb = member
         console.log("member",memb)
         resolve({ 
-            "_id": memb._id,
-            "username": memb.username,
-            "line_id": memb.line_id,
-            "tel": memb.tel,
-            "profile": {
-                "name": memb.profile.name,
-                "surename": memb.profile.surename,
-                "mobile_number": memb.profile.mobile_number,
-                "channel": memb.profile.channel,
-                "note": memb.profile.note
-            },
-            "banking_account": [
-                {
-                    "bank_id": memb.banking_account.bank_id,
-                    "bank_acct": memb.banking_account.bank_acct,
-                    "bank_name": memb.banking_account.bank_name,
-                    "bank_code": memb.banking_account.bank_code,
-                    "bank_status": memb.banking_account.bank_status
-                }
-            ],
-            "financial": {
-                "deposit_first_time_amount": memb.financial.deposit_first_time_amount,
-                "deposit_first_time": memb.financial.deposit_first_time,
-                "deposit_count": memb.financial.deposit_count,
-                "deposit_total_amount": memb.financial.deposit_total_amount,
-                "withdraw_first_time": memb.financial.withdraw_first_time,
-                "withdraw_count": memb.financial.withdraw_count,
-                "withdraw_total_amount": memb.financial.withdraw_total_amount
-            },
-            "PD":{
-                "username": provider.username,
-                "credit": provider.balance,
-                "currency": provider.currency,
-                    "hdp": provider.outStandingAmt.hdp,
-                    "mixParlay": provider.outStandingAmt.mixParlay,
-                    "mixStep": provider.outStandingAmt.mixStep,
-                    "casino": provider.outStandingAmt.casino,
-                    "slot": provider.outStandingAmt.slot,
-                    "card": provider.outStandingAmt.card,
-                    "lotto": provider.outStandingAmt.lotto,
-                    "keno": provider.outStandingAmt.keno,
-                    "trade": provider.outStandingAmt.trade,
-                    "poker": provider.outStandingAmt.poker
-            },
-            "status": memb.status,
-            "create_date": memb.create_date,
-            "update_date": memb.update_date,
-            "update_by": memb.update_by,
+            profile_mem:{
+                "_id": memb._id,
+                "username": memb.username,
+                "line_id": memb.line_id,
+                "tel": memb.tel,
+                "profile": {
+                    "name": memb.profile.name,
+                    "surename": memb.profile.surename,
+                    "mobile_number": memb.profile.mobile_number,
+                    "channel": memb.profile.channel,
+                    "note": memb.profile.note
+                },
+                "banking_account": memb.banking_account,
+                "financial": {
+                    "deposit_first_time_amount": memb.financial.deposit_first_time_amount,
+                    "deposit_first_time": memb.financial.deposit_first_time,
+                    "deposit_count": memb.financial.deposit_count,
+                    "deposit_total_amount": memb.financial.deposit_total_amount,
+                    "withdraw_first_time": memb.financial.withdraw_first_time,
+                    "withdraw_count": memb.financial.withdraw_count,
+                    "withdraw_total_amount": memb.financial.withdraw_total_amount
+                },
+                "PD":{
+                    "username": provider.username,
+                    "credit": provider.balance,
+                    "currency": provider.currency,
+                        "hdp": provider.outStandingAmt.hdp,
+                        "mixParlay": provider.outStandingAmt.mixParlay,
+                        "mixStep": provider.outStandingAmt.mixStep,
+                        "casino": provider.outStandingAmt.casino,
+                        "slot": provider.outStandingAmt.slot,
+                        "card": provider.outStandingAmt.card,
+                        "lotto": provider.outStandingAmt.lotto,
+                        "keno": provider.outStandingAmt.keno,
+                        "trade": provider.outStandingAmt.trade,
+                        "poker": provider.outStandingAmt.poker
+                },
+                "status": memb.status,
+                "create_date": memb.create_date,
+                "update_date": memb.update_date,
+                "update_by": memb.update_by,
+            }
+            
         },
         )
     })
