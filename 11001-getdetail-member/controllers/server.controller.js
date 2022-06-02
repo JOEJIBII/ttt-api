@@ -12,16 +12,16 @@ module.exports.getdetailmember = async function (req, res) {
     //console.log(JSON.parse(req.headers.payload))Mappingdata
    
     try {
-            console.log(req.body.username)
+            //console.log(req.body.username)
             if (payload.username !== null && payload.username !== '') {
                 // let CONF = await model.findConF(req.body).catch(() => {throw err});
-                // console.log(CONF)
-                let ResultMEMBER = await model.getdetailmember( req.body,JSON.parse(req.headers.payload)).catch(() => { throw err });
+                 console.log("start")
+                let ResultMEMBER = await model.getdetailmember(req.body,JSON.parse(req.headers.payload)).catch(() => { throw err });
                 console.log(ResultMEMBER)
                     if (ResultMEMBER && ResultMEMBER.length) {
                         //console.log('Result',ResultMEMBER)
                         console.log(ResultMEMBER[0].username)
-                        const log = await functions.logs(req.body,ResultMEMBER[0]._id).catch(() => {throw err});
+                        //const log = await functions.logs(ResultMEMBER[0]._id).catch(() => {throw err});
                         const ProfilePD = await functions.ProfilePD(ResultMEMBER[0].username).catch(() => {throw err});
                         console.log("PD",ProfilePD)
                         if(ProfilePD.result.result.code === 0){

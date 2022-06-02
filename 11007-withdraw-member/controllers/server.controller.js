@@ -21,7 +21,7 @@ module.exports.withdraw = async function (req, res) {
                     let getCounter = await model.Withrawcount(payload.user_id).catch(() => { throw err });
                     let counter_config = withdraw_configs[0].counter
                     let Counter = getCounter.value.financial.withdraw_count
-                   //console.log("Conter",Counter)
+                     //console.log("Conter",Counter)
                     //console.log("Counter_config",counter_config)
                     if(Counter <= counter_config){
                         let min_config = withdraw_configs[0].min

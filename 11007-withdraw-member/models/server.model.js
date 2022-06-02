@@ -90,3 +90,39 @@ module.exports.Withrawcount = (_id) => {
             .catch(error => reject(error));
     });
 }
+
+module.exports.InsertDocWithdraw = (payload,balance,) => {
+    console.log(payload)
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('withdraw')
+            .insertOne({
+                agent_id: ObjectId(payload.agent_id),
+                type:null,
+                date:moment().format(),
+                memb_id: ObjectId(payload.user_id),
+                from_bank_id: ObjectId(),
+                from_account_id: ObjectId(),
+                to_bank_id: ObjectId(),
+                to_account_id: ObjectId(),
+                amount: balance,
+                silp_date: null,
+                silp_image: null,
+                request_by:payload.username,
+                request_date: moment().format(),
+                approve_by : null,
+                approve_date:null,
+                status : null,
+                description:null,
+                cr_by:null,
+                cr_date:moment().format(),
+                cr_prog: null,
+                upd_by : null,
+                upd_date: null,
+                upd_prog:null
+
+            })
+                
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}

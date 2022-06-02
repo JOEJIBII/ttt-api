@@ -8,8 +8,10 @@ module.exports = async (request, response) => {
     //console.log(request,response)
     try {
             let token = await fx.get(request.headers);
+            console.log(token)
             if(!_.isNull(token)) {
                     let payload = await fx.decode(token);
+                    console.log(payload)
                     if(!_.isNull(payload)) {
                         // let exists = (await model.get(payload.ou, payload.branch, token))[0];
                         //     if(!_.isEmpty(exists)) {
@@ -18,12 +20,13 @@ module.exports = async (request, response) => {
                                     //console.log("verify")
                                     //console.log(token,sKey);
                                  let verify = await fx.verify(token, sKey);
-                                 //console.log("verify",verify)
+                                 
+                                 console.log("verify",verify)
                                  if(_.isEqual(verify.status, true)) {
                                          // console.log("request",request)
                                           //console.log("payload",payload)
                                     let result = await fx.send(request, payload);
-                                    //console.log("result",result)
+                                    console.log("result",result)
                                     response.send(result).end();
                                 }else{
                                      response.send(JWT_ERROR[verify.error]).end();

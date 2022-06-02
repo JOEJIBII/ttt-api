@@ -39,11 +39,13 @@ module.exports.verify = (token, sKey) => {
 module.exports.send = (request, payload) => {
     return new Promise(async (resolve, reject) => {
         try {
+            console.log("start")
             let { method, params, headers, body, query } = request;
             let { module, route } = params;
             headers["payload"] = JSON.stringify(payload);
             let uQuery = (method !== "POST") ? "?" + Object.keys(query).map(e => e + "=" + query[e]).join("&") : "";
             let option = (method === "GET" || method === "HEAD" || method === "DELETE") ? { method: method, headers: headers } : { method: method, headers: headers, body: JSON.stringify(body) }
+            console.log()
             await fetch("http://localhost" + ":" + GATEWAY_API_PORT[module][route] + uQuery, option)
                 .then(async response => await response.json())
                 .then(result => resolve(result))
