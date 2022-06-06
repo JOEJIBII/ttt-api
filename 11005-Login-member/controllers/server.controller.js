@@ -41,10 +41,11 @@ module.exports.login = async function (req, res) {
                  }else{
                      const inst_token =  await model.inserttoken(ResultToken).catch(() => { throw err });
                      if(inst_token.insertedId){
+                        let responses = await functions.Mappingdata(ResultToken,credit.result.result.data.balance).catch(() => {throw err});
                              res.send({
                                  status: "200",
                                  message: "success",
-                                 ResultToken
+                                 result:responses
                  
                              }).end();
                          }else
