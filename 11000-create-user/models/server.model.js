@@ -35,6 +35,7 @@ module.exports.register = (body,ip,_user) => {
                         bank_id: objectId(e.bank_id),
                         bank_acct: e.bank_acct,
                         bank_name: e.bank_name,
+                        bank_name_th: e.bank_name_th,
                         bank_code: e.bankcode,
                         bank_status: e.bank_status
                     }
