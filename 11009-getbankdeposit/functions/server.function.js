@@ -18,19 +18,27 @@ module.exports.logs = (body,ip) => {
 
 module.exports.Mappingdata = async (bank) => {
     return new Promise(async (resolve) => {
-        //let memb = member
+        let memb = []
         //console.log("member",Resulttoken)
-        resolve({ 
-        "bank_account": bank.map(e => {
-            return {
-                bank_id:Object(e.bank_id),
-                bank_account: e.bank_account,
-                account_name: e.bank_account_name,
-                bank_name_th: e.bank_name_th,
-                bank_name_en: e.bank_name_en,
-                bank_code: e.bank_code,
-                bank_status: e.bank_status
+        bank.forEach(e => {
+            if(e.bank_status === "Active"){
+                 memb = memb.concat(e)
             }
+        })
+        console.log(memb)
+        resolve({ 
+        "bank_account": memb.map(e => {
+                return {
+                    bank_id:Object(e.bank_id),
+                    bank_account: e.bank_account,
+                    account_name: e.bank_account_name,
+                    bank_name_th: e.bank_name_th,
+                    bank_name_en: e.bank_name_en,
+                    bank_code: e.bank_code,
+                    bank_status: e.bank_status
+                }
+            
+            
         })
         },)
     })
