@@ -8,12 +8,28 @@ const { json } = require('express');
 module.exports.withdraw = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     const payload = JSON.parse(req.headers.payload)
-    //console.log(payload)
+    console.log(payload)
     //console.log(JSON.parse(req.headers.payload))Mappingdata
    
     try {
             if (payload.agent_id !== null && payload.agent_id !== '') {
                 let withdraw_configs = await model.getwithdraw_config( req.body,JSON.parse(req.headers.payload)).catch(() => { throw err });
+                //console.log(withdraw_configs[0].bank_account)
+                let bankwitdrawfrom = []
+                let bankmember = []
+                withdraw_configs[0].bank_account.forEach(e => {
+                    if(e.bank_status === "Active"){
+                        bankwitdrawfrom = e
+                    }
+                })
+                console.log("user_id",payload.user_id)
+                let member = await model.findbankmemb(payload.user_id).catch(() => { throw err });
+                console.log("bank",bankwitdrawfrom)
+                console.log("mem",member[0])
+                member[0].banking_account.forEach(e => {
+                        bankmember = e
+                })
+                console.log("Bmem",bankmember)
                 let profile = await functions.ProfilePD(payload.username).catch(() => { throw err });
                 let credit_balance = profile.result.result.data.balance
                 let withdraw = req.body.balance 
@@ -28,7 +44,12 @@ module.exports.withdraw = async function (req, res) {
                         let max_config = withdraw_configs[0].max
                         if(withdraw >= min_config){
                             if(withdraw <= max_config){
-                                res.send({ status: "200", message: 'กรุณารอซักครู่ระบบกำลังตรวจสอบ TrunOver' }).end();
+                                let OpenPO = await model.InsertDocWithdraw(payload,withdraw,bankwitdrawfrom,member[0],bankmember).catch(() => { throw err });
+                                if(OpenPO.insertedId !== null && OpenPO.insertedId !== ''){
+                                    res.send({ status: "200", message: 'กรุณารอซักครู่ระบบกำลังตรวจสอบ TrunOver' }).end();
+                                }else{
+                                    res.send({ status: "201", message: 'ไม่สามารถสร้างใบถอนได้สำเร็จ' }).end();
+                                }
                             }else{
                                 res.send({ status: "202", message: 'กรุณาถอนมากกว่า '+ min_config }).end();
                             }
