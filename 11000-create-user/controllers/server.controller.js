@@ -26,7 +26,7 @@ module.exports.registermember = async function (req,res) {
                 //console.log(CONF);
                 const userTemp = CONF.value.provider.prov_agentusername + CONF.value.prefix + CONF.value.member.running_number
                 //console.log(userTemp);
-                   let Result = await model.register(body,req.headers.host,CONF.value.prefix + CONF.value.member.running_numbernode ).catch(() => {throw err});
+                   let Result = await model.register(body,req.headers.host,CONF.value.prefix + CONF.value.member.running_number ).catch(() => {throw err});
                    if(Result.insertedId !== null && Result.insertedId !== '') {
                         const createacct = await model.createaccountprovider(body,Result.insertedId,CONF,userTemp).catch(() => {throw err});
                         const acct_pd = await model.get_acct_pd(createacct.insertedId).catch(() => {throw err});
