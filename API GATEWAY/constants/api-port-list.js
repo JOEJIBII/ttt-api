@@ -7,7 +7,8 @@ module.exports = {
         "getbanking" : "11004",
         "login" : "11005",
         "logoff" : "11006",
-        "withdraw" : "11007"
+        "withdraw" : "11007",
+        "getbankdeposit" : "11009"
     },
     "panel" : {
         "create-user": "11000",
