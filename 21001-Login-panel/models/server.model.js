@@ -30,6 +30,7 @@ module.exports.login = (body) => {
                             tel:"$tel",
                             status:"$status",
                             avatar:"$avatar",
+                            role:"$role",
                             status_newmember:"$status_new_member",
                             create_date:"$cr_date",
                             update_date:"$upd_date",
@@ -40,13 +41,14 @@ module.exports.login = (body) => {
                
             ]).toArray()
             .then(result => {
-                //console.log("RE",result)
+                console.log("RE",result)
                 let jwtSecretKey = "bp888";
-                
+               
                 let data = { 
                     time:moment().format(),
                     username : result[0].username,
                     user_id : ObjectId(result[0]._id),
+                    role : result[0].role
                     //agent_id:ObjectId(result[0].agent_id)
                     //exp:moment.fomat()
                 }

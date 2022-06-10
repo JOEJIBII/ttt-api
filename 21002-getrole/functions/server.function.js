@@ -16,12 +16,16 @@ module.exports.logs = (body,ip) => {
     });
 }
 
-module.exports.Mappingdata = async (roles) => {
+module.exports.Mappingdata = async (roles,emp_role) => {
     return new Promise(async (resolve) => {
         let role = []
-        //console.log("member",Resulttoken)
+        
         roles.forEach(e => {
+            if(e.name != emp_role){
+                
                 role = role.concat(e)
+            }
+               
         })
         //console.log(memb)
         resolve({ 

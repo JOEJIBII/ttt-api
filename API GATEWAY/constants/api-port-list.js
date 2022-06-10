@@ -14,7 +14,8 @@ module.exports = {
         "create-user": "11000",
         "get-profileuser" : "11001",
         "update-password" : "11002",
-        "getallmember" : "11003"
+        "getallmember" : "11003",
+        "getrole" : "21002"
     },
     "provieder" : {
         "create-member": "45000", //Complete

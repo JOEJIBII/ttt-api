@@ -5,12 +5,14 @@ const functions = require('../functions/server.function');
 
 //const _ = require("lodash");
 module.exports.getrole = async function (req, res) {
+    const payload = JSON.parse(req.headers.payload)
+    console.log(payload)
     res.setHeader('Content-Type', 'application/json');
     req.headers["x-real-ip"]
     try {
             
         let Result = await model.getrole().catch(() => { throw err });
-        let responses = await functions.Mappingdata(Result).catch(() => {throw err});
+        let responses = await functions.Mappingdata(Result,payload.role).catch(() => {throw err});
         if (Result && Result.length) {
             const log = await functions.logs(req.body,req.headers.host).catch(() => {throw err});
             res.send({

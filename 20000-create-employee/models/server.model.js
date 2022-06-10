@@ -14,13 +14,13 @@ module.exports.addemployee = (body,ip,_user) => {
                 pool: [
                     {
                    agent_pool: ObjectId(body.agent_id),
-                   role:body.role
                 }
             ],
                 username: body.username,
                 password: body.password,
                 name: body.name,
                 tel: body.tel,
+                role:body.role,
                 avatar:body.avatar,
                 status: 'active',
                 cr_date: moment().format(),
