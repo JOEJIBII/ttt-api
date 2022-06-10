@@ -29,6 +29,7 @@ module.exports.login = (body) => {
                             name:"$name",
                             tel:"$tel",
                             status:"$status",
+                            avatar:"$avatar",
                             status_newmember:"$status_new_member",
                             create_date:"$cr_date",
                             update_date:"$upd_date",

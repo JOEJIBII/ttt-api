@@ -18,7 +18,7 @@ console.log("body",req.body)
              //console.log('Result',ResultToken)
             //console.log(credit)
                      const remove =   await model.remove_session(ResultToken.profile_employee._id).catch(() => { throw err }); 
-                     if (remove.deletedCount > 0){
+                    //  if (remove.deletedCount > 0){
                          const inst_token =  await model.inserttoken(ResultToken).catch(() => { throw err });
                          if(inst_token.insertedId){
                             //let responses = await functions.Mappingdata(ResultToken,credit.result.result.data.balance).catch(() => {throw err});
@@ -33,7 +33,7 @@ console.log("body",req.body)
                              {
                                  res.send({ status: "201", message: 'Cannot Create Token Please try again' }).end();
                              }
-                     }
+                    //  }
                  
         } else {
             res.send({ status: "202", message: 'not found data' }).end();
