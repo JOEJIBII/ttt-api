@@ -22,7 +22,7 @@ module.exports.addemployee = (body,ip,_user) => {
                 tel: body.tel,
                 role:body.role,
                 avatar:body.avatar,
-                status: 'active',
+                status: body.status,
                 cr_date: moment().format(),
                 cr_by: "20000-create-employee",
                 cr_prog: "20000-create-employee",
@@ -30,6 +30,20 @@ module.exports.addemployee = (body,ip,_user) => {
                 upd_by: null,
                 upd_prog: null
             })
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
+module.exports.CheckUser = (body) => {
+    return new Promise(async (resolve, reject) => {
+         await MongoDB.collection('employee')
+            .aggregate([{
+                $match : {
+                    '$and': [
+                     { username: body.username },
+                 ]},
+                }]).toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));
     });
