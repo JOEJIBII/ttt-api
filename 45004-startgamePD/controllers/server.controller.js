@@ -34,7 +34,7 @@ module.exports.startgame = async (req,res) => {
             body: JSON.stringify({
                 "agentUsername": conf[0].prov_agentusername,
                 "key": conf[0].prov_key,
-                "username": payload.username,
+                "username": conf[0].prov_agentusername + payload.username,
                 "web":  conf[0].prov_whitelabel  
             }) 
     }
@@ -45,7 +45,7 @@ module.exports.startgame = async (req,res) => {
             body: JSON.stringify({
                 "agentUsername": conf[0].prov_agentusername,
                 "key": conf[0].prov_key,
-                "username": payload.username,
+                "username": conf[0].prov_agentusername + payload.username,
                 "gameID": gameID,
                 "gameType": gameType,
                 "provider": provider,
