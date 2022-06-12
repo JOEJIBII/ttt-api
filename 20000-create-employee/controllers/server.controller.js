@@ -8,16 +8,18 @@ module.exports.addemp = async function (req,res) {
     res.setHeader('Content-type', 'application/json');
     let body = req.body
     console.log(body)
+    const payload = JSON.parse(req.headers.payload)
+    console.log(payload.username)
     try{
         //CheckUser
         req.headers["x-real-ip"]
         let CheckUser = await model.CheckUser(body).catch(() => {throw err});
 
         if(CheckUser.length == 0){
-            let Result = await model.addemployee(body).catch(() => {throw err});
+            let Result = await model.addemployee(body,payload).catch(() => {throw err});
             if(Result.insertedId !== null && Result.insertedId !== '') {
                  //console.log(acct_pd)
-                 const log = await functions.logs(body,Result.insertedId,req.headers.host).catch(() => {throw err});
+                 const log = await functions.logs(body,Result.insertedId,req.headers.host,payload).catch(() => {throw err});
                   //console.log("regis",regis
                   res.send({
                      status: "200",

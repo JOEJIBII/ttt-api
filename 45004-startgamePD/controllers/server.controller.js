@@ -18,8 +18,8 @@ module.exports.startgame = async (req,res) => {
     
     
     console.log(req.headers['user-agent'])
-    //let boo = req.headers['user-agent'].includes("Mobile")
-    let boo = true
+    let boo = req.headers['user-agent'].includes("Mobile")
+    //let boo = true
     let device = ""
     let option = {}
     if(boo === true){

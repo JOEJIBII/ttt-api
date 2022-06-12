@@ -41,7 +41,7 @@ module.exports = async (request, response) => {
                 response.send({ status: "100", message: "invalid token" }).end();
             }
     }catch (error){
-       // console.log("TEST")
+       console.log(error)
         response.send({ status: "500", message: "internal server error Gatway" }).end(); 
     }
 }

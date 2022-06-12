@@ -5,7 +5,8 @@ const moment = require('moment');
 const today = dayjs();
 const collectionmember = "member-Test"
 const collectionCONFIGURATION = "agent"
-module.exports.addemployee = (body,ip,_user) => {
+module.exports.addemployee = (body,payload) => {
+    console.log(payload)
     return new Promise(async (resolve, reject) => {
 
         //console.log(CONF);
@@ -24,7 +25,7 @@ module.exports.addemployee = (body,ip,_user) => {
                 avatar:body.avatar,
                 status: body.status,
                 cr_date: moment().format(),
-                cr_by: "20000-create-employee",
+                cr_by: payload.username,
                 cr_prog: "20000-create-employee",
                 upd_date: null,
                 upd_by: null,

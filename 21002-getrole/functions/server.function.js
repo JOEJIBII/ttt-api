@@ -19,9 +19,16 @@ module.exports.logs = (body,ip) => {
 module.exports.Mappingdata = async (roles,emp_role) => {
     return new Promise(async (resolve) => {
         let role = []
-        let agent = {}
+        let rolelevel = 0
         roles.forEach(e => {
-            if(e.name != emp_role){
+            if(e.name === emp_role){
+                
+                rolelevel = e.level
+            }
+        })
+      //  console.log("rolelevel",rolelevel)
+        roles.forEach(e => {
+            if(e.level <= rolelevel){
                 
                 role = role.concat(e)
             }

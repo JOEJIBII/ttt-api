@@ -6,15 +6,17 @@ const functions = require('../functions/server.function');
 //const _ = require("lodash");
 module.exports.getrole = async function (req, res) {
     const payload = JSON.parse(req.headers.payload)
-    console.log(payload)
+    //console.log(payload)
     res.setHeader('Content-Type', 'application/json');
     req.headers["x-real-ip"]
     try {
             
         let Result = await model.getrole().catch(() => { throw err });
-        let responses = await functions.Mappingdata(Result,payload.role).catch(() => {throw err});
+       // console.log("query",Result,"emp_role",payload.role)
         if (Result && Result.length) {
-            const log = await functions.logs(req.body,req.headers.host).catch(() => {throw err});
+            await functions.logs(req.body,req.headers.host).catch(() => {throw err});
+            let responses = await functions.Mappingdata(Result,payload.role).catch(() => {throw err});
+          //  console.log("Mappingdata",responses.role)
             res.send({
                 status: "200",
                 message: "success",
@@ -23,20 +25,8 @@ module.exports.getrole = async function (req, res) {
         } else {
             res.send({ status: "201", message: 'not found data' }).end();
         }
-                
-                
-          
     } catch (error) {
         console.error(error);
         res.send({ status: "300", message: 'internal error' }).end();
     }
 }
-
-
-
-//console.log(req.params.user)
-  //  res.send({
-    //    status: "200",
-     //   param: req.params.user,
-      //  message: "success",
-    //}).end();
