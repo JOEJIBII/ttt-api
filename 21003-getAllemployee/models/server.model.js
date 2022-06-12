@@ -49,14 +49,44 @@ module.exports.getallemp = (body) => {
                         role:"$role",
                         avatar:"$avatar",
                         status:"$status",
-                        crate_by:"$cr_by",
-                        crate_date:"$cr_date",
-                        update_by:"$upd_by",
-                        update_date:"$upd_date",
+                        crate_by:"$crate_by",
+                        crate_date:"$crate_date",
+                        update_by:"$update_by",
+                        update_date:"$update_date",
 
                         
                     }
                 }
+                ,{$lookup:{
+                    from:"emp_role",
+                    localField:"role",
+                    foreignField:"name",
+                    as:"roles"
+            }}, {
+                $unwind:{ path:"$roles" }
+                  },
+            {
+                    $project:{
+                        _id:1,
+                        web:"$web",
+                        web_id:"$web_id",
+                        username:"$username",
+                        password:"$password",
+                        name:"$name",
+                        tel:"$tel",
+                        role:"$role",
+                        role_description:"$roles.description",
+                        avatar:"$avatar",
+                        status:"$status",
+                        crate_by:"$crate_by",
+                        crate_date:"$crate_date",
+                        update_by:"$update_by",
+                        update_date:"$update_date",
+
+                        
+                    }
+                }
+           
             ]).toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));

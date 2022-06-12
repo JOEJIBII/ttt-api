@@ -9,7 +9,7 @@ module.exports.getallemployee = async function (req, res) {
     try {
 
         let ResultMEMBER = await model.getallemp().catch(() => { throw err });
-        // console.log(ResultMEMBER)
+         console.log(ResultMEMBER)
         if (ResultMEMBER && ResultMEMBER.length) {
             // console.log('Result',ResultMEMBER)
             let responses = await functions.Mappingdata(ResultMEMBER,payload.user_id).catch(() => {throw err});
@@ -20,7 +20,8 @@ module.exports.getallemployee = async function (req, res) {
                 message: "success",
                 result: {
                     total: responses.emp.length,
-                    emp:responses.emp
+                    ResultMEMBER
+                   // emp:responses.emp
                 }
             }).end();
         } else {

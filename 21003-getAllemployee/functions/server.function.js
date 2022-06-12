@@ -42,6 +42,7 @@ module.exports.Mappingdata = async (emp,emp_id_request) => {
                     name:e.name,
                     tel:e.tel,
                     role:e.role,
+                    role_description:e.role_description,
                     avatar:e.avatar,
                     status:e.status,
                     crate_by:e.crate_by,
