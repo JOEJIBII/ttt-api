@@ -4,7 +4,7 @@ const { ObjectId } = require('mongodb');
 const collectionmember = "member-Test"
 const collectionCONFIGURATION ="configuration"
 //const collectionhistory_log_api ="history_log_api"
-module.exports.getdetailmember = (body,payload) => {
+module.exports.getdetailmember = (user_id,agent_id) => {
    // console.log(body);
     return new Promise(async (resolve, reject) => {
 //console.log(CONF[0]._id);
@@ -17,8 +17,8 @@ module.exports.getdetailmember = (body,payload) => {
                         $and : [
                             //{ou_id : ObjectId(payload.ou)},
                           //{branch_id : ObjectId(payload.branch)},
-                            { _id : ObjectId(payload.user_id),
-                                agent_id : ObjectId(payload.agent_id)
+                            { _id : ObjectId(user_id),
+                                agent_id : ObjectId(agent_id)
                             }
 
                         ]

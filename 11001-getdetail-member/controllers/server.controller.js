@@ -1,6 +1,7 @@
 const model = require('../models/server.model');
 const functions = require('../functions/server.function');
 const { json } = require('express');
+const { ObjectId } = require('mongodb');
 
 //const { urlencoded } = require("express");
 
@@ -10,13 +11,19 @@ module.exports.getdetailmember = async function (req, res) {
     const payload = JSON.parse(req.headers.payload)
     console.log(payload)
     //console.log(JSON.parse(req.headers.payload))Mappingdata
-   
     try {
             //console.log(req.body.username)
             if (payload.username !== null && payload.username !== '') {
                 // let CONF = await model.findConF(req.body).catch(() => {throw err});
                  console.log("start")
-                let ResultMEMBER = await model.getdetailmember(req.body,JSON.parse(req.headers.payload)).catch(() => { throw err });
+                
+                 let ResultMEMBER = []
+                
+                if (payload.request === "member"){
+                  ResultMEMBER = await model.getdetailmember(payload.user_id,payload.agent_id).catch(() => { throw err });
+                   }else{
+                  ResultMEMBER = await model.getdetailmember(req.body.user_id,req.body.agent_id).catch(() => { throw err });
+                   }
                 console.log(ResultMEMBER)
                     if (ResultMEMBER && ResultMEMBER.length) {
                         //console.log('Result',ResultMEMBER)

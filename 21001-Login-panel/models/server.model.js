@@ -48,7 +48,8 @@ module.exports.login = (body) => {
                     time:moment().format(),
                     username : result[0].username,
                     user_id : ObjectId(result[0]._id),
-                    role : result[0].role
+                    role : result[0].role,
+                    request:"panel"
                     //agent_id:ObjectId(result[0].agent_id)
                     //exp:moment.fomat()
                 }

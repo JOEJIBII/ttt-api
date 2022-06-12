@@ -58,7 +58,8 @@ module.exports.login = (body,host) => {
                     time:moment().format(),
                     username : result[0].username,
                     user_id : ObjectId(result[0]._id),
-                    agent_id:ObjectId(result[0].agent_id)
+                    agent_id:ObjectId(result[0].agent_id),
+                    request:"member"
                     //exp:moment.fomat()
                 }
                 const gen_token = jwt.sign(data,jwtSecretKey,{expiresIn:'12H'})

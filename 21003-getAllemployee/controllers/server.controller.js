@@ -20,8 +20,8 @@ module.exports.getallemployee = async function (req, res) {
                 message: "success",
                 result: {
                     total: responses.emp.length,
-                    ResultMEMBER
-                   // emp:responses.emp
+                    //ResultMEMBER
+                   emp:responses.emp
                 }
             }).end();
         } else {

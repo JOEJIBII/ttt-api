@@ -11,8 +11,8 @@ module.exports = {
         "getbankdeposit" : "11009"
     },
     "panel" : {
-        "create-user": "11000",
-        "get-profileuser" : "11001",
+        "createuser": "11000",
+        "getprofileuser" : "11001",
         "update-password" : "11002",
         "getallmember" : "11003",
         "getrole" : "21002",
