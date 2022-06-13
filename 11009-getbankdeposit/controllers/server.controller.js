@@ -9,15 +9,17 @@ module.exports.getbankdeposit = async function (req, res) {
     try {
 
         let bankdeposit = await model.bankdeposit(payload.agent_id).catch(() => { throw err });
-         let responses = await functions.Mappingdata(bankdeposit[0].bank_account_deposit).catch(() => {throw err});
-         console.log(responses)
+        // console.log(bankdeposit)
+        //  let responses = await functions.Mappingdata(bankdeposit[0].bank_account_deposit).catch(() => {throw err});
+        
         if (bankdeposit && bankdeposit.length) {
             // console.log('Result',ResultMEMBER)
             // const log = await functions.logs(req.body, req.headers.host).catch(() => { throw err });
             res.send({
                 status: "200",
                 message: "success",
-                result:responses.bank_account
+                //result:responses.bank_account
+                result:bankdeposit
             }).end();
         } else {
             res.send({ status: "201", message: 'not found data' }).end();
