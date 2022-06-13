@@ -24,30 +24,92 @@ module.exports.login = (body,host) => {
                 },
                 {
                     $project:{
-                        _id:1,
-                            username:"$username",
-                            agent_id:"$agent_id",
-                            line_id:"$line_id",
-                            profile:{
-                                name:"$name",
-                                surename:"$surname",
-                                birthday_date:"$birthday",
-                                tel:"$tel",
-                                privilege:"$member_profile.memb_privilege",
-                                channel:"$channel",
-                                partner:"$member_profile.memb_partner",
-                                note:"$remark"
-                               },
-                            banking_account:"$banking_account",
-                            financial:"$financial",
-                            status:"$status",
-                            status_newmember:"$status_new_member",
-                            create_date:"$cr_date",
-                            update_date:"$upd_date",
-                            update_by:"$upd_by"
-                            
-                    }
-                },
+                       _id:1,
+                           username:"$username",
+                           agent_id:"$agent_id",
+                           line_id:"$line_id",
+                           profile:{
+                               name:"$name",
+                               surename:"$surname",
+                               birthday_date:"$birthday",
+                               tel:"$tel",
+                               privilege:"$member_profile.memb_privilege",
+                               channel:"$channel",
+                               partner:"$member_profile.memb_partner",
+                               note:"$remark"
+                              },
+                           financial:"$financial",
+                           status:"$status",
+                           status_newmember:"$status_new_member",
+                           create_date:"$cr_date",
+                           update_date:"$upd_date",
+                           update_by:"$upd_by"
+                           
+                   }
+               },
+               {$lookup:{
+                   from:"memb_bank_account",
+                   localField:"_id",
+                   foreignField:"memb_id",
+                   as:"bank_memb"
+           }}, 
+           {
+                   $unwind:{ path:"$bank_memb"}
+                     },
+                    {
+                    $project:{
+                       _id:1,
+                           username:"$username",
+                           agent_id:"$agent_id",
+                           line_id:"$line_id",
+                           profile:"$profile",
+                           bank_id: "$bank_memb.bank_id",
+                           bank_account_name: "$bank_memb.account_name",
+                           bank_account_number: "$bank_memb.account_number",
+                           bank_account_status: "$bank_memb.status",
+                           financial:"$financial",
+                           status:"$status",
+                           status_newmember:"$status_new_member",
+                           create_date:"$create_date",
+                           update_date:"$update_date",
+                           update_by:"$update_by"
+                           
+                   }
+               },
+                     {$lookup:{
+                   from:"bank",
+                   localField:"bank_id",
+                   foreignField:"_id",
+                   as:"bank"
+           }}, 
+           {
+                   $unwind:{ path:"$bank"}
+                     },
+           {
+                   $project:{
+                           _id:1,
+                           username:"$username",
+                           agent_id:"$agent_id",
+                           line_id:"$line_id",
+                            profile:"$profile",
+                           banking_account:[{
+                               bank_id : "$bank_id",
+                               bank_acct : "$bank_account_number",
+                               bank_acct_name : "$bank_account_name",
+                               bank_name : "$bank.nameen",
+                               bank_name_th : "$bank.nameth",
+                               bank_code : "$bank.code",
+                               bank_status: "$bank_account_status",
+                           }],
+                           financial:"$financial",
+                           status:"$status",
+                           status_newmember:"$status_new_member",
+                           create_date:"$create_date",
+                           update_date:"$update_date",
+                           update_by:"$update_by"
+                           
+                   }
+               },
                
             ]).toArray()
             .then(result => {

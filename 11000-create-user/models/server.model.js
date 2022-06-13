@@ -70,7 +70,6 @@ module.exports.findConF = (body) => {
             .findOneAndUpdate(
                 {
                     domain_name: body.domain_name
-
                 },
                 {
                     $inc: {
@@ -98,6 +97,27 @@ module.exports.createaccountprovider = (body, _id, CONF,_user) => {
                 cr_by :  "11000-create-user",
                 cr_date :moment().format(), 
                 cr_prog :  "11000-create-user",
+            })
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+module.exports.insertbankmemb = (memb_id,body) => {
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('member_provider_account')
+            .insertOne({
+                memb_id : ObjectId(memb_id),
+                bank_id : ObjectId(body.bank_id),
+                account_number : body.bank_acct,
+                account_name : body.name + body.surename,
+                description : null,
+                status : "active",
+                cr_by : "11000-create-user",
+                cr_date : moment().format(),
+                cr_prog : 11000-create-user,
+                upd_by : null,
+                upd_date : null,
+                upd_prog : null,
             })
             .then(result => resolve(result))
             .catch(error => reject(error));

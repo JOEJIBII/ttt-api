@@ -23,11 +23,13 @@ module.exports.registermember = async function (req,res) {
             if(Cktel.length == 0 && Ckbank.length == 0){
                 const CONF = await model.findConF(body).catch(() => {throw err});
                if(CONF.value !== null){
-                //console.log(CONF);
+                //console.log(CONF); insertbankmemb
                 const userTemp = CONF.value.provider.prov_agentusername + CONF.value.prefix + CONF.value.member.running_number
                 //console.log(userTemp);
                    let Result = await model.register(body,req.headers.host,CONF.value.prefix + CONF.value.member.running_number ).catch(() => {throw err});
                    if(Result.insertedId !== null && Result.insertedId !== '') {
+                       // let insertbank = await model.insertbankmemb(Result.insertedId,body).catch(() => {throw err});
+                       await model.insertbankmemb(Result.insertedId,body).catch(() => {throw err});
                         const createacct = await model.createaccountprovider(body,Result.insertedId,CONF,userTemp).catch(() => {throw err});
                         const acct_pd = await model.get_acct_pd(createacct.insertedId).catch(() => {throw err});
                         //console.log(acct_pd)
