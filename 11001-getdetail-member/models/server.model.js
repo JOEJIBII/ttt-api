@@ -28,6 +28,7 @@ module.exports.getdetailmember = (user_id,agent_id) => {
                 $project:{
                         username:"$username",
                         line_id:"$line_id",
+                        agent_id:"$agent_id",
                         tel:"$tel",
                         profile:{
                             name:"$name",
@@ -61,17 +62,9 @@ module.exports.getdetailmember = (user_id,agent_id) => {
                 $project:{
                         username:"$username",
                         line_id:"$line_id",
+                        agent_id:"$agent_id",
                         tel:"$tel",
-                        profile:{
-                            name:"$name",
-                            surename:"$surname",
-                            birthday_date:"$birthday",
-                            mobile_number:"mobile_number",
-                            privilege:"$privilege",
-                            channel:"$channel",
-                            partner:"$partner",
-                            note:"$note"
-                          },
+                        profile:"$profile",
                         bank_id: "$bank_memb.bank_id",
                         bank_account_name: "$bank_memb.account_name",
                         bank_account_number: "$bank_memb.account_number",
@@ -97,17 +90,9 @@ module.exports.getdetailmember = (user_id,agent_id) => {
                 $project:{
                         username:"$username",
                         line_id:"$line_id",
+                        agent_id:"$agent_id",
                         tel:"$tel",
-                        profile:{
-                            name:"$name",
-                            surename:"$surname",
-                            birthday_date:"$birthday",
-                            mobile_number:"mobile_number",
-                            privilege:"$privilege",
-                            channel:"$channel",
-                            partner:"$partner",
-                            note:"note"
-                          },
+                        profile:"$profile",
                         banking_account:[{
                             bank_id : "$bank_id",
                             bank_acct : "$bank_account_number",
@@ -119,12 +104,37 @@ module.exports.getdetailmember = (user_id,agent_id) => {
                         }],
                         financial:"$financial",
                         status:"$status",
-                         create_date:"create_date",
-                         update_date:"update_date",
-                         update_by:"update_by"
+                         create_date:"$create_date",
+                         update_date:"$update_date",
+                         update_by:"$update_by"
                         
                 }
-            },
+            },  {$lookup:{
+                from:"agent",
+                localField:"agent_id",
+                foreignField:"_id",
+                as:"agent"
+        }}, 
+        {
+                $unwind:{ path:"$agent"}
+                  },
+                  {
+                    $project:{
+                            username:"$username",
+                            line_id:"$line_id",
+                            web_id:"$agent_id",
+                            web_name:"$agent.name",
+                            tel:"$tel",
+                            profile:"$profile",
+                            banking_account:"$banking_account",
+                            financial:"$financial",
+                            status:"$status",
+                             create_date:"$create_date",
+                             update_date:"$update_date",
+                             update_by:"$update_by"
+                            
+                    }
+                },
             
         ]).toArray()
             .then(result => resolve(result))
