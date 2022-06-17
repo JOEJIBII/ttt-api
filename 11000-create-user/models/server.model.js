@@ -24,22 +24,13 @@ module.exports.register = (body,ip,_user) => {
                 tag: body.tag.map(e => {
                     return objectId(e)
                 }),
-                channel: body.channel.map(e => objectId(e)),
+                channel: ObjectId(body.channel),
                 remark: body.remark,
                 register_ip: ip,
                 register_date: today.format("DD/MM/YYYY HH:mm:ss"),
                 user_reference: body.user_reference,
                 promotion_status: body.promotion_status,
-                banking_account: body.banking_account.map(e => {
-                    return {
-                        bank_id: objectId(e.bank_id),
-                        bank_acct: e.bank_acct,
-                        bank_name: e.bank_name,
-                        bank_name_th: e.bank_name_th,
-                        bank_code: e.bankcode,
-                        bank_status: e.bank_status
-                    }
-                }),
+                privilege:"normal",
                 financial: {
                     deposit_first_time_amount: 0.00,
                     deposit_first_time: null,
@@ -107,6 +98,7 @@ module.exports.insertbankmemb = (memb_id,body) => {
         await MongoDB.collection('member_provider_account')
             .insertOne({
                 memb_id : ObjectId(memb_id),
+                agent_id : ObjectId(body.agent_id),
                 bank_id : ObjectId(body.bank_id),
                 account_number : body.bank_acct,
                 account_name : body.name + body.surename,
@@ -127,21 +119,33 @@ module.exports.insertbankmemb = (memb_id,body) => {
 
 module.exports.CheckBankAccount = (body) => {
     return new Promise(async (resolve, reject) => {
-        let query = {
-            $and: [{
-                agent_id: objectId(body.agent_id)
-            }, { $or: [] }]
-        }
-        for (const i of body.banking_account) {
-            query.$and[1].$or.push({
-                $and: [{ "banking_account.bank_id": objectId(i.bank_id) }, { "banking_account.bank_acct": i.bank_acct }]
-            })
-        }
-        await MongoDB.collection(collectionmember)
+        // let query = {
+        //     $and: [{
+        //         agent_id: ObjectId(body.agent_id)
+        //     }, { $or: [{
+        //         account_number: body.bank_acct
+        //     },{bank_id: ObjectId(body.bank_id)}
+        // ] }]
+        // }
+        // for (const i of body.banking_account) {
+        //     query.$and[1].$or.push({
+        //         $and: [{ "banking_account.bank_id": objectId(i.bank_id) }, { "banking_account.bank_acct": i.bank_acct }]
+        //     })
+        // }
+        console.log("test",body.agent_id,body.bank_acct,body.bank_id)
+       
+        await MongoDB.collection('memb_bank_account')
 
             .aggregate([
                 {
-                    $match: query
+                    $match: {
+                        $and: [{
+                            agent_id: ObjectId(body.agent_id)
+                        }, { $or: [{
+                            account_number: body.bank_acct
+                        },{bank_id: ObjectId(body.bank_id)}
+                    ] }]
+                    }
                 },
 
 
@@ -158,7 +162,7 @@ module.exports.CheckTel = (body) => {
             .aggregate([{
                 $match : {
                     '$and': [
-                     { agent_id: ObjectId(body.agent_id) },
+                     {agent_id: ObjectId(body.agent_id) },
                      {tel:body.tel}
                  ]},
                 }]).toArray()

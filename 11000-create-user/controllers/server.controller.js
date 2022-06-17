@@ -6,14 +6,16 @@ const functions = require('../functions/server.function');
 
 module.exports.registermember = async function (req,res) {
     res.setHeader('Content-type', 'application/json');
-    let body = req.body.body
+    let body = req.body
     try{
         // const CONF = await model.findConF(body).catch(() => {throw err});
         // const regis = await functions.registermemberPD2(CONF).catch(() => {throw err});
         // console.log(regis)
         // console.log(err)
         req.headers["x-real-ip"]
+        console.log(body)
         let Ckbank = await model.CheckBankAccount(body).catch(() => {throw err});
+        console.log(Ckbank.length)
         let Cktel = await model.CheckTel(body).catch(() => {throw err});
         
         const verifyCap = await functions.verifycaptcha(body.captchaID,body.value).catch(() => {throw err});

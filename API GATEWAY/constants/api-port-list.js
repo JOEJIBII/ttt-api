@@ -13,7 +13,7 @@ module.exports = {
     },
     "panel" : {
         "createuser": "11000",
-        "getprofileuser" : "11001",
+        "getprofileuser" : "21004",
         "update-password" : "11002",
         "getallmember" : "11003",
         "getrole" : "21002",

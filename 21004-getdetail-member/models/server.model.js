@@ -8,7 +8,7 @@ module.exports.getdetailmember = (user_id,agent_id) => {
    // console.log(body);
     return new Promise(async (resolve, reject) => {
 //console.log(CONF[0]._id);
-//console.log(payload.user_id);
+console.log(agent_id);
         await MongoDB.collection(collectionmember)
        
         .aggregate([
@@ -48,7 +48,40 @@ module.exports.getdetailmember = (user_id,agent_id) => {
                          update_by:"$upd_by"
                         
                 }
-            },
+            }, {$lookup:{
+                from:"channel",
+                localField:"profile.channel",
+                foreignField:"_id",
+                as:"channel"
+        }},  {
+                $unwind:{ path:"$channel"}
+                  }, {
+                $project:{
+                        username:"$username",
+                        line_id:"$line_id",
+                        agent_id:"$agent_id",
+                        tel:"$tel",
+                        profile:{
+                            name:"$profile.name",
+                            surename:"$profile.surename",
+                            birthday_date:"$profile.birthday_date",
+                            mobile_number:"$profile.mobile_number",
+                            privilege:"$profile.privilege",
+                            channel:"$channel.channel",
+                            channel_id:"$channel._id",
+                            partner:"$profile.partner",
+                            note:"$profile.note"
+                           },
+                        banking_account:"$banking_account",
+                        financial:"$financial",
+                        status:"$status",
+                         create_date:"$create_date",
+                         update_date:"$update_date",
+                         update_by:"$update_by"
+                        
+                }
+            }, 
+       
             {$lookup:{
                 from:"memb_bank_account",
                 localField:"_id",
@@ -135,6 +168,7 @@ module.exports.getdetailmember = (user_id,agent_id) => {
                             
                     }
                 },
+                  
             
         ]).toArray()
             .then(result => resolve(result))
