@@ -31,11 +31,11 @@ module.exports.login = (body,host) => {
                            profile:{
                                name:"$name",
                                surename:"$surname",
-                               birthday_date:"$birthday",
+                               birthday_date:"$birthday_date",
                                tel:"$tel",
-                               privilege:"$member_profile.memb_privilege",
+                               privilege:"$privilege",
                                channel:"$channel",
-                               partner:"$member_profile.memb_partner",
+                               user_reference:"$user_reference",
                                note:"$remark"
                               },
                            financial:"$financial",
@@ -44,6 +44,38 @@ module.exports.login = (body,host) => {
                            create_date:"$cr_date",
                            update_date:"$upd_date",
                            update_by:"$upd_by"
+                           
+                   }
+               },{$lookup:{
+                from:"channel",
+                localField:"profile.channel",
+                foreignField:"_id",
+                as:"channel"
+        }},  {
+                $unwind:{ path:"$channel"}
+                  },{
+                    $project:{
+                       _id:1,
+                           username:"$username",
+                           agent_id:"$agent_id",
+                           line_id:"$line_id",
+                           profile:{
+                               name:"$profile.name",
+                               surename:"$profile.surename",
+                               birthday_date:"$profile.birthday_date",
+                               tel:"$profile.tel",
+                               channel:"$channel.channel",
+                               channel_id:"$channel._id",
+                               privilege:"$profile.privilege",
+                               user_reference:"$profile.user_reference",
+                               note:"$profile.note"
+                              },
+                           financial:"$financial",
+                           status:"$status",
+                           status_newmember:"$status_newmember",
+                           create_date:"$create_date",
+                           update_date:"$update_date",
+                           update_by:"$update_by"
                            
                    }
                },
@@ -69,7 +101,7 @@ module.exports.login = (body,host) => {
                            bank_account_status: "$bank_memb.status",
                            financial:"$financial",
                            status:"$status",
-                           status_newmember:"$status_new_member",
+                           status_newmember:"$status_newmember",
                            create_date:"$create_date",
                            update_date:"$update_date",
                            update_by:"$update_by"
@@ -103,7 +135,7 @@ module.exports.login = (body,host) => {
                            }],
                            financial:"$financial",
                            status:"$status",
-                           status_newmember:"$status_new_member",
+                           status_newmember:"$status_newmember",
                            create_date:"$create_date",
                            update_date:"$update_date",
                            update_by:"$update_by"

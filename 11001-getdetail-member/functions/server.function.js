@@ -62,7 +62,11 @@ module.exports.Mappingdata = async (memb,provider) => {
                     "surename": memb.profile.surename,
                     "mobile_number": memb.profile.mobile_number,
                     "channel": memb.profile.channel,
-                    "note": memb.profile.note
+                    "channel_id": memb.profile.channel_id,
+                    "note": memb.profile.note,
+                    "birthday_date": memb.profile.birthday_date,
+                    "privilege":memb.profile.privilege,
+                    "user_reference":memb.profile.user_reference,
                 },
                 "banking_account": memb.banking_account,
                 "financial": {

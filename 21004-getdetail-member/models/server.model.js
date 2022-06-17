@@ -33,7 +33,11 @@ console.log(agent_id);
                         profile:{
                             name:"$name",
                             surename:"$surname",
-                            birthday_date:"$birthday",
+                            pin:"$pin",
+                            register_ip:"$register_ip",
+                            user_reference:"$user_reference",
+                            email:"$email",
+                            birthday_date:"$birthday_date",
                             mobile_number:"$tel",
                             privilege:"$privilege",
                             channel:"$channel",
@@ -64,6 +68,10 @@ console.log(agent_id);
                         profile:{
                             name:"$profile.name",
                             surename:"$profile.surename",
+                            pin:"$profile.pin",
+                            register_ip:"$profile.register_ip",
+                            user_reference:"$profile.user_reference",
+                            email:"$profile.email",
                             birthday_date:"$profile.birthday_date",
                             mobile_number:"$profile.mobile_number",
                             privilege:"$profile.privilege",

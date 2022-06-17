@@ -42,7 +42,7 @@ module.exports.register = (body,ip,_user) => {
                 },
                 status: 'active',
                 status_new_member: 'N',
-                cr_date: today.format("DD/MM/YYYY HH:mm:ss"),
+                cr_date: moment().format(),
                 cr_by: "11000-create-user",
                 cr_prog: "11000-create-user",
                 upd_date: null,

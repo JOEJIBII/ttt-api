@@ -47,7 +47,7 @@ module.exports.ProfilePD = async (username) => {
 module.exports.Mappingdata = async (Resulttoken,balance) => {
     return new Promise(async (resolve) => {
         //let memb = member
-        //console.log("member",Resulttoken)
+        console.log("member",Resulttoken)
         resolve({ 
         "token": Resulttoken.token,
         "profile_mem": {
@@ -59,8 +59,13 @@ module.exports.Mappingdata = async (Resulttoken,balance) => {
                 "name": Resulttoken.profile_mem.profile.name,
                 "surename": Resulttoken.profile_mem.profile.surename,
                 "tel": Resulttoken.profile_mem.profile.tel,
+                "channel_id": Resulttoken.profile_mem.profile.channel_id,
                 "channel": Resulttoken.profile_mem.profile.channel,
-                "note": Resulttoken.profile_mem.profile.note
+                "note": Resulttoken.profile_mem.profile.note,
+                "birthday_date": Resulttoken.profile_mem.profile.birthday_date,
+                "privilege": Resulttoken.profile_mem.profile.privilege,
+                "user_reference": Resulttoken.profile_mem.profile.user_reference,
+                             
             },
             "banking_account": Resulttoken.profile_mem.banking_account,
             "financial": Resulttoken.profile_mem.financial,
