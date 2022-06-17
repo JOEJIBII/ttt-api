@@ -18,7 +18,8 @@ module.exports = {
         "getallmember" : "11003",
         "getrole" : "21002",
         "addemployee" : "20000",
-        "getallemployee" : "21003"
+        "getallemployee" : "21003",
+        "getchannel": "11011",
     },
     "provieder" : {
         "create-member": "45000", //Complete
