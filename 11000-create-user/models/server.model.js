@@ -95,7 +95,7 @@ module.exports.createaccountprovider = (body, _id, CONF,_user) => {
 }
 module.exports.insertbankmemb = (memb_id,body) => {
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('member_provider_account')
+        await MongoDB.collection('member_bank_account')
             .insertOne({
                 memb_id : ObjectId(memb_id),
                 agent_id : ObjectId(body.agent_id),
@@ -106,7 +106,7 @@ module.exports.insertbankmemb = (memb_id,body) => {
                 status : "active",
                 cr_by : "11000-create-user",
                 cr_date : moment().format(),
-                cr_prog : 11000-create-user,
+                cr_prog : "11000-create-user",
                 upd_by : null,
                 upd_date : null,
                 upd_prog : null,
@@ -141,9 +141,9 @@ module.exports.CheckBankAccount = (body) => {
                     $match: {
                         $and: [{
                             agent_id: ObjectId(body.agent_id)
-                        }, { $or: [{
+                        }, {bank_id: ObjectId(body.bank_id)},{ $or: [{
                             account_number: body.bank_acct
-                        },{bank_id: ObjectId(body.bank_id)}
+                        },
                     ] }]
                     }
                 },

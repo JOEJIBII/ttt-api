@@ -69,13 +69,11 @@ module.exports.registermember = async function (req,res) {
                 if(Cktel.length !== 0   &&  Ckbank.length !== 0 ){
                     res.send({
                         status: "203",
-                        bank_account: body.banking_account.map(e => {
-                            return {
-                                bank_acct: e.bank_acct,
-                                bank_name: e.bank_name,
-                                bank_code: e.bankcode,
-                            }
-                        }),
+                        bank_account : 
+                            {
+                                bank_acct:body.bank_acct,
+
+                            },
                         tel: body.tel,
                         message: "PhoneNumber และ BankAccount มีอยู่ในระบบแล้ว"
                     }).end();
@@ -83,13 +81,20 @@ module.exports.registermember = async function (req,res) {
                     if(Cktel.length == 0  && Ckbank.length !== 0){
                         res.send({
                             status: "204",
-                            bank_account: body.banking_account.map(e => {
-                                return {
-                                    bank_acct: e.bank_acct,
-                                    bank_name: e.bank_name,
-                                    bank_code: e.bankcode,
-                                }
-                            }),
+                            bank_account : 
+                            {
+                                bank_acct:body.bank_acct,
+
+                            },
+                            // bank_account: body.banking_account.map(e => 
+                            //     {
+                            //     return {
+                            //         bank_acct: e.bank_acct,
+                            //         bank_name: e.bank_name,
+                            //         bank_code: e.bankcode,
+                            //     }
+                            // }
+                            // ),
                             message: "BankAccount มีอยู่ในระบบแล้ว"
                         }).end();
                     }else{
