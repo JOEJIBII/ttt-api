@@ -5,8 +5,15 @@ const { ObjectId } = require('mongodb');
 module.exports.getchannel = (body,payload) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('channel')
+        await MongoDB.collection('agent')
             .aggregate([
+                {
+                    $match: {
+                        $and: [{
+                            _id: ObjectId("629e381cb4839cabb5622da1")
+                        },]
+                    }
+                },
                 {
                     $project:{
                         _id:1,

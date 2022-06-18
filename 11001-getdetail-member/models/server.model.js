@@ -48,9 +48,9 @@ module.exports.getdetailmember = (user_id,agent_id) => {
                          update_by:"$upd_by"
                         
                 }
-            }, {$lookup:{
-                from:"channel",
-                localField:"profile.channel",
+            },{$lookup:{
+                from:"agent",
+                localField:"agent_id",
                 foreignField:"_id",
                 as:"channel"
         }},  {
@@ -68,7 +68,7 @@ module.exports.getdetailmember = (user_id,agent_id) => {
                             mobile_number:"$profile.mobile_number",
                             privilege:"$profile.privilege",
                             channel:"$channel.channel",
-                            channel_id:"$channel._id",
+                            channel_id:"$profile.channel",
                             user_reference:"$profile.user_reference",
                             note:"$profile.note"
                            },
@@ -80,7 +80,15 @@ module.exports.getdetailmember = (user_id,agent_id) => {
                          update_by:"$update_by"
                         
                 }
-            }, 
+            }, {
+                $unwind:{ path:"$profile.channel"}
+                  },
+                  {
+                    // find data again to filter only match
+                          $match: {
+                                     "profile.channel.channel_id": ObjectId("62aca1adb4839cabb5622db5") // secondary key
+                                }
+},
        
             {$lookup:{
                 from:"memb_bank_account",

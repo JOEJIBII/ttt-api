@@ -1,6 +1,7 @@
 const { MongoDB } = require('../configs/connection_mongodb');
 const moment = require('moment');
 const fetch = require('node-fetch');
+const { ObjectId } = require('mongodb');
 const collectionhistory_log_api ="history_log_api"
 
 module.exports.logs = (body,ip) => {
@@ -47,7 +48,8 @@ module.exports.ProfilePD = async (username) => {
 
 module.exports.Mappingdata = async (memb,provider) => {
     return new Promise(async (resolve) => {
-        //let memb = member
+        
+       
         console.log("member",memb)
         resolve({ 
             profile_mem:{
@@ -57,6 +59,7 @@ module.exports.Mappingdata = async (memb,provider) => {
                 "tel": memb.tel,
                 "web_id": memb.web_id,
                 "web_name": memb.web_name,
+                "url":memb.domain_name,
                     "name": memb.profile.name,
                     "surename": memb.profile.surename,
                     "birthday_date": memb.profile.birthday_date,
@@ -66,7 +69,7 @@ module.exports.Mappingdata = async (memb,provider) => {
                     "privilege":memb.profile.privilege,
                     "email":memb.profile.email,
                     "mobile_number": memb.profile.mobile_number,
-                    "channel": memb.profile.channel,
+                    "channel": memb.profile.channel.channel,
                     "channel_id": memb.profile.channel_id,
                     "note": memb.profile.note,
                 "banking_account": memb.banking_account[0],

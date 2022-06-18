@@ -16,8 +16,8 @@ module.exports.getchannel = async function (req, res) {
             res.send({
                 status: "200",
                 message: "success",
-                total_channel:Result.length,
-                channel:Result
+                total_channel:Result[0].channel.length,
+                channel:Result[0].channel
             }).end();
         } else {
             res.send({ status: "201", message: 'not found data' }).end();

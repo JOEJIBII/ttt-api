@@ -16,6 +16,7 @@ module.exports.register = (body,ip,_user) => {
                 username: _user,
                 password: body.password,
                 tel: body.tel,
+                mobile_no: body.tel,
                 pin: body.pin,
                 line_id: body.line_id,
                 name: body.name,

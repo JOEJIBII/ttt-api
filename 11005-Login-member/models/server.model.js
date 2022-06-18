@@ -47,8 +47,8 @@ module.exports.login = (body,host) => {
                            
                    }
                },{$lookup:{
-                from:"channel",
-                localField:"profile.channel",
+                from:"agent",
+                localField:"agent_id",
                 foreignField:"_id",
                 as:"channel"
         }},  {
@@ -65,7 +65,7 @@ module.exports.login = (body,host) => {
                                birthday_date:"$profile.birthday_date",
                                tel:"$profile.tel",
                                channel:"$channel.channel",
-                               channel_id:"$channel._id",
+                               channel_id:"$profile.channel",
                                privilege:"$profile.privilege",
                                user_reference:"$profile.user_reference",
                                note:"$profile.note"
@@ -78,7 +78,15 @@ module.exports.login = (body,host) => {
                            update_by:"$update_by"
                            
                    }
-               },
+               }, {
+                $unwind:{ path:"$profile.channel"}
+                  },
+                  {
+                    // find data again to filter only match
+                          $match: {
+                                     "profile.channel.channel_id": ObjectId("62aca1adb4839cabb5622db5") // secondary key
+                                }
+},
                {$lookup:{
                    from:"memb_bank_account",
                    localField:"_id",

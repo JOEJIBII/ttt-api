@@ -24,7 +24,7 @@ module.exports.getdetailmember = async function (req, res) {
                    }else{
                   ResultMEMBER = await model.getdetailmember(req.body.user_id,req.body.agent_id).catch(() => { throw err });
                    }
-                console.log(ResultMEMBER)
+                console.log("All",ResultMEMBER)
                     if (ResultMEMBER && ResultMEMBER.length) {
                         //console.log('Result',ResultMEMBER)
                         console.log(ResultMEMBER[0].username)

@@ -38,7 +38,7 @@ console.log(agent_id);
                             user_reference:"$user_reference",
                             email:"$email",
                             birthday_date:"$birthday_date",
-                            mobile_number:"$tel",
+                            mobile_number:"$mobile_no",
                             privilege:"$privilege",
                             channel:"$channel",
                             partner:"$partner",
@@ -53,8 +53,8 @@ console.log(agent_id);
                         
                 }
             }, {$lookup:{
-                from:"channel",
-                localField:"profile.channel",
+                from:"agent",
+                localField:"agent_id",
                 foreignField:"_id",
                 as:"channel"
         }},  {
@@ -76,7 +76,7 @@ console.log(agent_id);
                             mobile_number:"$profile.mobile_number",
                             privilege:"$profile.privilege",
                             channel:"$channel.channel",
-                            channel_id:"$channel._id",
+                            channel_id:"$profile.channel",
                             partner:"$profile.partner",
                             note:"$profile.note"
                            },
@@ -88,8 +88,15 @@ console.log(agent_id);
                          update_by:"$update_by"
                         
                 }
-            }, 
-       
+            }, {
+                $unwind:{ path:"$profile.channel"}
+                  },
+                  {
+                    // find data again to filter only match
+                          $match: {
+                                     "profile.channel.channel_id": ObjectId("62aca1adb4839cabb5622db5") // secondary key
+                                }
+},
             {$lookup:{
                 from:"memb_bank_account",
                 localField:"_id",
@@ -165,6 +172,7 @@ console.log(agent_id);
                             line_id:"$line_id",
                             web_id:"$agent_id",
                             web_name:"$agent.name",
+                            url:"$agent.domain_name",
                             tel:"$tel",
                             profile:"$profile",
                             banking_account:"$banking_account",
@@ -177,6 +185,8 @@ console.log(agent_id);
                     }
                 },
                   
+            
+            
             
         ]).toArray()
             .then(result => resolve(result))
