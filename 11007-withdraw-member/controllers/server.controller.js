@@ -42,7 +42,7 @@ module.exports.withdraw = async function (req, res) {
                             if(withdraw <= max_config){
                                 let OpenPO = await model.InsertDocWithdraw(payload,withdraw,bankwitdrawfrom,member[0]).catch(() => { throw err });
                                 if(OpenPO.insertedId !== null && OpenPO.insertedId !== ''){
-                                    res.send({ status: "200", message: 'กรุณารอซักครู่ระบบกำลังตรวจสอบ TrunOver' }).end();
+                                    res.send({ status: "200", message: 'กรุณารอซักครู่ระบบกำลังตรวจสอบ TrunOver', withdraw_count : getCounter.value.financial.withdraw_count}).end();
                                 }else{
                                     res.send({ status: "201", message: 'ไม่สามารถสร้างใบถอนได้สำเร็จ' }).end();
                                     let getCounter = await model.Withrawcount(payload.user_id,-1.0).catch(() => { throw err });
