@@ -95,7 +95,7 @@ module.exports.createaccountprovider = (body, _id, CONF,_user) => {
 }
 module.exports.insertbankmemb = (memb_id,body) => {
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('member_bank_account')
+        await MongoDB.collection('memb_bank_account')
             .insertOne({
                 memb_id : ObjectId(memb_id),
                 agent_id : ObjectId(body.agent_id),
