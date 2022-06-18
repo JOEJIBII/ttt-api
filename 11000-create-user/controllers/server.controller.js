@@ -6,7 +6,7 @@ const functions = require('../functions/server.function');
 
 module.exports.registermember = async function (req,res) {
     res.setHeader('Content-type', 'application/json');
-    let body = req.body
+    let body = req.body.body
     try{
         // const CONF = await model.findConF(body).catch(() => {throw err});
         // const regis = await functions.registermemberPD2(CONF).catch(() => {throw err});
