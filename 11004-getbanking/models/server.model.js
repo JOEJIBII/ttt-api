@@ -17,7 +17,7 @@ module.exports.getbanking = (body,payload) => {
                         $and : [
                             //{ou_id : ObjectId(payload.ou)},
                           //{branch_id : ObjectId(payload.branch)},
-                            { status : body.status }
+                            { status : "active" }
 
                         ]
                     }

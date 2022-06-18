@@ -22,6 +22,7 @@ module.exports = {
         "getchannel": "11011",
         "getprivilege": "21005",
         "getstatus": "21006",
+        "getbanking" : "11004",
     },
     "provieder" : {
         "create-member": "45000", //Complete
