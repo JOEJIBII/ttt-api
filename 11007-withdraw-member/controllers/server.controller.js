@@ -47,11 +47,11 @@ module.exports.withdraw = async function (req, res) {
                                     res.send({ status: "201", message: 'ไม่สามารถสร้างใบถอนได้สำเร็จ' }).end();
                                 }
                             }else{
-                                res.send({ status: "202", message: 'กรุณาถอนน้อยกว่า '+ max_config + "บาท" }).end();
+                                res.send({ status: "202", message: 'กรุณาถอนน้อยกว่า '+ max_config + " บาท" }).end();
                             }
                             
                         }else{
-                            res.send({ status: "202", message: 'กรุณาถอนมากกว่า '+ min_config + 'บาท'}).end();
+                            res.send({ status: "202", message: 'กรุณาถอนมากกว่า '+ min_config + ' บาท'}).end();
                         }
                         
                     }else{
