@@ -96,7 +96,7 @@ module.exports.findbankmemb = (id) => {
     });
 }
 
-module.exports.Withrawcount = (_id) => {
+module.exports.Withrawcount = (_id,counter) => {
     console.log(_id)
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(collectionmember)
@@ -107,7 +107,7 @@ module.exports.Withrawcount = (_id) => {
                 },
                 {
                     $inc: {
-                        "financial.withdraw_count": 1.0
+                        "financial.withdraw_count": counter
                     }
                 },
 

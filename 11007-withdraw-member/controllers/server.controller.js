@@ -30,7 +30,7 @@ module.exports.withdraw = async function (req, res) {
                 let credit_balance = profile.result.result.data.balance
                 let withdraw = req.body.balance 
                 if(withdraw <= credit_balance ){
-                    let getCounter = await model.Withrawcount(payload.user_id).catch(() => { throw err });
+                    let getCounter = await model.Withrawcount(payload.user_id,1.0).catch(() => { throw err });
                     let counter_config = withdraw_configs[0].counter
                     let Counter = getCounter.value.financial.withdraw_count
                      //console.log("Conter",Counter)
@@ -45,17 +45,21 @@ module.exports.withdraw = async function (req, res) {
                                     res.send({ status: "200", message: 'กรุณารอซักครู่ระบบกำลังตรวจสอบ TrunOver' }).end();
                                 }else{
                                     res.send({ status: "201", message: 'ไม่สามารถสร้างใบถอนได้สำเร็จ' }).end();
+                                    let getCounter = await model.Withrawcount(payload.user_id,-1.0).catch(() => { throw err });
                                 }
                             }else{
                                 res.send({ status: "202", message: 'กรุณาถอนน้อยกว่า '+ max_config + " บาท" }).end();
+                                let getCounter = await model.Withrawcount(payload.user_id,-1.0).catch(() => { throw err });
                             }
                             
                         }else{
                             res.send({ status: "202", message: 'กรุณาถอนมากกว่า '+ min_config + ' บาท'}).end();
+                            let getCounter = await model.Withrawcount(payload.user_id,-1.0).catch(() => { throw err });
                         }
                         
                     }else{
                         res.send({ status: "202", message: 'ถอนเกินจำนวนครั้งต่อวัน '+ 'จำนวนที่ถอนของวันนี้  ' + Counter + 'ครั้ง' }).end();
+                        let getCounter = await model.Withrawcount(payload.user_id,-1.0).catch(() => { throw err });
                     }
                    
                 }else
