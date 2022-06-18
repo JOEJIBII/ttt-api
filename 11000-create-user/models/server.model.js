@@ -27,7 +27,7 @@ module.exports.register = (body,ip,_user) => {
                 channel: ObjectId(body.channel),
                 remark: body.remark,
                 register_ip: ip,
-                register_date: today.format("DD/MM/YYYY HH:mm:ss"),
+                register_date: moment().format(),
                 user_reference: body.user_reference,
                 promotion_status: body.promotion_status,
                 privilege:"normal",
