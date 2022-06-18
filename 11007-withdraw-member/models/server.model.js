@@ -20,7 +20,7 @@ module.exports.getwithdraw_config = (body,payload) => {
                           //{branch_id : ObjectId(payload.branch)},
                             {
                                 _id : ObjectId(payload.agent_id)
-                            }
+                            },
 
                         ]
                     }
@@ -33,7 +33,7 @@ module.exports.getwithdraw_config = (body,payload) => {
                             counter:"$withdraw_config.counter",
                             min:"$withdraw_config.min_cash_limit",
                             max:"$withdraw_config.max_cash_limit",
-                            bank_account: "$agent_bank_account_withdraw",
+                           // bank_account: "$agent_bank_account_withdraw",
                             prov_key: "$provider.prov_key",
                             prov_prefix: "$provider.prov_prefix",
                             prov_domain: "$provider.prov_domain",
@@ -42,29 +42,52 @@ module.exports.getwithdraw_config = (body,payload) => {
                             
                     }
                 },
-                // {
-                //     $unwind:{ path:"$config_pd" }
-                //  },{
-                //     $project:{
-                //             id:1,
-                //             counter:"$counter",
-                //             min:"$min",
-                //             max:"$max",
-                //             bank_account: "$bank_account",
-                //             prov_key: "$config_pd.prov_key",
-                //             prov_prefix: "$config_pd.prov_prefix",
-                //             prov_domain: "$config_pd.prov_domain",
-                //             prov_agentusername : "$config_pd.prov_agentusername",
-                //             prov_whitelabel : "$config_pd.prov_whitelabel"
-                //     }
-                // },
-           
-                
+               
             ]).toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));
     });
 }
+
+module.exports.getbankweb = (body,payload) => {
+    // console.log(body);
+     return new Promise(async (resolve, reject) => {
+ 
+         await MongoDB.collection('agent_bank_account')
+        
+         .aggregate([
+            {
+                $match : {
+                    $and : [
+                        //{ou_id : ObjectId(payload.ou)},
+                      //{branch_id : ObjectId(payload.branch)},
+                        {
+                            agent_id : ObjectId("629e381cb4839cabb5622da1")
+                        },
+                        {
+                            type : "withdraw"
+                        },
+                        {
+                            status : "active"
+                        }
+
+                    ]
+                }
+            }, 
+            {
+                $project:{
+                        id:1,
+                      account_number : "$account_number",
+                      account_name : "$account_name"
+                        
+                }
+            },
+           
+        ]).toArray()
+             .then(result => resolve(result))
+             .catch(error => reject(error));
+     });
+ }
 
 
 
@@ -85,6 +108,7 @@ module.exports.findbankmemb = (id) => {
                         id:1,
                        // name:"$name",
                        // surename:"$",
+                       bank_id:"$bank_id",
                         account_name:"$account_name",
                         banking_account:"$account_number"
                         
@@ -117,7 +141,7 @@ module.exports.Withrawcount = (_id,counter) => {
     });
 }
 
-module.exports.InsertDocWithdraw = (payload,balance,bankwithdraw,member) => {
+module.exports.InsertDocWithdraw = (payload,balance,member,bankweb) => {
     console.log(payload)
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('withdraw')
@@ -126,11 +150,12 @@ module.exports.InsertDocWithdraw = (payload,balance,bankwithdraw,member) => {
                 type:null,
                 date:moment().format(),
                 memb_id: ObjectId(payload.user_id),
-                from_bank_id: ObjectId(bankwithdraw.bank_id),
-                from_account_id: bankwithdraw.bank_account,
+                from_bank_id: ObjectId(bankweb._id),
+                from_account: bankweb.account_number,
+                from_bank_name:bankweb.account_name,
                 member_name:member.account_name,
-                to_bank_id: ObjectId(member._id),
-                to_account: member.account_number,
+                to_bank_id: ObjectId(member.bank_id),
+                to_account: member.banking_account,
                 amount: balance,
                 silp_date: null,
                 silp_image: null,
@@ -140,7 +165,7 @@ module.exports.InsertDocWithdraw = (payload,balance,bankwithdraw,member) => {
                 approve_date:null,
                 status : 'pending',
                 description:null,
-                cr_by:null,
+                cr_by:payload.username,
                 cr_date:moment().format(),
                 cr_prog: null,
                 upd_by : null,

@@ -7,7 +7,7 @@ module.exports.logs = (body,ip) => {
         await MongoDB.collection(collectionhistory_log_api)
         .insertOne({
             memb_id:body.agent_id,
-            api_name:"11004-getchannel",
+            api_name:"21005-getprivilege",
             ip_address:ip,
             create_date:moment().format()
         })
