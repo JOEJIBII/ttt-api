@@ -20,6 +20,8 @@ module.exports = {
         "addemployee" : "20000",
         "getallemployee" : "21003",
         "getchannel": "11011",
+        "getprivilege": "21005",
+        "getstatus": "21006",
     },
     "provieder" : {
         "create-member": "45000", //Complete
