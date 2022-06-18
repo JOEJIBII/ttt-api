@@ -92,9 +92,9 @@ console.log(agent_id);
                 $unwind:{ path:"$profile.channel"}
                   },
                   {
-                    // find data again to filter only match
+                  
                           $match: {
-                                     "profile.channel.channel_id": ObjectId("62aca1adb4839cabb5622db5") // secondary key
+                                     "profile.channel.channel_id": ObjectId("62aca1adb4839cabb5622db5") 
                                 }
 },
             {$lookup:{

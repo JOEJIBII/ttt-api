@@ -59,16 +59,16 @@ module.exports.logs = (body,ip) => {
     });
 }
 
-module.exports.ProfilePD = async (username) => {
+module.exports.ProfilePD = async (username,config) => {
     return new Promise(async (resolve, reject) => {
         let option ={
             method :"POST",
             headers:{ "content-type": "application/json" },
             body: JSON.stringify({
-                "agentUsername": "99dev",
-                "key": "KGq54x_Hx6UUwxku4gT-q",
-                "username": username, 
-                "web":  "gb711"  
+                "agentUsername": config.prov_agentusername,
+                "key": config.prov_key,
+                "username": config.prov_agentusername + username, 
+                "web":  config.prov_whitelabel 
             })
             
         }
