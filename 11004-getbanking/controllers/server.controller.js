@@ -19,7 +19,7 @@ module.exports.getbanking = async function (req, res) {
                 result: {
 
                      total:Result.length,
-                     Member:Result
+                     banking:Result
                 }
             }).end();
         } else {
