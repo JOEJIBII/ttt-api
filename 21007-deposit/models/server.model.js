@@ -120,7 +120,7 @@ module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agentid) => {
                 approve_by : null,
                 approve_date:null,
                 status : 'pending',
-                description:null,
+                description:body.description,
                 turnover_status:null,
                 turnover_date:null,
                 turnover_value:null,
