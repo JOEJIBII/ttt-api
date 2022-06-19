@@ -78,8 +78,8 @@ module.exports.getbankweb = (body,payload) => {
                 $project:{
                         id:1,
                       account_number : "$account_number",
-                      account_name : "$account_name"
-                        
+                      account_name : "$account_name",
+                      bank_id : "$bank_id"  
                 }
             },
            
@@ -150,12 +150,12 @@ module.exports.InsertDocWithdraw = (payload,balance,member,bankweb) => {
                 type:"withdraw",
                 date:moment().format(),
                 memb_id: ObjectId(payload.user_id),
-                from_bank_id: ObjectId(bankweb._id),
-                from_account: bankweb.account_number,
+                from_bank_id: ObjectId(bankweb.bank_id),
+                from_account_id: bankweb._id,
                 from_bank_name:bankweb.account_name,
                 member_name:member.account_name,
                 to_bank_id: ObjectId(member.bank_id),
-                to_account: member.banking_account,
+                to_account_id: member._id,
                 amount: balance,
                 silp_date: null,
                 silp_image: null,

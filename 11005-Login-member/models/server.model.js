@@ -82,11 +82,14 @@ module.exports.login = (body,host) => {
                 $unwind:{ path:"$profile.channel"}
                   },
                   {
-                    // find data again to filter only match
-                          $match: {
-                                     "profile.channel.channel_id": ObjectId("62aca1adb4839cabb5622db5") // secondary key
-                                }
-},
+                    $unwind:{ path:"$profile.channel"}
+                      }, {
+                              $match: {
+                                        $expr: {
+                                                $eq: ["$profile.channel.channel_id", "$profile.channel_id"]
+                                                 }
+                                    }
+    },
                {$lookup:{
                    from:"memb_bank_account",
                    localField:"_id",

@@ -92,10 +92,11 @@ console.log(agent_id);
                 $unwind:{ path:"$profile.channel"}
                   },
                   {
-                  
-                          $match: {
-                                     "profile.channel.channel_id": ObjectId("62aca1adb4839cabb5622db5") 
-                                }
+                    $match: {
+                              $expr: {
+                                      $eq: ["$profile.channel.channel_id", "$profile.channel_id"]
+                                       }
+                          }
 },
             {$lookup:{
                 from:"memb_bank_account",
