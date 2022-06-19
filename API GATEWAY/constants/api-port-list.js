@@ -24,6 +24,8 @@ module.exports = {
         "getprivilege": "21005",
         "getstatus": "21006",
         "getbanking" : "11004",
+        "deposit" : "21007",
+        "updatestatusdeposit" : "21008",
     },
     "provieder" : {
         "create-member": "45000", //Complete
