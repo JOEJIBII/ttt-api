@@ -33,7 +33,7 @@ module.exports.getbankfrom = (body,agentid) => {
 }
 
 
-module.exports.getbankto = (body,agentid) => {
+module.exports.getbanktobyaccount_id = (body,agentid) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('agent_bank_account')
@@ -43,6 +43,38 @@ module.exports.getbankto = (body,agentid) => {
                     $and: [{
                         agent_id: ObjectId(agentid.agent_id),
                         _id: ObjectId(body.account_deposit)
+                    },]
+                }
+            },
+            {
+                $project:{
+                    _id:1,
+                    bank_id:"$bank_id",
+                    type:"$type",
+                    sub_type:"$sub_type"
+                    
+                }
+            }
+            
+        ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+        
+            
+    });
+}
+
+module.exports.getbanktobystatus = (agentid) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('agent_bank_account')
+        .aggregate([
+            {
+                $match: {
+                    $and: [{
+                        agent_id: ObjectId(agentid.agent_id),
+                        sub_type: "bouns",
+                        type:"deposit"
                     },]
                 }
             },

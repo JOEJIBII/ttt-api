@@ -12,7 +12,19 @@ module.exports.deposit = async function (req, res) {
     try {
         let getagentid = await model.getagentid(req.body).catch(() => { throw err });
         let bankfrom = await model.getbankfrom(req.body,getagentid[0]).catch(() => { throw err });
-        let bankto = await model.getbankto(req.body,getagentid[0]).catch(() => { throw err });
+        let bankto = []
+        console.log("acc",req.body.account_deposit)
+        if(req.body.account_deposit === null||req.body.account_deposit === ""){
+            
+            bankto = await model.getbanktobystatus(getagentid[0]).catch(() => { throw err });
+            console.log("getbanktobystatus",bankto)
+        }else{
+            
+            bankto = await model.getbanktobyaccount_id(req.body,getagentid[0]).catch(() => { throw err });
+            console.log("getbanktobyaccount_id",bankto)
+            
+        }
+        
         console.log("bankfrom",bankfrom)
         console.log("bankto",bankto)
 
