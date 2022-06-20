@@ -13,10 +13,16 @@ module.exports = async (request, response) => {
                     let payload = await fx.decode(token);
                     console.log(payload)
                     if(!_.isNull(payload)) {
-                        // let exists = (await model.get(payload.ou, payload.branch, token))[0];
-                        //     if(!_.isEmpty(exists)) {
-                        //         let { sKey } = exists;
-                                    let sKey  = "bp888";
+                        let exists =[]
+                        if(payload.request === "member"){
+                            exists = (await model.getmemb(payload.user_id, payload.agent_id, token))[0];
+                        }else{
+                            exists = (await model.getpanel(payload.user_id, token))[0];
+                        }
+                         
+                          if(!_.isEmpty(exists)) {
+                                let { sKey } = exists;
+                                //    let sKey  = "bp888";
                                     //console.log("verify")
                                     //console.log(token,sKey);
                                  let verify = await fx.verify(token, sKey);
@@ -31,9 +37,9 @@ module.exports = async (request, response) => {
                                 }else{
                                      response.send(JWT_ERROR[verify.error]).end();
                              }
-                        //     }else{
-                        //         response.send({ status: "503", message: "token not registered" }).end();
-                        //     }
+                      }else{
+                            response.send({ status: "503", message: "token not registered" }).end();
+                       }
                     }else{
                         response.send({ status: "504", message: "wrong token" }).end();
                     }

@@ -157,7 +157,7 @@ module.exports.login = (body,host) => {
             ]).toArray()
             .then(result => {
                 //console.log("RE",result[0]._id)
-                let jwtSecretKey = "bp888";
+                let jwtSecretKey = "tea_true";
                 
                 let data = { 
                     time:moment().format(),
@@ -185,7 +185,8 @@ module.exports.inserttoken = (body) => {
             .insertOne({
                 memb_id: objectId(body.profile_mem._id),
                 agent_id: objectId(body.profile_mem.agent_id),
-                token: body.token,
+                token: "Bearer " + body.token,
+                skey:"tea_true",
                 cr_date: moment().format(),
                 cr_by: "11005-Login-member",
                 cr_prog: "11005-Login-member",
