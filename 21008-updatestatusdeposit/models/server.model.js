@@ -1,8 +1,7 @@
 const { MongoDB } = require('../configs/connection_mongodb');
 const moment = require('moment');
 const { ObjectId } = require('mongodb');
-module.exports.updatestatus = (body,payload) => {
-    //console.log(body);
+module.exports.updateapprove = (body,payload) => {
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('deposit')
         .updateOne({_id: ObjectId(body.deposit_id)
@@ -10,7 +9,9 @@ module.exports.updatestatus = (body,payload) => {
         },{
             $set : {
                 "status": body.status,
-                "upd_by": payload.username,
+                "approve_by":ObjectId(payload.user_id),
+                "approve_date":moment().format(),
+                "upd_by": ObjectId(payload.user_id),
                 "upd_date": moment().format(),
                 "upd_prog": "21008-updatestatusdeposit"
             }
@@ -146,7 +147,7 @@ module.exports.getconfig_pd = (agent_id) => {
         },{
             $set : {
                 "ref_id": ObjectId(ref_id),
-                "upd_by": payload.username,
+                "upd_by": ObjectId(payload.user_id),
                 "upd_date": moment().format(),
                 "upd_prog": "21008-updatestatusdeposit"
             }
@@ -159,6 +160,52 @@ module.exports.getconfig_pd = (agent_id) => {
 }
 
 
+module.exports.updatechecked = (body,payload) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('deposit')
+        .updateOne({_id: ObjectId(body.deposit_id)
+
+        },{
+            $set : {
+                "status": body.status,
+                "checked_by_id":ObjectId(payload.user_id),
+                "checked_date":moment().format(),
+                "upd_by": ObjectId(payload.user_id),
+                "upd_date": moment().format(),
+                "upd_prog": "21008-updatestatusdeposit"
+            }
+        })
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+        
+            
+    });
+}
+
+module.exports.updatereject = (body,payload) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('deposit')
+        .updateOne({_id: ObjectId(body.deposit_id)
+
+        },{
+            $set : {
+                "status": body.status,
+                "approve_by":ObjectId(payload.user_id),
+                "approve_date":moment().format(),
+                "upd_by": ObjectId(payload.user_id),
+                "upd_date": moment().format(),
+                "upd_prog": "21008-updatestatusdeposit"
+            }
+        })
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+        
+            
+    });
+}
+
 
 module.exports.updatecredit = (agent_id,credit,payload) => {
     //console.log(body);
@@ -169,7 +216,7 @@ module.exports.updatecredit = (agent_id,credit,payload) => {
         },{
             $set : {
                 "credit": credit,
-                "upd_by": payload.username,
+                "upd_by": ObjectId(payload.user_id),
                 "upd_date": moment().format(),
                 "upd_prog": "21008-updatestatusdeposit"
             }
@@ -191,7 +238,7 @@ module.exports.update_financial = (memb_id,amount,payload) => {
             $set : {
                 "financial.deposit_first_time_amount": amount,
                 "financial.deposit_first_time": moment().format(),
-                "upd_by": payload.username,
+                "upd_by": ObjectId(payload.user_id),
                 "upd_date": moment().format(),
                 "upd_prog": "21008-updatestatusdeposit"
             }

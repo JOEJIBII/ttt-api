@@ -11,9 +11,9 @@ module.exports.updatestatusdeposit = async function (req, res) {
     const body = req.body
     console.log(payload)
     try {
-        let getagentid = await model.updatestatus(body,payload).catch(() => { throw err });
-        if(getagentid.modifiedCount === 1){
+        
             if(body.status === "check"){
+                    await model.updatechecked(body,payload).catch(() => { throw err });
                 res.send({
                     status: "200",
                     message: "success",
@@ -30,16 +30,18 @@ module.exports.updatestatusdeposit = async function (req, res) {
                     let depositPD = await functions.depositPD(getconfig_pd[0],getmembpd[0].username,getdocument[0].amount).catch(() => { throw err });
                     console.log(depositPD)
                     if(depositPD.result.code === 0){
-                        let updatecredit = await model.updatecredit(getdocument[0].agent_id,depositPD.result.data.agent.afterCredit,payload).catch(() => { throw err });
-                        let updaterefid = await model.updaterefid(body.deposit_id,depositPD.result.refId,payload).catch(() => { throw err });
+                       await model.updatecredit(getdocument[0].agent_id,depositPD.result.data.agent.afterCredit,payload).catch(() => { throw err });
+                       await model.updaterefid(body.deposit_id,depositPD.result.refId,payload).catch(() => { throw err });
                         let getmemb = await model.getmemb(getdocument[0].memb_id).catch(() => { throw err });
                         if(getmemb[0].financial.deposit_first_time === null ){
-                            let update_financial = await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
+                                await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
                             res.send({
                                 status: "200",
                                 message: "success",
                             }).end(); 
                         }else{
+                            await model.updateapprove(body,payload).catch(() => { throw err });
+                            await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
                             res.send({
                                 status: "200",
                                 message: "success",
@@ -48,6 +50,7 @@ module.exports.updatestatusdeposit = async function (req, res) {
                     }
                 }else{
                      if(body.status === "cancel"){
+                        await model.updatereject(body,payload).catch(() => { throw err });
                         res.send({
                             status: "200",
                             message: "success",
@@ -56,9 +59,7 @@ module.exports.updatestatusdeposit = async function (req, res) {
                     }
                 }
             }
-        }else{
-            res.send({ status: "201", message: 'update ไม่สำเร็จกรุณาทำรายการใหม่' }).end();
-        }
+        
     } catch (error) {
         console.error(error);
         res.send({ status: "300", message: 'internal error' }).end();

@@ -25,9 +25,6 @@ module.exports.bankdeposit = (agent_id) => {
                          { 
                             type : "deposit"
                         }, 
-                        { 
-                            sub_type : "deposit"
-                        },   
                     ]
                 }
             },

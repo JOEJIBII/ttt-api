@@ -13,8 +13,6 @@ module.exports.getdeposit = () => {
             {
                 $match : {
                    $or:[
-                        //{ou_id : ObjectId(payload.ou)},
-                      //{branch_id : ObjectId(payload.branch)},
                         {status:"pending"},{status:"check"}
                     ]
                 }
@@ -30,7 +28,9 @@ module.exports.getdeposit = () => {
                         from_bank_id:"$from_bank_id",
                         from_account_id:"$from_account_id",
                         to_bank_id:"$to_bank_id",
-                        to_account_id:"$to_account_id"
+                        to_account_id:"$to_account_id",
+                        check_by:"$check_by",
+                        checked_date:"$checked_date"
                 }
             },{$lookup:{
                     from:"member_provider_account",
@@ -58,7 +58,9 @@ module.exports.getdeposit = () => {
                         from_bank_id:"$from_bank_id",
                         from_account_id:"$from_account_id",
                         to_bank_id:"$to_bank_id",
-                        to_account_id:"$to_account_id"
+                        to_account_id:"$to_account_id",
+                        check_by:"$check_by",
+                        checked_date:"$checked_date"
                 }
             },{$lookup:{
                     from:"memb_bank_account",
@@ -88,7 +90,9 @@ module.exports.getdeposit = () => {
                         from_bank_id:"$from_bank_id",
                         from_account_id:"$from_account_id",
                         to_bank_id:"$to_bank_id",
-                        to_account_id:"$to_account_id"
+                        to_account_id:"$to_account_id",
+                        check_by:"$check_by",
+                        checked_date:"$checked_date"
                 }
             },{$lookup:{
                     from:"bank",
@@ -121,7 +125,9 @@ module.exports.getdeposit = () => {
                         from_bank_id:"$from_bank_id",
                         from_account_id:"$from_account_id",
                         to_bank_id:"$to_bank_id",
-                        to_account_id:"$to_account_id"
+                        to_account_id:"$to_account_id",
+                        check_by:"$check_by",
+                        checked_date:"$checked_date"
                 }
             },{$lookup:{
                     from:"bank",
@@ -157,7 +163,9 @@ module.exports.getdeposit = () => {
                         web_account_nameen:"$banking_agent.nameen",
                         web_account_code:"$banking_agent.code",
                         to_bank_id:"$to_bank_id",
-                        to_account_id:"$to_account_id"
+                        to_account_id:"$to_account_id",
+                        check_by:"$check_by",
+                        checked_date:"$checked_date"
                 }
             },
             {$lookup:{
@@ -197,7 +205,9 @@ module.exports.getdeposit = () => {
                         web_account_name:"$agent_account.account_name",
                         web_account_number:"$agent_account.account_number",
                         to_bank_id:"$to_bank_id",
-                        to_account_id:"$to_account_id"
+                        to_account_id:"$to_account_id",
+                        check_by:"$check_by",
+                        checked_date:"$checked_date"
                 }
             },
              {$lookup:{
@@ -239,10 +249,64 @@ module.exports.getdeposit = () => {
                         web_account_name:"$web_account_name",
                         web_account_number:"$web_account_number",
                         to_bank_id:"$to_bank_id",
-                        to_account_id:"$to_account_id"
+                        to_account_id:"$to_account_id", 
+                        check_by:"$check_by",
+                        checked_date:"$checked_date"
                 }
             },
-         
+             {$lookup:{
+                from:"member-Test",
+                localField:"memb_id",
+                foreignField:"_id",
+                as:"memb_acc"
+                }},
+                         {
+                                $unwind:{ path:"$memb_acc"}
+                         }, {
+                                          $match: {
+                                                           $expr: {
+                                                                        $eq: ["$memb_id", "$memb_acc._id"]
+                                                                 }
+                                                    }
+                            },
+                            {
+                                $project:{
+                                        id:1,
+                                        type:"$type",
+                                        amount:"$amount",
+                                        request_date:"$request_date",
+                                        status:"$status",
+                                        agent_id:"$agent_id",
+                                        web_name:"$webagent.domain_name",
+                                        web_aka:"$webagent.name",
+                                        memb_id:"$memb_id",
+                                        memb_username:"$memb_username",
+                                        memb_status:"$memb_status",
+                                        memb_name:"$memb_name",
+                                        memb_bank:"$memb_bank",
+                                        memb_banking_th:"$memb_banking_th",
+                                        memb_banking_en:"$memb_banking_en",
+                                        memb_banking_code:"$memb_banking_code",
+                                        from_bank_id:"$from_bank_id",
+                                        from_account_id:"$from_account_id",
+                                        web_account_nameth:"$web_account_nameth",
+                                        web_account_nameen:"$web_account_nameen",
+                                        web_account_code:"$web_account_code",
+                                        web_account_name:"$web_account_name",
+                                        web_account_number:"$web_account_number",
+                                        to_bank_id:"$to_bank_id",
+                                        to_account_id:"$to_account_id", 
+                                        // Checked:{
+                                        //         check_by:"$check_by",
+                                        //         checked_date:"$checked_date",
+                                        //         checker_username : "$emp.username",
+                                        //         checker_name : "$emp.name",
+                                        //         checker_tel : "$emp.tel",
+                                        //         checker_role : "$emp.role",
+                                        //         checker_avatar : "$emp.avatar",
+                                        // }
+                                }
+                            }
            
         ]).toArray()
              .then(result => resolve(result))
@@ -277,7 +341,9 @@ module.exports.getdeposit = () => {
                         from_bank_id:"$from_bank_id",
                         from_account_id:"$from_account_id",
                         to_bank_id:"$to_bank_id",
-                        to_account_id:"$to_account_id"
+                        to_account_id:"$to_account_id",
+                        check_by:"$check_by",
+                        checked_date:"$checked_date"
                 }
             },{$lookup:{
                     from:"member_provider_account",
@@ -305,7 +371,9 @@ module.exports.getdeposit = () => {
                         from_bank_id:"$from_bank_id",
                         from_account_id:"$from_account_id",
                         to_bank_id:"$to_bank_id",
-                        to_account_id:"$to_account_id"
+                        to_account_id:"$to_account_id",
+                        check_by:"$check_by",
+                        checked_date:"$checked_date"
                 }
             },{$lookup:{
                     from:"memb_bank_account",
@@ -335,7 +403,9 @@ module.exports.getdeposit = () => {
                         from_bank_id:"$from_bank_id",
                         from_account_id:"$from_account_id",
                         to_bank_id:"$to_bank_id",
-                        to_account_id:"$to_account_id"
+                        to_account_id:"$to_account_id",
+                        check_by:"$check_by",
+                        checked_date:"$checked_date"
                 }
             },{$lookup:{
                     from:"bank",
@@ -368,7 +438,9 @@ module.exports.getdeposit = () => {
                         from_bank_id:"$from_bank_id",
                         from_account_id:"$from_account_id",
                         to_bank_id:"$to_bank_id",
-                        to_account_id:"$to_account_id"
+                        to_account_id:"$to_account_id",
+                        check_by:"$check_by",
+                        checked_date:"$checked_date"
                 }
             },{$lookup:{
                     from:"bank",
@@ -404,7 +476,9 @@ module.exports.getdeposit = () => {
                         web_account_nameen:"$banking_agent.nameen",
                         web_account_code:"$banking_agent.code",
                         to_bank_id:"$to_bank_id",
-                        to_account_id:"$to_account_id"
+                        to_account_id:"$to_account_id",
+                        check_by:"$check_by",
+                        checked_date:"$checked_date"
                 }
             },
             {$lookup:{
@@ -444,7 +518,9 @@ module.exports.getdeposit = () => {
                         web_account_name:"$agent_account.account_name",
                         web_account_number:"$agent_account.account_number",
                         to_bank_id:"$to_bank_id",
-                        to_account_id:"$to_account_id"
+                        to_account_id:"$to_account_id",
+                        check_by:"$check_by",
+                        checked_date:"$checked_date"
                 }
             },
              {$lookup:{
@@ -486,9 +562,64 @@ module.exports.getdeposit = () => {
                         web_account_name:"$web_account_name",
                         web_account_number:"$web_account_number",
                         to_bank_id:"$to_bank_id",
-                        to_account_id:"$to_account_id"
+                        to_account_id:"$to_account_id",
+                        check_by:"$check_by",
+                        checked_date:"$checked_date"
                 }
             },
+            {$lookup:{
+                from:"member-Test",
+                localField:"memb_id",
+                foreignField:"_id",
+                as:"memb_acc"
+                }},
+                         {
+                                $unwind:{ path:"$memb_acc"}
+                         }, {
+                                          $match: {
+                                                           $expr: {
+                                                                        $eq: ["$memb_id", "$memb_acc._id"]
+                                                                 }
+                                                    }
+                            },
+                            {
+                                $project:{
+                                        id:1,
+                                        type:"$type",
+                                        amount:"$amount",
+                                        request_date:"$request_date",
+                                        status:"$status",
+                                        agent_id:"$agent_id",
+                                        web_name:"$webagent.domain_name",
+                                        web_aka:"$webagent.name",
+                                        memb_id:"$memb_id",
+                                        memb_username:"$memb_username",
+                                        memb_status:"$memb_acc.status",
+                                        memb_name:"$memb_name",
+                                        memb_bank:"$memb_bank",
+                                        memb_banking_th:"$memb_banking_th",
+                                        memb_banking_en:"$memb_banking_en",
+                                        memb_banking_code:"$memb_banking_code",
+                                        from_bank_id:"$from_bank_id",
+                                        from_account_id:"$from_account_id",
+                                        web_account_nameth:"$web_account_nameth",
+                                        web_account_nameen:"$web_account_nameen",
+                                        web_account_code:"$web_account_code",
+                                        web_account_name:"$web_account_name",
+                                        web_account_number:"$web_account_number",
+                                        to_bank_id:"$to_bank_id",
+                                        to_account_id:"$to_account_id", 
+                                        // Checked:{
+                                        //         check_by:"$check_by",
+                                        //         checked_date:"$checked_date",
+                                        //         checker_username : "$emp.username",
+                                        //         checker_name : "$emp.name",
+                                        //         checker_tel : "$emp.tel",
+                                        //         checker_role : "$emp.role",
+                                        //         checker_avatar : "$emp.avatar",
+                                        // }
+                                }
+                            }
          
            
         ]).toArray()

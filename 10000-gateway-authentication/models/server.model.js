@@ -1,5 +1,6 @@
 const { MongoDB } = require("../configs/connection_mongodb");
 const { ObjectId } = require("mongodb");
+const fetch = require('node-fetch');
 
 module.exports.getmemb = (memb_id, agent_id, token) => {
     return new Promise(async (resolve, reject) => {

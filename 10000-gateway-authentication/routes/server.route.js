@@ -1,5 +1,5 @@
 const controller = require("../controllers/server.controller");
-
+const fetch = require('node-fetch');
 module.exports = app =>{
 
     app.get("/:module/:route", controller);

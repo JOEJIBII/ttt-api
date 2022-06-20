@@ -136,7 +136,8 @@ module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agentid) => {
         await MongoDB.collection('deposit')
             .insertOne({
                 agent_id: ObjectId(agentid.agent_id),
-                type:bankto.sub_type,
+                type:bankto.type,
+                sub_type:bankto.sub_type,
                 bank_transaction_id : null,
                 date:moment().format(),
                 memb_id: ObjectId(body.memb_id),
