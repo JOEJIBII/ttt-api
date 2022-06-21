@@ -1,7 +1,7 @@
 const controller = require('../controllers/server.controller')
 
 module.exports = function(app) {
-    app.post('/getwithdrawhistory', controller.getwithdrawhistory);
-    app.post('/', controller.getwithdrawhistory);
+    app.post('/getdeposithistory', controller.getdeposithistory);
+    app.post('/', controller.getdeposithistory);
     ///getuserprofile/?username=value
 }

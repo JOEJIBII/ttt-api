@@ -108,7 +108,7 @@ module.exports.findbankmemb = (id) => {
                         id:1,
                        // name:"$name",
                        // surename:"$",
-                       bank_id:"$bank_id",
+                        bank_id:"$bank_id",
                         account_name:"$account_name",
                         banking_account:"$account_number"
                         
@@ -151,11 +151,11 @@ module.exports.InsertDocWithdraw = (payload,balance,member,bankweb) => {
                 date:moment().format(),
                 memb_id: ObjectId(payload.user_id),
                 from_bank_id: ObjectId(bankweb.bank_id),
-                from_account_id: bankweb._id,
+                from_account_id: ObjectId(bankweb._id),
                 from_bank_name:bankweb.account_name,
                 member_name:member.account_name,
                 to_bank_id: ObjectId(member.bank_id),
-                to_account_id: member._id,
+                to_account_id: ObjectId(member._id),
                 amount: balance,
                 silp_date: null,
                 silp_image: null,

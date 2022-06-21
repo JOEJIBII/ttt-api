@@ -2,17 +2,17 @@ const { MongoDB } = require('../configs/connection_mongodb');
 const objectId = require('mongodb').ObjectId;
 const dayjs = require('dayjs');
 const { ObjectId } = require('mongodb');
-module.exports.getwithdrawhistory = (payload) => {
+module.exports.getdeposithistory = (payload) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('withdraw')
+        await MongoDB.collection('deposit')
         .aggregate([
             {
                 $match: {
                     $and: [{
                         agent_id: ObjectId(payload.agent_id),
                         memb_id: ObjectId(payload.user_id),
-                        type:"withdraw"
+                        type:"deposit"
                     },]
                 }
             },
@@ -96,7 +96,7 @@ module.exports.getwithdrawhistory = (payload) => {
                 }
             },{$lookup:{
                     from:"bank",
-                    localField:"to_bank_id",
+                    localField:"from_bank_id",
                     foreignField:"_id",
                     as:"banking_memb"
 }},  {
@@ -104,7 +104,7 @@ module.exports.getwithdrawhistory = (payload) => {
          }, {
                      $match: {
                                $expr: {
-                                       $eq: ["$banking_memb_id", "$banking_memb_id.to_bank_id"]
+                                       $eq: ["$banking_memb_id", "$banking_memb_id.from_bank_id"]
                                         }
                            }
 },{
@@ -131,7 +131,7 @@ module.exports.getwithdrawhistory = (payload) => {
                 }
             },{$lookup:{
                     from:"bank",
-                    localField:"from_bank_id",
+                    localField:"to_bank_id",
                     foreignField:"_id",
                     as:"banking_agent"
 }},  {
@@ -139,7 +139,7 @@ module.exports.getwithdrawhistory = (payload) => {
          }, {
                      $match: {
                                $expr: {
-                                       $eq: ["$banking_agent_id", "$banking_agent_id.from_bank_id"]
+                                       $eq: ["$banking_agent_id", "$banking_agent_id.to_bank_id"]
                                         }
                            }
 },{
@@ -170,7 +170,7 @@ module.exports.getwithdrawhistory = (payload) => {
             },
             {$lookup:{
                     from:"agent_bank_account",
-                    localField:"from_account_id",
+                    localField:"to_account_id",
                     foreignField:"_id",
                     as:"agent_account"
 }},
@@ -179,7 +179,7 @@ module.exports.getwithdrawhistory = (payload) => {
          }, {
                      $match: {
                                $expr: {
-                                       $eq: ["$from_account_id", "$agent_account._id"]
+                                       $eq: ["$agent_account_id", "$agent_account.to_account_id"]
                                         }
                            }
 },{
@@ -249,12 +249,12 @@ module.exports.getwithdrawhistory = (payload) => {
                         web_account_name:"$web_account_name",
                         web_account_number:"$web_account_number",
                         to_bank_id:"$to_bank_id",
-                        to_account_id:"$to_account_id",
+                        to_account_id:"$to_account_id", 
                         check_by:"$check_by",
                         checked_date:"$checked_date"
                 }
             },
-            {$lookup:{
+             {$lookup:{
                 from:"member-Test",
                 localField:"memb_id",
                 foreignField:"_id",
@@ -281,7 +281,7 @@ module.exports.getwithdrawhistory = (payload) => {
                                         web_aka:"$webagent.name",
                                         memb_id:"$memb_id",
                                         memb_username:"$memb_username",
-                                        memb_status:"$memb_acc.status",
+                                        memb_status:"$memb_status",
                                         memb_name:"$memb_name",
                                         memb_bank:"$memb_bank",
                                         memb_banking_th:"$memb_banking_th",
@@ -296,10 +296,17 @@ module.exports.getwithdrawhistory = (payload) => {
                                         web_account_number:"$web_account_number",
                                         to_bank_id:"$to_bank_id",
                                         to_account_id:"$to_account_id", 
-                                        
+                                        // Checked:{
+                                        //         check_by:"$check_by",
+                                        //         checked_date:"$checked_date",
+                                        //         checker_username : "$emp.username",
+                                        //         checker_name : "$emp.name",
+                                        //         checker_tel : "$emp.tel",
+                                        //         checker_role : "$emp.role",
+                                        //         checker_avatar : "$emp.avatar",
+                                        // }
                                 }
                             }
-         
            
         ]).toArray()
             .then(result => resolve(result))
