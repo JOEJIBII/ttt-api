@@ -14,7 +14,7 @@ module.exports.history = async function (req, res) {
         let deposit = await model.getdeposit().catch(() => { throw err });
         let withdraw = await model.getwithdraw().catch(() => { throw err });
         let result  = deposit.concat(withdraw);
-        result = result.sort(function(a, b){return new Date(a.request_date) - new Date(b.request_date)})
+        result = result.sort(function(a, b){return new Date(b.request_date) - new Date(a.request_date)})
                 res.send({
                     status: "200",
                     message: "success",

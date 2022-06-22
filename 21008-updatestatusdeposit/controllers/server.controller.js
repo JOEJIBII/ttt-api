@@ -13,11 +13,11 @@ module.exports.updatestatusdeposit = async function (req, res) {
     try {
         
             if(body.status === "check"){
-                    await model.updatechecked(body,payload).catch(() => { throw err });
+               let updatecheck  =   await model.updatechecked(body,payload).catch(() => { throw err });
                 res.send({
                     status: "200",
                     message: "success",
-                    result : getagentid
+                    result : updatecheck
                 }).end();
             }else{
                 if(body.status === "approve"){
@@ -27,17 +27,23 @@ module.exports.updatestatusdeposit = async function (req, res) {
                     //console.log(getconfig_pd[0])
                     //let getmemb = await model.getmemb(getdocument[0].memb_id).catch(() => { throw err });
                    // console.log(getmemb[0].financial.deposit_first_time)
+                   let updateturnover =await model.updateturnover(getdocument[0].memb_id,getdocument[0].agent_id,getdocument[0].amount,getdocument[0].description).catch(() => { throw err });
                     let depositPD = await functions.depositPD(getconfig_pd[0],getmembpd[0].username,getdocument[0].amount).catch(() => { throw err });
                     console.log(depositPD)
                     if(depositPD.result.code === 0){
                        await model.updatecredit(getdocument[0].agent_id,depositPD.result.data.agent.afterCredit,payload).catch(() => { throw err });
                        await model.updaterefid(body.deposit_id,depositPD.result.refId,payload).catch(() => { throw err });
+                      
+                       if(updateturnover.modifiedCount === 0){
+                        await model.upsertturnover(getdocument[0].memb_id,getdocument[0].agent_id,getdocument[0].amount,getdocument[0].description).catch(() => { throw err });
+                       }
                         let getmemb = await model.getmemb(getdocument[0].memb_id).catch(() => { throw err });
                         if(getmemb[0].financial.deposit_first_time === null ){
                                 await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
                             res.send({
                                 status: "200",
                                 message: "success",
+                                credit_web : depositPD.result.data.agent.afterCredit
                             }).end(); 
                         }else{
                             await model.updateapprove(body,payload).catch(() => { throw err });
@@ -50,11 +56,11 @@ module.exports.updatestatusdeposit = async function (req, res) {
                     }
                 }else{
                      if(body.status === "cancel"){
-                        await model.updatereject(body,payload).catch(() => { throw err });
+                     let updatereject = await model.updatereject(body,payload).catch(() => { throw err });
                         res.send({
                             status: "200",
                             message: "success",
-                            result : getagentid.modifiedCount
+                            result : updatereject.modifiedCount
                         }).end(); 
                     }
                 }

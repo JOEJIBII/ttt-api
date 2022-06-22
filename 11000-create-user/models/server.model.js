@@ -94,15 +94,32 @@ module.exports.createaccountprovider = (body, _id, CONF,_user) => {
             .catch(error => reject(error));
     });
 }
+
+module.exports.createaccountprovider = (body, _id, CONF,_user) => {
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('member_provider_account')
+            .insertOne({
+                memb_id: _id,
+                username: _user,
+                password: CONF.value.prefix + "123456",
+                prov_id: CONF.value.provider.prov_id,
+                flagregister: "N",
+                cr_by :  "11000-create-user",
+                cr_date :moment().format(), 
+                cr_prog :  "11000-create-user",
+            })
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
 module.exports.insertbankmemb = (memb_id,body) => {
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('memb_bank_account')
+        await MongoDB.collection('memb_trunover')
             .insertOne({
                 memb_id : ObjectId(memb_id),
                 agent_id : ObjectId(body.agent_id),
-                bank_id : ObjectId(body.bank_id),
-                account_number : body.bank_acct,
-                account_name : body.name + body.surename,
+                turnover : 0.00,
                 description : null,
                 status : "active",
                 cr_by : "11000-create-user",

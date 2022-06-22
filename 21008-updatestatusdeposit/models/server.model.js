@@ -169,8 +169,8 @@ module.exports.updatechecked = (body,payload) => {
         },{
             $set : {
                 "status": body.status,
-                "checked_by_id":ObjectId(payload.user_id),
-                "checked_date":moment().format(),
+                "check_by":ObjectId(payload.user_id),
+                "check_date":moment().format(),
                 "upd_by": ObjectId(payload.user_id),
                 "upd_date": moment().format(),
                 "upd_prog": "21008-updatestatusdeposit"
@@ -199,6 +199,53 @@ module.exports.updatereject = (body,payload) => {
                 "upd_prog": "21008-updatestatusdeposit"
             }
         })
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+        
+            
+    });
+}
+
+
+module.exports.upsertturnover = (memb_id,agent_id,amount,note) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('memb_turnover')
+        .updateOne({memb_id: ObjectId(memb_id),agent_id : ObjectId(agent_id)
+        },{
+            $set : {
+                turnover : Number(amount),
+                description : note,
+                cr_by : "21008-updatestatusdeposit",
+                cr_date : moment().format(),
+                cr_prog : "21008-updatestatusdeposit",
+                upd_by : "21008-updatestatusdeposit",
+                upd_date : moment().format(),
+                upd_prog : "21008-updatestatusdeposit"
+            } 
+        },{ upsert: true})
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+        
+            
+    });
+}
+
+module.exports.updateturnover = (memb_id,agent_id,amount,note) => {
+    console.log(memb_id);console.log(agent_id);console.log(amount);console.log(note);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('memb_turnover')
+        .updateOne({memb_id: ObjectId(memb_id), agent_id : ObjectId(agent_id)},
+        {
+            $set : {
+                //turnover : body.amount,
+                //description : note,
+                upd_by : "21008-updatestatusdeposit",
+                upd_date : moment().format(),
+                upd_prog : "21008-updatestatusdeposit"
+            },
+            $inc:{turnover:Number(amount)}
+        },)
             .then(result => resolve(result))
             .catch(error => reject(error));
         

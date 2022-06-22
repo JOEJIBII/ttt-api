@@ -11,7 +11,8 @@ module.exports = {
         "getbankdeposit" : "11009",
         "getwithdrawamount" : "11010",
         "getwithdrawhistory" : "11012",
-        "getdeposithistory" : "11014"
+        "getdeposithistory" : "11014",
+        "updatepassword" : "11002"
     },
     "panel" : {
         "createuser": "11000",
