@@ -11,21 +11,22 @@ module.exports.login = async function (req, res) {
 //console.log(req.headers['user-agent'])
     try {
         let ResultToken = await model.login(req.body,req.headers).catch(() => { throw err });
-        // console.log(ResultToken)
+        console.log(ResultToken)
         //console.log("Test",ResultToken.profile_mem._id)
-        if (ResultToken.token && ResultToken.token.length) {
+        if (ResultToken.length !== 0) {
              console.log('Result',ResultToken)
-            const credit = await functions.ProfilePD(ResultToken.profile_mem.username).catch(() => { throw err });
-            //console.log(credit)
+             let Token = model.gen_token(ResultToken)
+            const credit = await functions.ProfilePD(ResultToken[0].username).catch(() => { throw err });
+            //console.log(Token)
             if(credit.result.status === "200"){
-                const find = await model.find_session(ResultToken.profile_mem._id).catch(() => { throw err });
+                const find = await model.find_session(ResultToken[0]._id).catch(() => { throw err });
                 // console.log(find[0]._id)
                  if(find.length > 0){
                      const remove =   await model.remove_session(find[0]._id).catch(() => { throw err }); 
                      if (remove.deletedCount > 0){
-                         const inst_token =  await model.inserttoken(ResultToken).catch(() => { throw err });
+                         const inst_token =  await model.inserttoken(ResultToken,Token).catch(() => { throw err });
                          if(inst_token.insertedId){
-                            let responses = await functions.Mappingdata(ResultToken,credit.result.result.data.balance).catch(() => {throw err});
+                            let responses = await functions.Mappingdata(ResultToken,credit.result.result.data.balance,Token).catch(() => {throw err});
                             console.log(responses)
                                  res.send({
                                      status: "200",
@@ -60,7 +61,7 @@ module.exports.login = async function (req, res) {
             res.send({ status: "202", message: 'not found data' }).end();
         }
     } catch (error) {
-        //console.error(error);
+        console.error(error);
         res.send({ status: "300", message: 'internal error' }).end();
     }
 }

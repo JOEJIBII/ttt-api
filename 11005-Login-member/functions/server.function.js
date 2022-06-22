@@ -44,38 +44,38 @@ module.exports.ProfilePD = async (username) => {
         })
 }
 
-module.exports.Mappingdata = async (Resulttoken,balance) => {
+module.exports.Mappingdata = async (Resulttoken,balance,token) => {
     return new Promise(async (resolve) => {
         //let memb = member
         console.log("member",Resulttoken)
         resolve({ 
-        "token": Resulttoken.token,
+        "token":token,
         "profile_mem": {
-            "_id": Resulttoken.profile_mem._id,
-            "username": Resulttoken.profile_mem.username,
-            "agent_id": Resulttoken.profile_mem.agent_id,
-            "line_id": Resulttoken.profile_mem.line_id,
+            "_id": Resulttoken[0]._id,
+            "username": Resulttoken[0].username,
+            "agent_id": Resulttoken[0].agent_id,
+            "line_id": Resulttoken[0].line_id,
             "profile": {
-                "name": Resulttoken.profile_mem.profile.name,
-                "surename": Resulttoken.profile_mem.profile.surename,
-                "tel": Resulttoken.profile_mem.profile.tel,
-                "channel_id": Resulttoken.profile_mem.profile.channel_id,
-                "channel": Resulttoken.profile_mem.profile.channel.channel,
-                "note": Resulttoken.profile_mem.profile.note,
-                "birthday_date": Resulttoken.profile_mem.profile.birthday_date,
-                "privilege": Resulttoken.profile_mem.profile.privilege,
-                "user_reference": Resulttoken.profile_mem.profile.user_reference,      
+                "name": Resulttoken[0].profile.name,
+                "surename": Resulttoken[0].profile.surename,
+                "tel": Resulttoken[0].profile.tel,
+                "channel_id": Resulttoken[0].profile.channel_id,
+                "channel": Resulttoken[0].profile.channel,
+                "note": Resulttoken[0].profile.note,
+                "birthday_date": Resulttoken[0].profile.birthday_date,
+                "privilege": Resulttoken[0].profile.privilege,
+                "user_reference": Resulttoken[0].profile.user_reference,      
             },
-            "banking_account": Resulttoken.profile_mem.banking_account,
-            "financial": Resulttoken.profile_mem.financial,
+            "banking_account": Resulttoken[0].banking_account,
+            "financial": Resulttoken[0].financial,
             "PD":{
                 "credit":balance
             },
-            "status": Resulttoken.profile_mem.status,
-            "status_newmember": Resulttoken.profile_mem.status_newmember,
-            "create_date": Resulttoken.profile_mem.create_date,
-            "update_date": Resulttoken.profile_mem.update_date,
-            "update_by": Resulttoken.profile_mem.update_by
+            "status": Resulttoken[0].status,
+            "status_newmember": Resulttoken[0].status_newmember,
+            "create_date": Resulttoken[0].create_date,
+            "update_date": Resulttoken[0].update_date,
+            "update_by": Resulttoken[0].update_by
         }
         },)
     })
