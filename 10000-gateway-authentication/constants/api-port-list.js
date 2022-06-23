@@ -30,6 +30,8 @@ module.exports = {
         "updatestatusdeposit": "21008",
         "history": "21009",
         "logoff": "21010",
+        "getprefix": "21011",
+        
     },
     "provieder": {
         "create-member": "45000", //Complete
