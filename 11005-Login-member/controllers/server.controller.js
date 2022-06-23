@@ -53,7 +53,7 @@ module.exports.login = async function (req, res) {
                     }
                 }
             } else {
-                res.send({ credit }).end();
+                res.send({ status: "203", message:"amb " + credit.result.message.msg }).end();
             }
         } else {
             res.send({ status: "202", message: 'not found data' }).end();
