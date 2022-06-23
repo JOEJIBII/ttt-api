@@ -47,9 +47,9 @@ module.exports.ProfilePD = async (username) => {
 module.exports.Mappingdata = async (Resulttoken,balance,token) => {
     return new Promise(async (resolve) => {
         //let memb = member
-        console.log("member",Resulttoken)
+        //console.log("member",Resulttoken)
         resolve({ 
-        "token":token,
+        "token":token.token,
         "profile_mem": {
             "_id": Resulttoken[0]._id,
             "username": Resulttoken[0].username,

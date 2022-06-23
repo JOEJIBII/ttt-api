@@ -11,11 +11,11 @@ module.exports.login = async function (req, res) {
     //console.log(req.headers['user-agent'])
     try {
         let ResultToken = await model.login(req.body, req.headers).catch(() => { throw err });
-        console.log(ResultToken)
+        //console.log(ResultToken)
         //console.log("Test",ResultToken.profile_mem._id)
         if (ResultToken.length !== 0) {
-            console.log('Result', ResultToken)
-            let Token = model.gen_token(ResultToken)
+            //console.log('Result', ResultToken)
+            let Token = model.gen_token(ResultToken[0])
             const credit = await functions.ProfilePD(ResultToken[0].username).catch(() => { throw err });
             //console.log(Token)
             if (credit.result.status === "200") {
@@ -27,7 +27,7 @@ module.exports.login = async function (req, res) {
                         const inst_token = await model.inserttoken(ResultToken, Token).catch(() => { throw err });
                         if (inst_token.insertedId) {
                             let responses = await functions.Mappingdata(ResultToken, credit.result.result.data.balance, Token).catch(() => { throw err });
-                            console.log(responses)
+                            //console.log(responses)
                             res.send({
                                 status: "200",
                                 message: "success",

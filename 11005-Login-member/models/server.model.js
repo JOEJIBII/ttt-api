@@ -187,16 +187,16 @@ module.exports.login = (body, host) => {
 }
 
 module.exports.gen_token = (body) => {
-    console.log(body);
+    //console.log(body);
 
 
     let jwtSecretKey = "tea_true";
 
     let data = {
         time: moment().format(),
-        username: body[0].username,
-        user_id: ObjectId(body[0]._id),
-        agent_id: ObjectId(body[0].agent_id),
+        username: body.username,
+        user_id: ObjectId(body._id),
+        agent_id: ObjectId(body.agent_id),
         request: "member"
         //exp:moment.fomat()
     }
@@ -208,13 +208,13 @@ module.exports.gen_token = (body) => {
 }
 
 module.exports.inserttoken = (body,token) => {
-    //console.log(body);
+    console.log("inserttoken",token.token);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('memb_session')
             .insertOne({
                 memb_id: objectId(body[0]._id),
                 agent_id: objectId(body[0].agent_id),
-                token: "Bearer " + token,
+                token: "Bearer " + token.token,
                 skey: "tea_true",
                 cr_date: moment().format(),
                 cr_by: "11005-Login-member",
