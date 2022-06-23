@@ -31,6 +31,7 @@ module.exports = {
         "history": "21009",
         "logoff": "21010",
         "getprefix": "21011",
+        "getconfiggeneral": "21012",
         
     },
     "provieder": {
