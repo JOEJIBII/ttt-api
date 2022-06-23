@@ -32,6 +32,7 @@ module.exports = {
         "logoff": "21010",
         "getprefix": "21011",
         "getconfiggeneral": "21012",
+        "updateconfgenneral":"21013",
         
     },
     "provieder": {
