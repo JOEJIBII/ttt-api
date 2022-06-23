@@ -39,6 +39,7 @@ module.exports.updatestatusdeposit = async function (req, res) {
                        }
                         let getmemb = await model.getmemb(getdocument[0].memb_id).catch(() => { throw err });
                         if(getmemb[0].financial.deposit_first_time === null ){
+                                await model.updateapprove(body,payload).catch(() => { throw err });
                                 await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
                             res.send({
                                 status: "200",
@@ -47,10 +48,11 @@ module.exports.updatestatusdeposit = async function (req, res) {
                             }).end(); 
                         }else{
                             await model.updateapprove(body,payload).catch(() => { throw err });
-                            await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
+                            //await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
                             res.send({
                                 status: "200",
                                 message: "success",
+                                credit_web : depositPD.result.data.agent.afterCredit
                             }).end(); 
                         }
                     }
