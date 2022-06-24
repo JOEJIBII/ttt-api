@@ -7,9 +7,9 @@ module.exports.getwithdrawamount = async function (req, res) {
     //console.log(JSON.parse(req.headers.payload))
     const payload = JSON.parse(req.headers.payload)
     try {
-
+     
         let getwithdrawamount = await model.getwithdraw(payload.agent_id).catch(() => { throw err });
-         console.log(getwithdrawamount)
+        // console.log(getwithdrawamount)
         //  let responses = await functions.Mappingdata(bankdeposit[0].bank_account_deposit).catch(() => {throw err});
         
         if (getwithdrawamount && getwithdrawamount.length) {

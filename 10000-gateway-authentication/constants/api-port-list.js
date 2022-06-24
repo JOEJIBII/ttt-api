@@ -33,6 +33,7 @@ module.exports = {
         "getprefix": "21011",
         "getconfiggeneral": "21012",
         "updateconfgenneral":"21013",
+        "historylasted":"21014"
         
     },
     "provieder": {
