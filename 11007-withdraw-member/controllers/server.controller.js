@@ -12,17 +12,14 @@ module.exports.withdraw = async function (req, res) {
     //console.log(JSON.parse(req.headers.payload))Mappingdata
    
     try {
+
+        let checktrasaction = await model.checktrasaction(payload.agent_id).catch(() => { throw err });
+        if(checktrasaction.length === 0){
             if (payload.agent_id !== null && payload.agent_id !== '') {
                 let withdraw_configs = await model.getwithdraw_config( req.body,JSON.parse(req.headers.payload)).catch(() => { throw err });
                 let getbankweb = await model.getbankweb( req.body,JSON.parse(req.headers.payload)).catch(() => { throw err });
                 console.log("bankweb",getbankweb)
-                //console.log("config",withdraw_configs[0].prov_key)
-                // let bankwitdrawfrom = []
-                // withdraw_configs[0].bank_account.forEach(e => {
-                //     if(e.bank_status === "Active"){
-                //         bankwitdrawfrom = e
-                //     }
-                // })
+                
                 console.log("user_id",payload.user_id)
                 let member = await model.findbankmemb(payload.user_id).catch(() => { throw err });
                // console.log("bank",bankwitdrawfrom)
@@ -70,6 +67,10 @@ module.exports.withdraw = async function (req, res) {
             } else {
                 res.send({ status: "203", message: 'invalid parameter' }).end();
             }
+        }else{
+            res.send({ status: "204", message: 'พบรายการถอนแล้ว กรุณารอ' }).end();
+        }
+           
     } catch (error) {
         console.error(error);
         res.send({ status: "300", message: 'internal error' }).end();

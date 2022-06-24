@@ -120,6 +120,39 @@ module.exports.findbankmemb = (id) => {
     });
 }
 
+
+module.exports.checktrasaction = (agent_id) => {
+    // console.log(agent_id);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('withdraw')
+        .aggregate([
+            {
+                $match : {
+                    $and : [
+                        //{ou_id : ObjectId(payload.ou)},
+                      //{branch_id : ObjectId(payload.branch)},
+                        { 
+                          agent_id : ObjectId(agent_id)
+                        },
+                        {
+                           mem_id : ObjectId(user_id) 
+                        },{
+                            $or: [
+                                    { status: "pending" }, { status: "check" }
+                            ]
+                    }
+                        
+
+                    ]
+                }
+            }
+        ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
+
 module.exports.Withrawcount = (_id,counter) => {
     console.log(_id)
     return new Promise(async (resolve, reject) => {

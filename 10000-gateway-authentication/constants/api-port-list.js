@@ -27,7 +27,7 @@ module.exports = {
         "getstatus": "21006",
         "getbanking": "11004",
         "deposit": "21007",
-        "updatestatusdeposit": "21008",
+        "updatetransaction": "21008",
         "history": "21009",
         "logoff": "21010",
         "getprefix": "21011",
