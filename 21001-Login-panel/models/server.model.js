@@ -40,38 +40,41 @@ module.exports.login = (body) => {
                 },
                
             ]).toArray()
-            .then(result => {
-                console.log("RE",result)
-                let jwtSecretKey = "tea_true";
-               
-                let data = { 
-                    time:moment().format(),
-                    username : result[0].username,
-                    user_id : ObjectId(result[0]._id),
-                    role : result[0].role,
-                    request:"panel"
-                    //agent_id:ObjectId(result[0].agent_id)
-                    //exp:moment.fomat()
-                }
-                const gen_token = jwt.sign(data,jwtSecretKey,{expiresIn:'12H'})
-                const R = {
-                    token : gen_token,
-                    profile_employee : result[0]
-                }
-                //console.log("token",R)
-                resolve(R)})
+            .then(result => resolve(result))
             .catch(error => reject(error));
     });
 }
 
-module.exports.inserttoken = (body) => {
+module.exports.gen_token = (body) => {
+    //console.log(body);
+
+
+    let jwtSecretKey = "tea_true";
+    
+    let data = { 
+        time:moment().format(),
+        username : body.username,
+        user_id : ObjectId(body._id),
+        role : body.role,
+        request:"panel"
+        //agent_id:ObjectId(result[0].agent_id)
+        //exp:moment.fomat()
+    }
+    const gen_token = jwt.sign(data, jwtSecretKey, { expiresIn: '12H' })
+    const R = {
+        token: gen_token,
+    }
+    return R
+}
+
+module.exports.inserttoken = (body,token) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('emp_session')
             .insertOne({
-                employee_id: objectId(body.profile_employee._id),
+                employee_id: objectId(body._id),
                 //agent_id: objectId(body.profile_mem.agent_id),
-                token: "Bearer " +  body.token,
+                token: "Bearer " +  token,
                 skey:"tea_true",
                 cr_date: moment().format(),
                 cr_by: "21001-login-employee",

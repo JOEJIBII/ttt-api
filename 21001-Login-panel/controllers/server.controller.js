@@ -13,21 +13,27 @@ module.exports.login = async function (req, res) {
 console.log("body",req.body)
     try {
         let ResultToken = await model.login(req.body).catch(() => { throw err });
-         //console.log("result",ResultToken)
+         //console.log("result",ResultToken[0])
         //console.log("Test",ResultToken.profile_mem._id)
-        if (ResultToken.token && ResultToken.token.length) {
+        
+        if (ResultToken.length !== 0) {
              //console.log('Result',ResultToken)
             //console.log(credit)
-                     const remove =   await model.remove_session(ResultToken.profile_employee._id).catch(() => { throw err }); 
+                     let Token = model.gen_token(ResultToken[0])
+                     const remove =   await model.remove_session(ResultToken[0]._id).catch(() => { throw err }); 
                     //  if (remove.deletedCount > 0){
-                         const inst_token =  await model.inserttoken(ResultToken).catch(() => { throw err });
+                         const inst_token =  await model.inserttoken(ResultToken[0],Token.token).catch(() => { throw err });
                          if(inst_token.insertedId){
                             //let responses = await functions.Mappingdata(ResultToken,credit.result.result.data.balance).catch(() => {throw err});
                             //console.log("response",responses)
                                  res.send({
                                      status: "200",
                                      message: "success",
-                                     result:ResultToken
+                                     result:{
+                                        token:Token.token,
+                                        profile_employee:ResultToken[0]
+                                     }
+                                     
                                      //credit:credit.result.result.data.balance
                                  }).end();
                              }else
