@@ -7,12 +7,17 @@ const functions = require('../functions/server.function');
 module.exports.registermember = async function (req, res) {
     res.setHeader('Content-type', 'application/json');
     let body = req.body.body
+    // const payload = JSON.parse(req.headers.payload)
+    //console.log("ip",req.headers)
+    
     try {
-        req.headers["x-real-ip"]
-        console.log(body)
-        //if(payload.user_id === "" || payloa)
-        const verifyCap = await functions.verifycaptcha(body.captchaID, body.value).catch(() => { throw err });
-        if (verifyCap.status === "200") {
+        //req.headers["x-real-ip"]
+       // let responses = await functions.Mappingdata(body).catch(() => {throw err});
+        // console.log(body.request)
+        // const verifyCap = JSON.parse()
+        let verifyCap = await functions.verifycaptcha(body.captchaID, body.value).catch(() => { throw err });
+      
+        if (verifyCap.status === "200" || body.request === "panel") {
             let Ckbank = await model.CheckBankAccount(body).catch(() => { throw err });
             console.log(Ckbank.length)
             let Cktel = await model.CheckTel(body).catch(() => { throw err });
@@ -76,15 +81,6 @@ module.exports.registermember = async function (req, res) {
                                 bank_acct: body.bank_acct,
 
                             },
-                            // bank_account: body.banking_account.map(e => 
-                            //     {
-                            //     return {
-                            //         bank_acct: e.bank_acct,
-                            //         bank_name: e.bank_name,
-                            //         bank_code: e.bankcode,
-                            //     }
-                            // }
-                            // ),
                             message: "BankAccount มีอยู่ในระบบแล้ว"
                         }).end();
                     } else {
