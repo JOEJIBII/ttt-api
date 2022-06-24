@@ -11,15 +11,12 @@ module.exports.registermember = async function (req, res) {
     //console.log("ip",req.headers)
     
     try {
-        //req.headers["x-real-ip"]
-       // let responses = await functions.Mappingdata(body).catch(() => {throw err});
-        // console.log(body.request)
-        // const verifyCap = JSON.parse()
+        
         let verifyCap = await functions.verifycaptcha(body.captchaID, body.value).catch(() => { throw err });
       
         if (verifyCap.status === "200" || body.request === "panel") {
             let Ckbank = await model.CheckBankAccount(body).catch(() => { throw err });
-            console.log(Ckbank.length)
+            //console.log(Ckbank.length)
             let Cktel = await model.CheckTel(body).catch(() => { throw err });
             if (Cktel.length == 0 && Ckbank.length == 0) {
                 const CONF = await model.findConF(body).catch(() => { throw err });
@@ -32,7 +29,7 @@ module.exports.registermember = async function (req, res) {
                         await model.get_acct_pd(createacct.insertedId).catch(() => { throw err });
                         await functions.logs(body, Result.insertedId, req.headers.host).catch(() => { throw err });
                         const regis = await functions.registermemberPD(CONF, userTemp).catch(() => { throw err });
-                        console.log("regis", regis)
+                        //console.log("regis", regis)
                         if (regis.result.code === 0) {
                             res.send({
                                 status: "200",
