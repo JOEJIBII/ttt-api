@@ -193,7 +193,7 @@ module.exports.gen_token = (body) => {
     let jwtSecretKey = "tea_true";
 
     let data = {
-        time: moment().format(),
+        time: new Date(moment().format()),
         username: body.username,
         user_id: ObjectId(body._id),
         agent_id: ObjectId(body.agent_id),
@@ -216,7 +216,7 @@ module.exports.inserttoken = (body,token) => {
                 agent_id: objectId(body[0].agent_id),
                 token: "Bearer " + token.token,
                 skey: "tea_true",
-                cr_date: moment().format(),
+                cr_date: new Date(moment().format()),
                 cr_by: "11005-Login-member",
                 cr_prog: "11005-Login-member",
             })

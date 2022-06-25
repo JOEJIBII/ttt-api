@@ -21,7 +21,7 @@ module.exports.updatepassword = (memb_id,agent_id,pass) => {
                 //turnover : body.amount,
                 pin: pass,
                 upd_by : ObjectId(memb_id),
-                upd_date : moment().format(),
+                upd_date : new Date(moment().format()),
                 upd_prog : "11002-update-password"
             },
         },)

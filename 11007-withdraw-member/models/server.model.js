@@ -174,6 +174,28 @@ module.exports.Withrawcount = (_id,counter) => {
     });
 }
 
+
+module.exports.Withrawcount = (_id,counter) => {
+    console.log(_id)
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('withdraw')
+            .findOneAndUpdate(
+                {
+                    _id: ObjectId(_id)
+
+                },
+                {
+                    $inc: {
+                        "financial.withdraw_count": counter
+                    }
+                },
+
+            )
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
 module.exports.InsertDocWithdraw = (payload,balance,member,bankweb) => {
     console.log(payload)
     return new Promise(async (resolve, reject) => {
@@ -181,7 +203,7 @@ module.exports.InsertDocWithdraw = (payload,balance,member,bankweb) => {
             .insertOne({
                 agent_id: ObjectId(payload.agent_id),
                 type:"withdraw",
-                date:moment().format(),
+                date:new Date(moment().format()),
                 memb_id: ObjectId(payload.user_id),
                 from_bank_id: ObjectId(bankweb.bank_id),
                 from_account_id: ObjectId(bankweb._id),
@@ -193,13 +215,13 @@ module.exports.InsertDocWithdraw = (payload,balance,member,bankweb) => {
                 silp_date: null,
                 silp_image: null,
                 request_by:payload.username,
-                request_date: moment().format(),
+                request_date:new Date(moment().format()) ,
                 approve_by : null,
                 approve_date:null,
                 status : 'pending',
                 description:null,
                 cr_by:payload.username,
-                cr_date:moment().format(),
+                cr_date:new Date(moment().format()),
                 cr_prog: null,
                 upd_by : null,
                 upd_date: null,

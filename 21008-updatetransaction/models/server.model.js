@@ -12,9 +12,9 @@ module.exports.updateapprove = (body, payload) => {
                 $set: {
                     "status": body.status,
                     "approve_by": ObjectId(payload.user_id),
-                    "approve_date": moment().format(),
+                    "approve_date": new Date(moment().format()),
                     "upd_by": ObjectId(payload.user_id),
-                    "upd_date": moment().format(),
+                    "upd_date": new Date(moment().format()),
                     "upd_prog": "21008-updatestatusdeposit"
                 }
             })
@@ -149,7 +149,7 @@ module.exports.updaterefid = (doc_id, ref_id, payload, type) => {
                 $set: {
                     "ref_id": ObjectId(ref_id),
                     "upd_by": ObjectId(payload.user_id),
-                    "upd_date": moment().format(),
+                    "upd_date": new Date(moment().format()),
                     "upd_prog": "21008-updatestatusdeposit"
                 }
             }, { upsert: true }
@@ -173,9 +173,9 @@ module.exports.updatechecked = (body, payload) => {
                 $set: {
                     "status": body.status,
                     "check_by": ObjectId(payload.user_id),
-                    "check_date": moment().format(),
+                    "check_date": new Date(moment().format()),
                     "upd_by": ObjectId(payload.user_id),
-                    "upd_date": moment().format(),
+                    "upd_date": new Date(moment().format()),
                     "upd_prog": "21008-updatestatusdeposit"
                 }
             })
@@ -197,9 +197,9 @@ module.exports.updatereject = (body, payload) => {
                 $set: {
                     "status": body.status,
                     "approve_by": ObjectId(payload.user_id),
-                    "approve_date": moment().format(),
+                    "approve_date": new Date(moment().format()),
                     "upd_by": ObjectId(payload.user_id),
-                    "upd_date": moment().format(),
+                    "upd_date": new Date(moment().format()),
                     "upd_prog": "21008-updatestatusdeposit"
                 }
             })
@@ -222,10 +222,10 @@ module.exports.upsertturnover = (memb_id, agent_id, amount, note) => {
                     turnover: Number(amount),
                     description: note,
                     cr_by: "21008-updatestatusdeposit",
-                    cr_date: moment().format(),
+                    cr_date: new Date(moment().format()),
                     cr_prog: "21008-updatestatusdeposit",
                     upd_by: "21008-updatestatusdeposit",
-                    upd_date: moment().format(),
+                    upd_date: new Date(moment().format()),
                     upd_prog: "21008-updatestatusdeposit"
                 }
             }, { upsert: true })
@@ -246,7 +246,7 @@ module.exports.updateturnover = (memb_id, agent_id, amount, note) => {
                         //turnover : body.amount,
                         //description : note,
                         upd_by: "21008-updatestatusdeposit",
-                        upd_date: moment().format(),
+                        upd_date: new Date(moment().format()),
                         upd_prog: "21008-updatestatusdeposit"
                     },
                     $inc: { turnover: Number(amount) }
@@ -270,7 +270,7 @@ module.exports.updatecredit = (agent_id, credit, payload) => {
                 $set: {
                     "credit": credit,
                     "upd_by": ObjectId(payload.user_id),
-                    "upd_date": moment().format(),
+                    "upd_date": new Date(moment().format()),
                     "upd_prog": "21008-updatestatusdeposit"
                 }
             })
@@ -291,7 +291,7 @@ module.exports.update_financial = (memb_id, amount, payload) => {
             }, {
                 $set: {
                     "upd_by": ObjectId(payload.user_id),
-                    "upd_date": moment().format(),
+                    "upd_date": new Date(moment().format()),
                     "upd_prog": "21008-updatestatusdeposit"
                 },
                 $inc: { "financial.deposit_count": Number(1), "financial.deposit_total_amount": Number(amount) }
@@ -315,9 +315,9 @@ module.exports.update_financial_withdraw = (memb_id, amount, payload) => {
             }, {
                 $set: {
                     "financial.withdraw_first_time_amount": Double(amount),
-                    "financial.withdraw_first_time": moment().format(),
+                    "financial.withdraw_first_time": new Date(moment().format()),
                     "upd_by": ObjectId(payload.user_id),
-                    "upd_date": moment().format(),
+                    "upd_date": new Date(moment().format()),
                     "upd_prog": "21008-updatetrasaction"
                 },
                 $inc: { "financial.withdraw_count": 1, "financial.withdraw_total_amount": Double(amount) }
@@ -342,9 +342,9 @@ module.exports.update_financial_first = (memb_id, amount, payload) => {
             }, {
                 $set: {
                     "financial.deposit_first_time_amount": amount,
-                    "financial.deposit_first_time": moment().format(),
+                    "financial.deposit_first_time": new Date(moment().format()),
                     "upd_by": ObjectId(payload.user_id),
-                    "upd_date": moment().format(),
+                    "upd_date": new Date(moment().format()),
                     "upd_prog": "21008-updatestatusdeposit"
                 },
                 $inc: { "financial.deposit_count": Number(1), "financial.deposit_total_amount": Number(amount) }
@@ -368,7 +368,7 @@ module.exports.update_financial_withdraw_first = (memb_id, amount, payload) => {
             }, {
                 $set: {
                     "upd_by": ObjectId(payload.user_id),
-                    "upd_date": moment().format(),
+                    "upd_date": new Date(moment().format()),
                     "upd_prog": "21008-updatetrasaction"
                 },
                 $inc: { "financial.withdraw_count": 1, "financial.withdraw_total_amount": Double(amount) }

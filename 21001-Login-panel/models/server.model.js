@@ -76,7 +76,7 @@ module.exports.inserttoken = (body,token) => {
                 //agent_id: objectId(body.profile_mem.agent_id),
                 token: "Bearer " +  token,
                 skey:"tea_true",
-                cr_date: moment().format(),
+                cr_date: new Date(moment().format()),
                 cr_by: "21001-login-employee",
                 cr_prog: "21001-login-employee",
             })

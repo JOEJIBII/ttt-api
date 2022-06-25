@@ -9,7 +9,7 @@ module.exports.logs = (body,ip) => {
             memb_id:body.agent_id,
             api_name:"21007-deposit",
             ip_address:ip,
-            create_date:moment().format()
+            create_date:new Date(moment().format())
         })
             .then(result => resolve(result))
             .catch(error => reject(error));

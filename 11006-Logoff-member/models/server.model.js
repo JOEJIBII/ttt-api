@@ -55,7 +55,7 @@ module.exports.login = (body,host) => {
                 let jwtSecretKey = "bp888";
                 
                 let data = { 
-                    time:Date(),
+                    time:new Date(moment().format()),
                     username : result[0].username,
                     user_id : ObjectId(result[0]._id),
                     agent_id:ObjectId(result[0].agent_id)

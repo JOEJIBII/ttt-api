@@ -87,7 +87,7 @@ module.exports.createaccountprovider = (body, _id, CONF,_user) => {
                 prov_id: CONF.value.provider.prov_id,
                 flagregister: "N",
                 cr_by :  "11000-create-user",
-                cr_date :moment().format(), 
+                cr_date :new Date(moment().format()), 
                 cr_prog :  "11000-create-user",
             })
             .then(result => resolve(result))
@@ -105,7 +105,7 @@ module.exports.createaccountprovider = (body, _id, CONF,_user) => {
                 prov_id: CONF.value.provider.prov_id,
                 flagregister: "N",
                 cr_by :  "11000-create-user",
-                cr_date :moment().format(), 
+                cr_date :new Date(moment().format()), 
                 cr_prog :  "11000-create-user",
             })
             .then(result => resolve(result))
@@ -123,7 +123,7 @@ module.exports.insertbankmemb = (memb_id,body) => {
                 description : null,
                 status : "active",
                 cr_by : "11000-create-user",
-                cr_date : moment().format(),
+                cr_date : new Date(moment().format()),
                 cr_prog : "11000-create-user",
                 upd_by : null,
                 upd_date : null,

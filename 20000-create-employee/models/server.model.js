@@ -24,7 +24,7 @@ module.exports.addemployee = (body,payload) => {
                 role:body.role,
                 avatar:body.avatar,
                 status: body.status,
-                cr_date: moment().format(),
+                cr_date: new Date(moment().format()),
                 cr_by: payload.username,
                 cr_prog: "20000-create-employee",
                 upd_date: null,
