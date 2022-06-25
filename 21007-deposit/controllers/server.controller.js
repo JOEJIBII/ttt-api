@@ -15,7 +15,6 @@ module.exports.deposit = async function (req, res) {
                 bankto = await model.getbanktobystatus(getagentid[0]).catch(() => { throw err });
                 console.log("getbanktobystatus",bankto)
             }else{
-                
                 bankto = await model.getbanktobyaccount_id(req.body,getagentid[0]).catch(() => { throw err });
                 console.log("getbanktobyaccount_id",bankto)
                 

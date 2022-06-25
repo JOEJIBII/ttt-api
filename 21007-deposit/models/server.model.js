@@ -73,7 +73,7 @@ module.exports.getbanktobystatus = (agentid) => {
                 $match: {
                     $and: [{
                         agent_id: ObjectId(agentid.agent_id),
-                        sub_type: "bouns",
+                        sub_type: "bonus",
                         type:"deposit"
                     },]
                 }
