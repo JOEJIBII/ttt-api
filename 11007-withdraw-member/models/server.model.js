@@ -1,159 +1,185 @@
 const { MongoDB } = require('../configs/connection_mongodb');
 // const objectId = require('mongodb').ObjectId;
-const { ObjectId } = require('mongodb');
+const { ObjectId, Double } = require('mongodb');
 const moment = require('moment');
 const { withdraw } = require('../controllers/server.controller');
 const collectionmember = "member-Test"
-const collectionCONFIGURATION ="configuration"
+const collectionCONFIGURATION = "configuration"
 //const collectionhistory_log_api ="history_log_api"
-module.exports.getwithdraw_config = (body,payload) => {
-   // console.log(body);
+module.exports.getwithdraw_config = (body, payload) => {
+    // console.log(body);
     return new Promise(async (resolve, reject) => {
 
         await MongoDB.collection('agent')
-       
+
             .aggregate([
                 {
-                    $match : {
-                        $and : [
+                    $match: {
+                        $and: [
                             //{ou_id : ObjectId(payload.ou)},
-                          //{branch_id : ObjectId(payload.branch)},
+                            //{branch_id : ObjectId(payload.branch)},
                             {
-                                _id : ObjectId(payload.agent_id)
+                                _id: ObjectId(payload.agent_id)
                             },
 
                         ]
                     }
                 }, {
-                    $unwind:{ path:"$withdraw_config" }
-                 },
+                    $unwind: { path: "$withdraw_config" }
+                },
                 {
-                    $project:{
-                            id:1,
-                            counter:"$withdraw_config.counter",
-                            min:"$withdraw_config.min_cash_limit",
-                            max:"$withdraw_config.max_cash_limit",
-                           // bank_account: "$agent_bank_account_withdraw",
-                            prov_key: "$provider.prov_key",
-                            prov_prefix: "$provider.prov_prefix",
-                            prov_domain: "$provider.prov_domain",
-                            prov_agentusername : "$provider.prov_agentusername",
-                            prov_whitelabel : "$provider.prov_whitelabel",
-                            
+                    $project: {
+                        id: 1,
+                        counter: "$withdraw_config.counter",
+                        min: "$withdraw_config.min_cash_limit",
+                        max: "$withdraw_config.max_cash_limit",
+                        // bank_account: "$agent_bank_account_withdraw",
+                        prov_key: "$provider.prov_key",
+                        prov_prefix: "$provider.prov_prefix",
+                        prov_domain: "$provider.prov_domain",
+                        prov_agentusername: "$provider.prov_agentusername",
+                        prov_whitelabel: "$provider.prov_whitelabel",
+
                     }
                 },
-               
+
             ]).toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));
     });
 }
 
-module.exports.getbankweb = (body,payload) => {
+module.exports.getbankweb = (body, payload) => {
     // console.log(body);
-     return new Promise(async (resolve, reject) => {
- 
-         await MongoDB.collection('agent_bank_account')
-        
-         .aggregate([
-            {
-                $match : {
-                    $and : [
-                        //{ou_id : ObjectId(payload.ou)},
-                      //{branch_id : ObjectId(payload.branch)},
-                        {
-                            agent_id : ObjectId("629e381cb4839cabb5622da1")
-                        },
-                        {
-                            type : "withdraw"
-                        },
-                        {
-                            status : "active"
-                        }
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('agent_bank_account')
+            .aggregate([
+                {
+                    $match: {
+                        $and: [
+                            //{ou_id : ObjectId(payload.ou)},
+                            //{branch_id : ObjectId(payload.branch)},
+                            {
+                                agent_id: ObjectId("629e381cb4839cabb5622da1")
+                            },
+                            {
+                                type: "withdraw"
+                            },
+                            {
+                                status: "active"
+                            }
 
-                    ]
-                }
-            }, 
-            {
-                $project:{
-                        id:1,
-                      account_number : "$account_number",
-                      account_name : "$account_name",
-                      bank_id : "$bank_id"  
-                }
-            },
-           
-        ]).toArray()
-             .then(result => resolve(result))
-             .catch(error => reject(error));
-     });
- }
+                        ]
+                    }
+                },
+                {
+                    $project: {
+                        id: 1,
+                        account_number: "$account_number",
+                        account_name: "$account_name",
+                        bank_id: "$bank_id"
+                    }
+                },
+
+            ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
 
 
 
 module.exports.findbankmemb = (id) => {
     return new Promise(async (resolve, reject) => {
-          await MongoDB.collection('memb_bank_account')
-          .aggregate([
-            {
-                $match : {
-                    $and : [
-                        //{ou_id : ObjectId(payload.ou)},
-                      //{branch_id : ObjectId(payload.branch)},
-                        {memb_id:ObjectId(id)}
-                    ]
-                }
-            }, {
-                $project:{
-                        id:1,
-                       // name:"$name",
-                       // surename:"$",
-                        bank_id:"$bank_id",
-                        account_name:"$account_name",
-                        banking_account:"$account_number"
-                        
-                }
-            },
-        ]).toArray()
+        await MongoDB.collection('memb_bank_account')
+            .aggregate([
+                {
+                    $match: {
+                        $and: [
+                            //{ou_id : ObjectId(payload.ou)},
+                            //{branch_id : ObjectId(payload.branch)},
+                            { memb_id: ObjectId(id) }
+                        ]
+                    }
+                }, {
+                    $project: {
+                        id: 1,
+                        // name:"$name",
+                        // surename:"$",
+                        bank_id: "$bank_id",
+                        account_name: "$account_name",
+                        banking_account: "$account_number"
+
+                    }
+                },
+            ]).toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));
     });
 }
 
 
-module.exports.checktrasaction = (agent_id) => {
+module.exports.checktrasaction = (agent_id, user_id) => {
     // console.log(agent_id);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('withdraw')
-        .aggregate([
-            {
-                $match : {
-                    $and : [
-                        //{ou_id : ObjectId(payload.ou)},
-                      //{branch_id : ObjectId(payload.branch)},
-                        { 
-                          agent_id : ObjectId(agent_id)
-                        },
-                        {
-                           mem_id : ObjectId(user_id) 
-                        },{
-                            $or: [
+            .aggregate([
+                {
+                    $match: {
+                        $and: [
+                            //{ou_id : ObjectId(payload.ou)},
+                            //{branch_id : ObjectId(payload.branch)},
+                            {
+                                agent_id: ObjectId(agent_id)
+                            },
+                            {
+                                memb_id: ObjectId(user_id)
+                            }, {
+                                $or: [
                                     { status: "pending" }, { status: "check" }
-                            ]
-                    }
-                        
+                                ]
+                            }
 
-                    ]
+
+                        ]
+                    }
                 }
-            }
-        ]).toArray()
+            ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
+module.exports.counttrasaction = (agent_id,memb_id) => {
+    // console.log(agent_id);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('withdraw')
+            .aggregate([
+                {
+                    $match: {
+                        $and: [
+                            //{ou_id : ObjectId(payload.ou)},
+                            //{branch_id : ObjectId(payload.branch)},
+                            {
+                                agent_id: ObjectId(agent_id)
+                            },
+                            {
+                                memb_id: ObjectId(memb_id)
+                            }, 
+                            {approve_date:{$gte:new Date(moment().format('YYYY-MM-DD'))}}
+
+
+                        ]
+                    }
+                }
+            ]).toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));
     });
 }
 
 
-module.exports.Withrawcount = (_id,counter) => {
+module.exports.Withrawcount = (_id, counter) => {
     console.log(_id)
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(collectionmember)
@@ -162,11 +188,11 @@ module.exports.Withrawcount = (_id,counter) => {
                     _id: ObjectId(_id)
 
                 },
-                {
-                    $inc: {
-                        "financial.withdraw_count": counter
-                    }
-                },
+                // {
+                //     $inc: {
+                //         "financial.withdraw_count": counter
+                //     }
+                // },
 
             )
             .then(result => resolve(result))
@@ -175,7 +201,7 @@ module.exports.Withrawcount = (_id,counter) => {
 }
 
 
-module.exports.Withrawcount = (_id,counter) => {
+module.exports.Withrawcount = (_id, counter) => {
     console.log(_id)
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('withdraw')
@@ -196,39 +222,39 @@ module.exports.Withrawcount = (_id,counter) => {
     });
 }
 
-module.exports.InsertDocWithdraw = (payload,balance,member,bankweb) => {
+module.exports.InsertDocWithdraw = (payload, balance, member, bankweb) => {
     console.log(payload)
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('withdraw')
             .insertOne({
                 agent_id: ObjectId(payload.agent_id),
-                type:"withdraw",
-                date:new Date(moment().format()),
+                type: "withdraw",
+                date: new Date(moment().format()),
                 memb_id: ObjectId(payload.user_id),
                 from_bank_id: ObjectId(bankweb.bank_id),
                 from_account_id: ObjectId(bankweb._id),
-                from_bank_name:bankweb.account_name,
-                member_name:member.account_name,
+                from_bank_name: bankweb.account_name,
+                member_name: member.account_name,
                 to_bank_id: ObjectId(member.bank_id),
                 to_account_id: ObjectId(member._id),
-                amount: balance,
+                amount: Double(balance),
                 silp_date: null,
                 silp_image: null,
-                request_by:payload.username,
-                request_date:new Date(moment().format()) ,
-                approve_by : null,
-                approve_date:null,
-                status : 'pending',
-                description:null,
-                cr_by:payload.username,
-                cr_date:new Date(moment().format()),
+                request_by: payload.username,
+                request_date: new Date(moment().format()),
+                approve_by: null,
+                approve_date: null,
+                status: 'pending',
+                description: null,
+                cr_by: payload.username,
+                cr_date: new Date(moment().format()),
                 cr_prog: null,
-                upd_by : null,
+                upd_by: null,
                 upd_date: null,
-                upd_prog:null
+                upd_prog: null
 
             })
-                
+
             .then(result => resolve(result))
             .catch(error => reject(error));
     });
