@@ -34,7 +34,8 @@ module.exports = {
         "getconfiggeneral": "21012",
         "updateconfgenneral":"21013",
         "historylasted":"21014",
-        "getbanktrnsaction":"21015"
+        "getbanktrnsaction":"21015",
+        "historybyId":"21016"
         
     },
     "provieder": {

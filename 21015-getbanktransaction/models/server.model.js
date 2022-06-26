@@ -22,6 +22,9 @@ module.exports.bankdeposit = (agent_id) => {
                         { 
                             type : "deposit"
                         }, 
+                        { 
+                            sub_type : "deposit"
+                        }, 
                     ]
                 }
             },
@@ -80,6 +83,9 @@ module.exports.bankwithdraw = (agent_id) => {
                         },  
                         { 
                             type : "withdraw"
+                        }, 
+                        { 
+                            sub_type : "withdraw"
                         }, 
                     ]
                 }
