@@ -35,7 +35,9 @@ module.exports = {
         "updateconfgenneral":"21013",
         "historylasted":"21014",
         "getbanktrnsaction":"21015",
-        "historybyId":"21016"
+        "historybyId":"21016",
+        "updatemember":"21017",
+        "updateemp":"21018",
         
     },
     "provieder": {
