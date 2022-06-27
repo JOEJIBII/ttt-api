@@ -2,21 +2,21 @@
 //const { ObjectId } = require('mongodb');
 const fetch = require('node-fetch');
 //const model = require('../models/server.model');
-const {Key,prefix,domain,agentUsername,whiteLabel} = require('../../Config/key-config');
+//const {Key,prefix,domain,agentUsername,whiteLabel} = require('../../Config/key-config');
 //const _ = require("lodash");
 
 module.exports.changestatus = async (req,res) => {
     let {header, body, params, query} = req;
-    let { status,username } = body;
+    let { status,username,agentUsername,key,whiteLabel,domain,prefix } = body;
     let option ={
         method :"POST",
         headers:{ "content-type": "application/json" },
         body: JSON.stringify({
             "agentUsername": agentUsername,
-            "key": Key,
+            "key": key,
             "username": username, 
             "status":status,
-            "web":  whiteLabel  
+            "web":  whiteLabel
         })
         
     }

@@ -2,18 +2,18 @@
 //const { ObjectId } = require('mongodb');
 const fetch = require('node-fetch');
 //const model = require('../models/server.model');
-const {Key,prefix,domain,agentUsername,whiteLabel} = require('../../Config/key-config');
+//const {Key,prefix,domain,agentUsername,whiteLabel} = require('../../Config/key-config');
 //const _ = require("lodash");
 
 module.exports.getWinLoseByDepositID = async (req,res) => {
     let {header, body, params, query} = req;
-    let { refId,username } = body;
+    let { refId,username,agentUsername,key,whiteLabel,prefix,domain } = body;
     let option ={
         method :"POST",
         headers:{ "content-type": "application/json" },
         body: JSON.stringify({
             "agentUsername": agentUsername,
-            "key": Key,
+            "key": key,
             "username": username, 
             "refId":refId,
             "web":  whiteLabel  

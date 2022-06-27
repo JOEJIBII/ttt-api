@@ -17,17 +17,19 @@ module.exports.logs = (body,ip) => {
     });
 }
 
-module.exports.withdrawPD = async (username) => {
+module.exports.changestatus = async (username,conf) => {
     return new Promise(async (resolve, reject) => {
         let option ={
             method :"POST",
             headers:{ "content-type": "application/json" },
             body: JSON.stringify({
-                "agentUsername": "99dev",
-                "key": "KGq54x_Hx6UUwxku4gT-q",
-                "username": username, 
-                "balance":Number(body.credit),
-                "web":  "gb711"  
+                "agentUsername": conf.prov_agentusername,
+                "key": conf.prov_key,
+                "username":conf.prov_agentusername +  username, 
+                "status":"SUSPEND",
+                "whiteLabel":  conf.prov_whitelabel,  
+                "domain": conf.prov_domain,
+                "prefix":conf.prov_prefix
             })
             
         }
@@ -36,7 +38,8 @@ module.exports.withdrawPD = async (username) => {
             //headers["payload"] = JSON.stringify(payload);
             //let uQuery = (method !== "POST") ? "?" + Object.keys(query).map(e => e + "=" + query[e]).join("&") : "";
             //let option = (method === "GET" || method === "HEAD" || method === "DELETE") ? { method: method, headers: headers } : { method: method, headers: headers, body: JSON.stringify(body) }
-            await fetch("http://localhost" + ":" + "45002/withdrawPD" , option)
+            console.log("http://localhost" + ":" + "45005/changestatus" , option)
+            await fetch("http://localhost" + ":" + "45005/changestatus" , option)
             //console.log("http://localhost" + ":" + "45012/getProfileAndCredit" , option)
             .then(async res => await res.json())
             .then(result => resolve({result:result}))
@@ -44,6 +47,30 @@ module.exports.withdrawPD = async (username) => {
         })
 }
 
+
+
+module.exports.checkturnover = async (username,conf,ref_id) => {
+    return new Promise(async (resolve, reject) => {
+        let option ={
+            method :"POST",
+            headers:{ "content-type": "application/json" },
+            body: JSON.stringify({
+                "agentUsername": conf.prov_agentusername,
+                "key": conf.prov_key,
+                "username":conf.prov_agentusername +  username, 
+                "refId": ref_id,
+                "whiteLabel":  conf.prov_whitelabel,  
+                "domain": conf.prov_domain,
+                "prefix":conf.prov_prefix
+            })
+        }
+            console.log("http://localhost" + ":" + "45009/getWinLoseByDepositID" , option)
+            await fetch("http://localhost" + ":" + "45009/getWinLoseByDepositID" , option)
+            .then(async res => await res.json())
+            .then(result => resolve({result:result}))
+            .catch(error => reject(error));
+        })
+}
 
 module.exports.logs = (body,ip) => {
     return new Promise(async (resolve, reject) => {
@@ -72,13 +99,8 @@ module.exports.ProfilePD = async (username,config) => {
             })
             
         }
-            //let { method, params, headers, body, query } = request;
-            //let { module, route } = params;
-            //headers["payload"] = JSON.stringify(payload);
-            //let uQuery = (method !== "POST") ? "?" + Object.keys(query).map(e => e + "=" + query[e]).join("&") : "";
-            //let option = (method === "GET" || method === "HEAD" || method === "DELETE") ? { method: method, headers: headers } : { method: method, headers: headers, body: JSON.stringify(body) }
-            await fetch("http://localhost" + ":" + "45012/getProfileAndCredit" , option)
-            //console.log("http://localhost" + ":" + "45012/getProfileAndCredit" , option)
+          await fetch("http://localhost" + ":" + "45012/getProfileAndCredit" , option)
+           
             .then(async res => await res.json())
             .then(result => resolve({result:result}))
             .catch(error => reject(error));
@@ -88,7 +110,6 @@ module.exports.ProfilePD = async (username,config) => {
 
 module.exports.Mappingdata = async (memb,provider) => {
     return new Promise(async (resolve) => {
-        //let memb = member
         console.log("member",memb)
         resolve({ 
             "_id": memb._id,

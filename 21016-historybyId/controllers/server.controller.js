@@ -68,25 +68,6 @@ module.exports.historybyId = async function (req, res) {
                 result: history[0]
             }).end();
         }
-
-
-        // if(lock.lock_status === "" || lock.lock_status === null){
-        //     let deposit = await model.getdeposit().catch(() => { throw err });
-        //     let withdraw = await model.getwithdraw().catch(() => { throw err });
-        //     let result  = deposit.concat(withdraw);
-        //     result = result.sort(function(a, b){return new Date(b.request_date) - new Date(a.request_date)})
-        //             res.send({
-        //                 status: "200",
-        //                 message: "success",
-        //                 result 
-        //             }).end();
-        // }else{
-        //     res.send({
-        //         status: "200",
-        //         message: "success",
-        //         result :lock[0]
-        //     }).end();
-        // }
     } catch (error) {
         console.error(error);
         res.send({ status: "300", message: 'internal error' }).end();

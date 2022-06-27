@@ -127,20 +127,18 @@ module.exports.checktrasaction = (agent_id, user_id) => {
                 {
                     $match: {
                         $and: [
-                            //{ou_id : ObjectId(payload.ou)},
-                            //{branch_id : ObjectId(payload.branch)},
+
                             {
                                 agent_id: ObjectId(agent_id)
                             },
                             {
                                 memb_id: ObjectId(user_id)
-                            }, {
+                            },
+                            {
                                 $or: [
                                     { status: "pending" }, { status: "check" }
                                 ]
                             }
-
-
                         ]
                     }
                 }
@@ -150,7 +148,7 @@ module.exports.checktrasaction = (agent_id, user_id) => {
     });
 }
 
-module.exports.counttrasaction = (agent_id,memb_id) => {
+module.exports.counttrasaction = (agent_id, memb_id) => {
     // console.log(agent_id);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('withdraw')
@@ -158,15 +156,13 @@ module.exports.counttrasaction = (agent_id,memb_id) => {
                 {
                     $match: {
                         $and: [
-                            //{ou_id : ObjectId(payload.ou)},
-                            //{branch_id : ObjectId(payload.branch)},
                             {
                                 agent_id: ObjectId(agent_id)
                             },
                             {
                                 memb_id: ObjectId(memb_id)
-                            }, 
-                            {approve_date:{$gte:new Date(moment().format('YYYY-MM-DD'))}}
+                            },
+                            { approve_date: { $gte: new Date(moment().format('YYYY-MM-DD')) } }
 
 
                         ]
@@ -188,13 +184,38 @@ module.exports.Withrawcount = (_id, counter) => {
                     _id: ObjectId(_id)
 
                 },
-                // {
-                //     $inc: {
-                //         "financial.withdraw_count": counter
-                //     }
-                // },
 
             )
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
+module.exports.getlastdeposit = (agent_id, memb_id) => {
+    console.log(agent_id, memb_id)
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection("deposit")
+            .aggregate([
+                {
+                    $match: {
+                        $and: [
+                            {
+                                agent_id: ObjectId(agent_id)
+                            },
+                            {
+                                memb_id: ObjectId(memb_id)
+                            },
+                        ]
+                    }
+                },
+                {
+                    $project: {
+                        ref_id: "$ref_id"
+                    }
+                }
+            ])
+            .sort({ _id: -1 })
+            .toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));
     });
@@ -222,7 +243,7 @@ module.exports.Withrawcount = (_id, counter) => {
     });
 }
 
-module.exports.InsertDocWithdraw = (payload, balance, member, bankweb) => {
+module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, turnover) => {
     console.log(payload)
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('withdraw')
@@ -245,10 +266,16 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb) => {
                 approve_by: null,
                 approve_date: null,
                 status: 'pending',
-                description: null,
-                lock_status:"",
-                lock_by:"",
-                lock_date:null,
+                description: notes.map(e => {
+                    return {
+                        username: e.username,
+                        note: e.note,
+                        note_date: e.note_date
+                    }
+                }),
+                lock_status: "",
+                lock_by: "",
+                lock_date: null,
                 cr_by: payload.username,
                 cr_date: new Date(moment().format()),
                 cr_prog: null,

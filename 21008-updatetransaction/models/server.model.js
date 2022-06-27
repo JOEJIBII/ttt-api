@@ -11,6 +11,7 @@ module.exports.updateapprove = (body, payload) => {
             }, {
                 $set: {
                     "status": body.status,
+                    "description":body.description,
                     "approve_by": ObjectId(payload.user_id),
                     "approve_date": new Date(moment().format()),
                     "upd_by": ObjectId(payload.user_id),
@@ -172,6 +173,7 @@ module.exports.updatechecked = (body, payload) => {
             }, {
                 $set: {
                     "status": body.status,
+                    "description":body.description,
                     "check_by": ObjectId(payload.user_id),
                     "check_date": new Date(moment().format()),
                     "upd_by": ObjectId(payload.user_id),
@@ -196,6 +198,7 @@ module.exports.updatereject = (body, payload) => {
             }, {
                 $set: {
                     "status": body.status,
+                    "description":body.description,
                     "approve_by": ObjectId(payload.user_id),
                     "approve_date": new Date(moment().format()),
                     "upd_by": ObjectId(payload.user_id),

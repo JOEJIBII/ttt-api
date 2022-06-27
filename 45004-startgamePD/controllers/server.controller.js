@@ -81,16 +81,17 @@ module.exports.startgame = async (req,res) => {
                     }else{
                         uri = result.url + "&rdPage=sports"
                     }
-                   
                 }else{
-                    
                     uri = result.data.uri
                 }
                 res.send({ status: "200" ,message: "success", uri}).end();
             }else{
-                res.send({ status: "400" ,message: result,option,URL}).end();
+                if(result["code"] === 100030){
+                    res.send({ status: "201" ,message: result["msg"]}).end();
+                }else{
+                    res.send({ status: "400" ,message: result,option,URL}).end();
+                }
             }
-
         }).catch(error => {
             res.send({ status: "500", message: "internal server error", error: error.message }).end();
         });
