@@ -408,7 +408,7 @@ module.exports.getdeposit = () => {
                                                 to_account_id: "$to_account_id",
                                                 Checked: {
                                                         $cond: [{
-                                                                $eq: [{ $ifNull: ["$lock_status", null] }, null]
+                                                                $eq: [{ $ifNull: ["$emp.username", null] }, null]
                                                         },
                                                                 null,
                                                         {
@@ -953,7 +953,7 @@ module.exports.getwithdraw = () => {
                                                 Checked: "$Checked",
                                                 lock: {
                                                         $cond: [{
-                                                                $eq: [{ $ifNull: ["$lock_status", null] }, null]
+                                                                $eq: [{ $ifNull: ["$emplock.username", null] }, null]
                                                         },
                                                                 null,
                                                         {
