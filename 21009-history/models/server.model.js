@@ -20,11 +20,11 @@ module.exports.getdeposit = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 from_bank_id: "$from_bank_id",
@@ -32,7 +32,10 @@ module.exports.getdeposit = () => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
                                         }
                                 }, {
                                         $lookup: {
@@ -53,11 +56,11 @@ module.exports.getdeposit = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_prov.username",
@@ -66,7 +69,10 @@ module.exports.getdeposit = () => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
                                         }
                                 }, {
                                         $lookup: {
@@ -87,11 +93,11 @@ module.exports.getdeposit = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -102,7 +108,10 @@ module.exports.getdeposit = () => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
                                         }
                                 }, {
                                         $lookup: {
@@ -123,11 +132,11 @@ module.exports.getdeposit = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -141,7 +150,10 @@ module.exports.getdeposit = () => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
                                         }
                                 }, {
                                         $lookup: {
@@ -162,11 +174,11 @@ module.exports.getdeposit = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -183,7 +195,10 @@ module.exports.getdeposit = () => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
                                         }
                                 },
                                 {
@@ -206,11 +221,11 @@ module.exports.getdeposit = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -229,7 +244,10 @@ module.exports.getdeposit = () => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
                                         }
                                 },
                                 {
@@ -252,11 +270,11 @@ module.exports.getdeposit = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$webagent.domain_name",
                                                 web_aka: "$webagent.name",
@@ -278,7 +296,10 @@ module.exports.getdeposit = () => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
                                         }
                                 },
                                 {
@@ -302,11 +323,11 @@ module.exports.getdeposit = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 web_aka: "$web_aka",
@@ -329,7 +350,10 @@ module.exports.getdeposit = () => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
                                                 // Checked:{
                                                 //         check_by:"$check_by",
                                                 //         checked_date:"$checked_date",
@@ -343,24 +367,24 @@ module.exports.getdeposit = () => {
                                 },
                                 {
                                         $lookup: {
-                                            from: "employee",
-                                            localField: "check_by",
-                                            foreignField: "_id",
-                                            as: "emp"
+                                                from: "employee",
+                                                localField: "check_by",
+                                                foreignField: "_id",
+                                                as: "emp"
                                         }
-                                    },
-                                    {
+                                },
+                                {
                                         $unwind: { path: "$emp", preserveNullAndEmptyArrays: true }
-                                    },
+                                },
                                 {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 web_aka: "$web_aka",
@@ -384,21 +408,81 @@ module.exports.getdeposit = () => {
                                                 to_account_id: "$to_account_id",
                                                 Checked: {
                                                         $cond: [{
-                                                            $eq: [{ $ifNull: ["$emp.username", null] }, null]
+                                                                $eq: [{ $ifNull: ["$emp.username", null] }, null]
                                                         },
-                                                            null,
+                                                                null,
                                                         {
-                                                            check_by: "$check_by",
-                                                            checked_date: "$checked_date",
-                                                            checker_username: "$emp.username",
-                                                            checker_name: "$emp.name",
-                                                            checker_tel: "$emp.tel",
-                                                            checker_role: "$emp.role",
-                                                            checker_avatar: "$emp.avatar",
+                                                                check_by: "$check_by",
+                                                                checked_date: "$checked_date",
+                                                                checker_username: "$emp.username",
+                                                                checker_name: "$emp.name",
+                                                                checker_tel: "$emp.tel",
+                                                                checker_role: "$emp.role",
+                                                                checker_avatar: "$emp.avatar",
                                                         }]
-                                                    }
+                                                },
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
                                         }
-                                }
+                                },
+                                {
+                                        $lookup: {
+                                                from: "employee",
+                                                localField: "lock_by",
+                                                foreignField: "_id",
+                                                as: "emplock"
+                                        }
+                                },
+                                {
+                                        $unwind: { path: "$emplock", preserveNullAndEmptyArrays: true }
+                                },
+                                {
+                                        $project: {
+                                                id: 1,
+                                                type: "$type",
+                                                sub_type: "$sub_type",
+                                                amount: "$amount",
+                                                request_date: "$request_date",
+                                                status: "$status",
+                                                description: "$description",
+                                                agent_id: "$agent_id",
+                                                web_name: "$web_name",
+                                                web_aka: "$web_aka",
+                                                web_prefix: "$web_prefix",
+                                                memb_id: "$memb_id",
+                                                memb_username: "$memb_username",
+                                                memb_status: "$memb_status",
+                                                memb_name: "$memb_name",
+                                                memb_bank: "$memb_bank",
+                                                memb_banking_th: "$memb_banking_th",
+                                                memb_banking_en: "$memb_banking_en",
+                                                memb_banking_code: "$memb_banking_code",
+                                                from_bank_id: "$from_bank_id",
+                                                from_account_id: "$from_account_id",
+                                                web_account_nameth: "$web_account_nameth",
+                                                web_account_nameen: "$web_account_nameen",
+                                                web_account_code: "$web_account_code",
+                                                web_account_name: "$web_account_name",
+                                                web_account_number: "$web_account_number",
+                                                to_bank_id: "$to_bank_id",
+                                                to_account_id: "$to_account_id",
+                                                Checked: "$Checked",
+                                                lock: {
+                                                        $cond: [{
+                                                                $eq: [{ $ifNull: ["$emplock.username", null] }, null]
+                                                        },
+                                                                null,
+                                                        {
+                                                                lock_status: "$lock_status",
+                                                                lock_by: "$emplock.username",
+                                                                lock_date: "$lock_date",
+                                                                lock_avatar: "$emplock.avatar",
+                                                        }]
+                                                },
+
+                                        }
+                                },
 
                         ]).toArray()
                         .then(result => resolve(result))
@@ -425,11 +509,11 @@ module.exports.getwithdraw = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 from_bank_id: "$from_bank_id",
@@ -437,7 +521,10 @@ module.exports.getwithdraw = () => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
                                         }
                                 }, {
                                         $lookup: {
@@ -448,23 +535,23 @@ module.exports.getwithdraw = () => {
                                         }
                                 }, {
                                         $unwind: { path: "$memb_prov" }
-                                }, 
+                                },
                                 {
                                         $match: {
                                                 $expr: {
                                                         $eq: ["$memb_prov.memb_id", "$memb_id"]
                                                 }
                                         }
-                                }, 
+                                },
                                 {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_prov.username",
@@ -473,7 +560,10 @@ module.exports.getwithdraw = () => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
                                         }
                                 }, {
                                         $lookup: {
@@ -494,11 +584,11 @@ module.exports.getwithdraw = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -509,7 +599,10 @@ module.exports.getwithdraw = () => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
                                         }
                                 }, {
                                         $lookup: {
@@ -530,11 +623,11 @@ module.exports.getwithdraw = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -548,7 +641,10 @@ module.exports.getwithdraw = () => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
                                         }
                                 }, {
                                         $lookup: {
@@ -569,11 +665,11 @@ module.exports.getwithdraw = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -590,7 +686,10 @@ module.exports.getwithdraw = () => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
                                         }
                                 },
                                 {
@@ -613,11 +712,11 @@ module.exports.getwithdraw = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -636,7 +735,10 @@ module.exports.getwithdraw = () => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
                                         }
                                 },
                                 {
@@ -659,11 +761,11 @@ module.exports.getwithdraw = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$webagent.domain_name",
                                                 web_aka: "$webagent.name",
@@ -685,7 +787,10 @@ module.exports.getwithdraw = () => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
                                         }
                                 },
                                 {
@@ -709,11 +814,11 @@ module.exports.getwithdraw = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 web_aka: "$web_aka",
@@ -736,16 +841,20 @@ module.exports.getwithdraw = () => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
-                                                
+                                                checked_date: "$checked_date",
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
+
                                         }
                                 },
-                                {  $lookup: {
-                                        from: "employee",
-                                        localField: "check_by",
-                                        foreignField: "_id",
-                                        as: "emp"
-                                    }
+                                {
+                                        $lookup: {
+                                                from: "employee",
+                                                localField: "check_by",
+                                                foreignField: "_id",
+                                                as: "emp"
+                                        }
                                 },
                                 {
                                         $unwind: { path: "$emp", preserveNullAndEmptyArrays: true }
@@ -754,11 +863,11 @@ module.exports.getwithdraw = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 web_aka: "$web_aka",
@@ -782,66 +891,81 @@ module.exports.getwithdraw = () => {
                                                 to_account_id: "$to_account_id",
                                                 Checked: {
                                                         $cond: [{
-                                                            $eq: [{ $ifNull: ["$emp.username", null] }, null]
+                                                                $eq: [{ $ifNull: ["$emp.username", null] }, null]
                                                         },
-                                                            null,
+                                                                null,
                                                         {
-                                                            check_by: "$check_by",
-                                                            checked_date: "$checked_date",
-                                                            checker_username: "$emp.username",
-                                                            checker_name: "$emp.name",
-                                                            checker_tel: "$emp.tel",
-                                                            checker_role: "$emp.role",
-                                                            checker_avatar: "$emp.avatar",
+                                                                check_by: "$check_by",
+                                                                checked_date: "$checked_date",
+                                                                checker_username: "$emp.username",
+                                                                checker_name: "$emp.name",
+                                                                checker_tel: "$emp.tel",
+                                                                checker_role: "$emp.role",
+                                                                checker_avatar: "$emp.avatar",
                                                         }]
-                                                    }
+                                                },
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
+                                        }
+                                }, {
+                                        $lookup: {
+                                                from: "employee",
+                                                localField: "lock_by",
+                                                foreignField: "_id",
+                                                as: "emplock"
                                         }
                                 },
-                                // {  $lookup: {
-                                //         from: "employee",
-                                //         localField: "check_by",
-                                //         foreignField: "_id",
-                                //         as: "emp"
-                                //     }
-                                // },
-                                // {
-                                //         $project: {
-                                //                 id: 1,
-                                //                 type: "$type",
-                                //                 amount: "$amount",
-                                //                 request_date: "$request_date",
-                                //                 status: "$status",
-                                //                 agent_id: "$agent_id",
-                                //                 web_name: "$webagent.domain_name",
-                                //                 web_aka: "$webagent.name",
-                                //                 memb_id: "$memb_id",
-                                //                 memb_username: "$memb_username",
-                                //                 memb_status: "$memb_status",
-                                //                 memb_name: "$memb_name",
-                                //                 memb_bank: "$memb_bank",
-                                //                 memb_banking_th: "$memb_banking_th",
-                                //                 memb_banking_en: "$memb_banking_en",
-                                //                 memb_banking_code: "$memb_banking_code",
-                                //                 from_bank_id: "$from_bank_id",
-                                //                 from_account_id: "$from_account_id",
-                                //                 web_account_nameth: "$web_account_nameth",
-                                //                 web_account_nameen: "$web_account_nameen",
-                                //                 web_account_code: "$web_account_code",
-                                //                 web_account_name: "$web_account_name",
-                                //                 web_account_number: "$web_account_number",
-                                //                 to_bank_id: "$to_bank_id",
-                                //                 to_account_id: "$to_account_id",
-                                //                 Checked:{
-                                //                         check_by:"$check_by",
-                                //                         checked_date:"$checked_date",
-                                //                         checker_username : "$checker_username",
-                                //                         checker_name : "$checker_name",
-                                //                         checker_tel : "$checker_tel",
-                                //                         checker_role : "$checker_role",
-                                //                         checker_avatar : "$checker_avatar",
-                                //                 }
-                                //         }
-                                // }
+                                {
+                                        $unwind: { path: "$emplock", preserveNullAndEmptyArrays: true }
+                                },
+                                {
+                                        $project: {
+                                                id: 1,
+                                                type: "$type",
+                                                sub_type: "$sub_type",
+                                                amount: "$amount",
+                                                request_date: "$request_date",
+                                                status: "$status",
+                                                description: "$description",
+                                                agent_id: "$agent_id",
+                                                web_name: "$web_name",
+                                                web_aka: "$web_aka",
+                                                web_prefix: "$web_prefix",
+                                                memb_id: "$memb_id",
+                                                memb_username: "$memb_username",
+                                                memb_status: "$memb_status",
+                                                memb_name: "$memb_name",
+                                                memb_bank: "$memb_bank",
+                                                memb_banking_th: "$memb_banking_th",
+                                                memb_banking_en: "$memb_banking_en",
+                                                memb_banking_code: "$memb_banking_code",
+                                                from_bank_id: "$from_bank_id",
+                                                from_account_id: "$from_account_id",
+                                                web_account_nameth: "$web_account_nameth",
+                                                web_account_nameen: "$web_account_nameen",
+                                                web_account_code: "$web_account_code",
+                                                web_account_name: "$web_account_name",
+                                                web_account_number: "$web_account_number",
+                                                to_bank_id: "$to_bank_id",
+                                                to_account_id: "$to_account_id",
+                                                Checked: "$Checked",
+                                                lock: {
+                                                        $cond: [{
+                                                                $eq: [{ $ifNull: ["$emplock.username", null] }, null]
+                                                        },
+                                                                null,
+                                                        {
+                                                                lock_status: "$lock_status",
+                                                                lock_by: "$emplock.username",
+                                                                lock_date: "$lock_date",
+                                                                lock_avatar: "$emplock.avatar",
+                                                        }]
+                                                },
+
+                                        }
+                                },
+                                
 
 
                         ]).toArray()

@@ -11,8 +11,9 @@ module.exports.updatetransaction = async function (req, res) {
     const body = req.body
     try {
         if (body.type === "withdraw") {
-            if(body.status === "check"){
+            if(body.status === "check" || body.status === "save" ){
                 let updatecheck  =   await model.updatechecked(body,payload).catch(() => { throw err });
+                let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
                  res.send({
                      status: "200",
                      message: "success",
@@ -36,6 +37,7 @@ module.exports.updatetransaction = async function (req, res) {
                                  await model.updateapprove(body,payload).catch(() => { throw err });
                                 await model.update_financial_withdraw_first(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
                                //console.log(update)
+                               let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
                              res.send({
                                  status: "200",
                                  message: "success",
@@ -44,6 +46,7 @@ module.exports.updatetransaction = async function (req, res) {
                          }else{
                              await model.updateapprove(body,payload).catch(() => { throw err });
                              await model.update_financial_withdraw(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
+                             let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
                              //await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
                              res.send({
                                  status: "200",
@@ -55,18 +58,35 @@ module.exports.updatetransaction = async function (req, res) {
                  }else{
                       if(body.status === "cancel"){
                       let updatereject = await model.updatereject(body,payload).catch(() => { throw err });
+                      let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
                          res.send({
                              status: "200",
                              message: "success",
                              result : updatereject.modifiedCount
                          }).end(); 
+                     }else{
+                        if(body.status === "close"){
+                            let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
+                            res.send({
+                                status: "200",
+                                message: "success",
+                                result : "close success"
+                            }).end(); 
+                        } else{
+                            res.send({
+                                status: "500",
+                                message: "ขอมูลไม่ถูกต้อง",
+                                result : "close success"
+                            }).end(); 
+                        }
                      }
                  }
              }
         } else {
             if (body.type === "deposit") {
-                if (body.status === "check") {
+                if (body.status === "check" || body.status === "save") {
                     let updatecheck = await model.updatechecked(body, payload).catch(() => { throw err });
+                    let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
                     res.send({
                         status: "200",
                         message: "success",
@@ -91,6 +111,7 @@ module.exports.updatetransaction = async function (req, res) {
                             if (getmemb[0].financial.deposit_first_time === null || getmemb[0].financial.deposit_first_time === "0") {
                                 await model.updateapprove(body, payload).catch(() => { throw err });
                                 await model.update_financial_first(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
+                                let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
                                 res.send({
                                     status: "200",
                                     message: "success",
@@ -100,6 +121,7 @@ module.exports.updatetransaction = async function (req, res) {
                                 await model.updateapprove(body, payload).catch(() => { throw err });
                                 await model.update_financial(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
                                 //await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
+                                let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
                                 res.send({
                                     status: "200",
                                     message: "success",
@@ -110,11 +132,27 @@ module.exports.updatetransaction = async function (req, res) {
                     } else {
                         if (body.status === "cancel") {
                             let updatereject = await model.updatereject(body, payload).catch(() => { throw err });
+                            let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
                             res.send({
                                 status: "200",
                                 message: "success",
                                 result: updatereject.modifiedCount
                             }).end();
+                        }else{
+                            if(body.status === "close"){
+                                let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
+                                res.send({
+                                    status: "200",
+                                    message: "success",
+                                    result : "close success"
+                                }).end(); 
+                            } else{
+                                res.send({
+                                    status: "500",
+                                    message: "ขอมูลไม่ถูกต้อง",
+                                    result : "close success"
+                                }).end(); 
+                            }
                         }
                     }
                 }

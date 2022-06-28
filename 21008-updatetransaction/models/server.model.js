@@ -163,6 +163,29 @@ module.exports.updaterefid = (doc_id, ref_id, payload, type) => {
 }
 
 
+
+module.exports.updatelock = (body,payload) => {
+    console.log(payload);
+    return new Promise(async (resolve, reject) => {
+            await MongoDB.collection(body.type)
+                    .updateOne({
+                            _id: ObjectId(body.doc_id)
+
+                    }, {
+                            $set: {
+                                    "lock_status": "",
+                                    "lock_by": ObjectId(payload.user_id),
+                                    "lock_date": new Date(moment().format()),
+                            }
+                    }, { upsert: true }
+                    )
+                    .then(result => resolve(result))
+                    .catch(error => reject(error));
+
+
+    });
+}
+
 module.exports.updatechecked = (body, payload) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
