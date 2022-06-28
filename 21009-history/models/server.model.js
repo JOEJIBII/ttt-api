@@ -477,6 +477,7 @@ module.exports.getdeposit = () => {
                                                                 lock_status: "$lock_status",
                                                                 lock_by: "$emplock.username",
                                                                 lock_date: "$lock_date",
+                                                                lock_role: "$emplock.role",
                                                                 lock_avatar: "$emplock.avatar",
                                                         }]
                                                 },
@@ -959,6 +960,7 @@ module.exports.getwithdraw = () => {
                                                                 lock_status: "$lock_status",
                                                                 lock_by: "$emplock.username",
                                                                 lock_date: "$lock_date",
+                                                                lock_role: "$emplock.role",
                                                                 lock_avatar: "$emplock.avatar",
                                                         }]
                                                 },
