@@ -69,3 +69,27 @@ module.exports.withdraw = async (config, username, amount) => {
 }
 
 
+
+module.exports.changestatus = async (username,conf) => {
+    return new Promise(async (resolve, reject) => {
+        let option ={
+            method :"POST",
+            headers:{ "content-type": "application/json" },
+            body: JSON.stringify({
+                "agentUsername": conf.prov_agentusername,
+                "key": conf.prov_key,
+                "username":conf.prov_agentusername +  username, 
+                "status":"ACTIVE",
+                "whiteLabel":  conf.prov_whitelabel,  
+                "domain": conf.prov_domain,
+                "prefix":conf.prov_prefix
+            })
+            
+        }
+           //console.log("http://localhost" + ":" + "45005/changestatus" , option)
+            await fetch("http://localhost" + ":" + "45005/changestatus" , option)
+            .then(async res => await res.json())
+            .then(result => resolve({result:result}))
+            .catch(error => reject(error));
+        })
+}

@@ -4,6 +4,7 @@ const functions = require('../functions/server.function');
 //const { urlencoded } = require("express");
 
 //const _ = require("lodash");
+
 module.exports.historylasted = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     req.headers["x-real-ip"]

@@ -11,150 +11,186 @@ module.exports.updatetransaction = async function (req, res) {
     const body = req.body
     try {
         if (body.type === "withdraw") {
-            if(body.status === "check" || body.status === "save" ){
-                let updatecheck  =   await model.updatechecked(body,payload).catch(() => { throw err });
-                let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
-                 res.send({
-                     status: "200",
-                     message: "success",
-                     result : updatecheck
-                 }).end();
-             }else{
-                 if(body.status === "approve"){
-                     let getdocument = await model.getdocument(body).catch(() => { throw err });
-                     //console.log(getdocument[0])
-                     let getconfig_pd = await model.getconfig_pd(getdocument[0].agent_id).catch(() => { throw err });
-                     let getmembpd = await model.getmembpd(getdocument[0].memb_id).catch(() => { throw err });
-                     //let updateturnover = await model.updateturnover(getdocument[0].memb_id,getdocument[0].agent_id,getdocument[0].amount,getdocument[0].description).catch(() => { throw err });
-                     let withdrawPD = await functions.withdraw(getconfig_pd[0],getmembpd[0].username,getdocument[0].amount).catch(() => { throw err });
-                     if(withdrawPD.result.code === 0){
-                        await model.updatecredit(getdocument[0].agent_id,withdrawPD.result.data.agent.afterCredit,payload).catch(() => { throw err });
-                        await model.updaterefid(body.doc_id,withdrawPD.result.refId,payload,body.type).catch(() => { throw err });
-                         let getmemb = await model.getmemb(getdocument[0].memb_id).catch(() => { throw err });
-                         //console.log("-----------------------",getmemb[0].financial.withdraw_first_time)
-                         if(getmemb[0].financial.withdraw_first_time === null || getmemb[0].financial.withdraw_first_time === "0" ){
+            let checkpermission = await model.getdocument(body).catch(() => { throw err });
+            if (checkpermission[0].lock_status === "lock") {
+                if (checkpermission[0].lock_by.toString() === payload.user_id.toString()) {
+                    if (body.status === "check" || body.status === "save") {
+                        let updatecheck = await model.updatechecked(body, payload).catch(() => { throw err });
+                        let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
+                        res.send({
+                            status: "200",
+                            message: "success",
+                            result: updatecheck
+                        }).end();
+                    } else {
+                        if (body.status === "approve") {
+                            let getdocument = await model.getdocument(body).catch(() => { throw err });
+                            //console.log(getdocument[0])
+                            let getconfig_pd = await model.getconfig_pd(getdocument[0].agent_id).catch(() => { throw err });
+                            let getmembpd = await model.getmembpd(getdocument[0].memb_id).catch(() => { throw err });
+                            //let updateturnover = await model.updateturnover(getdocument[0].memb_id,getdocument[0].agent_id,getdocument[0].amount,getdocument[0].description).catch(() => { throw err });
+                            let withdrawPD = await functions.withdraw(getconfig_pd[0], getmembpd[0].username, getdocument[0].amount).catch(() => { throw err });
+                            if (withdrawPD.result.code === 0) {
+                                await model.updatecredit(getdocument[0].agent_id, withdrawPD.result.data.agent.afterCredit, payload).catch(() => { throw err });
+                                await model.updaterefid(body.doc_id, withdrawPD.result.refId, payload, body.type).catch(() => { throw err });
+                                let getmemb = await model.getmemb(getdocument[0].memb_id).catch(() => { throw err });
+                                //console.log("-----------------------",getmemb[0].financial.withdraw_first_time)
+                                if (getmemb[0].financial.withdraw_first_time === null || getmemb[0].financial.withdraw_first_time === "0") {
 
-                                 await model.updateapprove(body,payload).catch(() => { throw err });
-                                await model.update_financial_withdraw_first(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
-                               //console.log(update)
-                               let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
-                             res.send({
-                                 status: "200",
-                                 message: "success",
-                                 credit_web : withdrawPD.result.data.agent.afterCredit
-                             }).end(); 
-                         }else{
-                             await model.updateapprove(body,payload).catch(() => { throw err });
-                             await model.update_financial_withdraw(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
-                             let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
-                             //await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
-                             res.send({
-                                 status: "200",
-                                 message: "success",
-                                 credit_web : withdrawPD.result.data.agent.afterCredit
-                             }).end(); 
-                         }
-                     }
-                 }else{
-                      if(body.status === "cancel"){
-                      let updatereject = await model.updatereject(body,payload).catch(() => { throw err });
-                      let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
-                         res.send({
-                             status: "200",
-                             message: "success",
-                             result : updatereject.modifiedCount
-                         }).end(); 
-                     }else{
-                        if(body.status === "close"){
-                            let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
-                            res.send({
-                                status: "200",
-                                message: "success",
-                                result : "close success"
-                            }).end(); 
-                        } else{
-                            res.send({
-                                status: "202",
-                                message: "ขอมูลไม่ถูกต้อง",
-                                result : ""
-                            }).end(); 
-                        }
-                     }
-                 }
-             }
-        } else {
-            if (body.type === "deposit") {
-                if (body.status === "check" || body.status === "save") {
-                    let updatecheck = await model.updatechecked(body, payload).catch(() => { throw err });
-                    let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
-                    res.send({
-                        status: "200",
-                        message: "success",
-                        result: updatecheck
-                    }).end();
-                } else {
-                    if (body.status === "approve") {
-                        let getdocument = await model.getdocument(body).catch(() => { throw err });
-                        let getconfig_pd = await model.getconfig_pd(getdocument[0].agent_id).catch(() => { throw err });
-                        let getmembpd = await model.getmembpd(getdocument[0].memb_id).catch(() => { throw err });
-                        let updateturnover = await model.updateturnover(getdocument[0].memb_id, getdocument[0].agent_id, getdocument[0].amount, getdocument[0].description).catch(() => { throw err });
-                        let depositPD = await functions.depositPD(getconfig_pd[0], getmembpd[0].username, getdocument[0].amount).catch(() => { throw err });
-                        //console.log(depositPD)
-                        if (depositPD.result.code === 0) {
-                            await model.updatecredit(getdocument[0].agent_id, depositPD.result.data.agent.afterCredit, payload).catch(() => { throw err });
-                            await model.updaterefid(body.doc_id, depositPD.result.refId, payload, body.type).catch(() => { throw err });
-
-                            if (updateturnover.modifiedCount === 0) {
-                                await model.upsertturnover(getdocument[0].memb_id, getdocument[0].agent_id, getdocument[0].amount, getdocument[0].description).catch(() => { throw err });
+                                    await model.updateapprove(body, payload).catch(() => { throw err });
+                                    await model.update_financial_withdraw_first(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
+                                    //console.log(update)
+                                    let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
+                                    let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
+                                    res.send({
+                                        status: "200",
+                                        message: "success",
+                                        credit_web: withdrawPD.result.data.agent.afterCredit
+                                    }).end();
+                                } else {
+                                    await model.updateapprove(body, payload).catch(() => { throw err });
+                                    await model.update_financial_withdraw(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
+                                    let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
+                                    //await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
+                                    res.send({
+                                        status: "200",
+                                        message: "success",
+                                        credit_web: withdrawPD.result.data.agent.afterCredit
+                                    }).end();
+                                }
                             }
-                            let getmemb = await model.getmemb(getdocument[0].memb_id).catch(() => { throw err });
-                            if (getmemb[0].financial.deposit_first_time === null || getmemb[0].financial.deposit_first_time === "0") {
-                                await model.updateapprove(body, payload).catch(() => { throw err });
-                                await model.update_financial_first(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
-                                let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
+                        } else {
+                            if (body.status === "cancel") {
+                                let updatereject = await model.updatereject(body, payload).catch(() => { throw err });
+                                let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
+                                let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
                                 res.send({
                                     status: "200",
                                     message: "success",
-                                    credit_web: depositPD.result.data.agent.afterCredit
+                                    result: updatereject.modifiedCount
                                 }).end();
                             } else {
-                                await model.updateapprove(body, payload).catch(() => { throw err });
-                                await model.update_financial(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
-                                //await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
-                                let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
-                                res.send({
-                                    status: "200",
-                                    message: "success",
-                                    credit_web: depositPD.result.data.agent.afterCredit
-                                }).end();
-                            }
-                        }
-                    } else {
-                        if (body.status === "cancel") {
-                            let updatereject = await model.updatereject(body, payload).catch(() => { throw err });
-                            let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
-                            res.send({
-                                status: "200",
-                                message: "success",
-                                result: updatereject.modifiedCount
-                            }).end();
-                        }else{
-                            if(body.status === "close"){
-                                let updatelock  =   await model.updatelock(body,payload).catch(() => { throw err });
-                                res.send({
-                                    status: "200",
-                                    message: "success",
-                                    result : "close success"
-                                }).end(); 
-                            } else{
-                                res.send({
-                                    status: "202",
-                                    message: "ขอมูลไม่ถูกต้อง",
-                                }).end(); 
+                                if (body.status === "close") {
+                                    let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
+                                    res.send({
+                                        status: "200",
+                                        message: "success",
+                                        result: "close success"
+                                    }).end();
+                                } else {
+                                    res.send({
+                                        status: "202",
+                                        message: "ขอมูลไม่ถูกต้อง",
+                                        result: ""
+                                    }).end();
+                                }
                             }
                         }
                     }
+                } else {
+                    res.send({
+                        status: "200",
+                        message: "งานนี้ไม่ใช่ของคุณแล้ว",
+                    }).end();
                 }
+            } else {
+                res.send({
+                    status: "200",
+                    message: "งานนี้ไม่ได้ lock อยู่",
+                }).end();
+            }
+        } else {
+            if (body.type === "deposit") {
+                let checkpermission = await model.getdocument(body).catch(() => { throw err });
+                if (checkpermission[0].lock_status === "lock") {
+                    if (checkpermission[0].lock_by.toString() === payload.user_id.toString()) {
+                        if (body.status === "check" || body.status === "save") {
+                            let updatecheck = await model.updatechecked(body, payload).catch(() => { throw err });
+                            let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
+                            res.send({
+                                status: "200",
+                                message: "success",
+                                result: updatecheck
+                            }).end();
+                        } else {
+                            if (body.status === "approve") {
+                                let getdocument = await model.getdocument(body).catch(() => { throw err });
+                                let getconfig_pd = await model.getconfig_pd(getdocument[0].agent_id).catch(() => { throw err });
+                                let getmembpd = await model.getmembpd(getdocument[0].memb_id).catch(() => { throw err });
+                                let updateturnover = await model.updateturnover(getdocument[0].memb_id, getdocument[0].agent_id, getdocument[0].amount, getdocument[0].description).catch(() => { throw err });
+                                let depositPD = await functions.depositPD(getconfig_pd[0], getmembpd[0].username, getdocument[0].amount).catch(() => { throw err });
+                                //console.log(depositPD)
+                                if (depositPD.result.code === 0) {
+                                    await model.updatecredit(getdocument[0].agent_id, depositPD.result.data.agent.afterCredit, payload).catch(() => { throw err });
+                                    await model.updaterefid(body.doc_id, depositPD.result.refId, payload, body.type).catch(() => { throw err });
+
+                                    if (updateturnover.modifiedCount === 0) {
+                                        await model.upsertturnover(getdocument[0].memb_id, getdocument[0].agent_id, getdocument[0].amount, getdocument[0].description).catch(() => { throw err });
+                                    }
+                                    let getmemb = await model.getmemb(getdocument[0].memb_id).catch(() => { throw err });
+                                    if (getmemb[0].financial.deposit_first_time === null || getmemb[0].financial.deposit_first_time === "0") {
+                                        await model.updateapprove(body, payload).catch(() => { throw err });
+                                        await model.update_financial_first(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
+                                        let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
+                                        let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
+                                        res.send({
+                                            status: "200",
+                                            message: "success",
+                                            credit_web: depositPD.result.data.agent.afterCredit
+                                        }).end();
+                                    } else {
+                                        await model.updateapprove(body, payload).catch(() => { throw err });
+                                        await model.update_financial(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
+                                        //await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
+                                        let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
+                                        res.send({
+                                            status: "200",
+                                            message: "success",
+                                            credit_web: depositPD.result.data.agent.afterCredit
+                                        }).end();
+                                    }
+                                }
+                            } else {
+                                if (body.status === "cancel") {
+                                    let updatereject = await model.updatereject(body, payload).catch(() => { throw err });
+                                    let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
+                                    let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
+                                    res.send({
+                                        status: "200",
+                                        message: "success",
+                                        result: updatereject.modifiedCount
+                                    }).end();
+                                } else {
+                                    if (body.status === "close") {
+                                        let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
+                                        res.send({
+                                            status: "200",
+                                            message: "success",
+                                            result: "close success"
+                                        }).end();
+                                    } else {
+                                        res.send({
+                                            status: "202",
+                                            message: "ขอมูลไม่ถูกต้อง",
+                                        }).end();
+                                    }
+                                }
+                            }
+                        }
+
+                    } else {
+                        res.send({
+                            status: "200",
+                            message: "งานนี้ไม่ใช่ของคุณแล้ว",
+                        }).end();
+                    }
+                } else {
+                    res.send({
+                        status: "200",
+                        message: "งานนี้ไม่ได้ lock อยู่",
+                    }).end();
+                }
+
             } else {
                 res.send({
                     status: "201",
