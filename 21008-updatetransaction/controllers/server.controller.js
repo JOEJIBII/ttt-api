@@ -74,9 +74,9 @@ module.exports.updatetransaction = async function (req, res) {
                             }).end(); 
                         } else{
                             res.send({
-                                status: "500",
+                                status: "202",
                                 message: "ขอมูลไม่ถูกต้อง",
-                                result : "close success"
+                                result : ""
                             }).end(); 
                         }
                      }
@@ -148,9 +148,8 @@ module.exports.updatetransaction = async function (req, res) {
                                 }).end(); 
                             } else{
                                 res.send({
-                                    status: "500",
+                                    status: "202",
                                     message: "ขอมูลไม่ถูกต้อง",
-                                    result : "close success"
                                 }).end(); 
                             }
                         }

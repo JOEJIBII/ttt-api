@@ -13,7 +13,7 @@ module.exports.getdeposit = () => {
                                 {
                                         $match: {
                                                 $or: [
-                                                        { status: "pending" }, { status: "check" }
+                                                        { status: "pending" }, { status: "check" },{ status: "save" }
                                                 ]
                                         }
                                 }, {
@@ -502,7 +502,7 @@ module.exports.getwithdraw = () => {
                                                 $or: [
                                                         //{ou_id : ObjectId(payload.ou)},
                                                         //{branch_id : ObjectId(payload.branch)},
-                                                        { status: "pending" }, { status: "check" }
+                                                        { status: "pending" }, { status: "check" }, { status: "save" }
                                                 ]
                                         }
                                 }, {
