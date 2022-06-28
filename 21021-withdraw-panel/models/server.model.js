@@ -1,12 +1,12 @@
 const { MongoDB } = require('../configs/connection_mongodb');
 // const objectId = require('mongodb').ObjectId;
-const { ObjectId, Double } = require('mongodb');
+const { ObjectId, Double, ObjectID } = require('mongodb');
 const moment = require('moment');
 const { withdraw } = require('../controllers/server.controller');
 const collectionmember = "member-Test"
 const collectionCONFIGURATION = "configuration"
 //const collectionhistory_log_api ="history_log_api"
-module.exports.getwithdraw_config = (body, payload) => {
+module.exports.getwithdraw_config = (agent_id) => {
     // console.log(body);
     return new Promise(async (resolve, reject) => {
 
@@ -19,7 +19,7 @@ module.exports.getwithdraw_config = (body, payload) => {
                             //{ou_id : ObjectId(payload.ou)},
                             //{branch_id : ObjectId(payload.branch)},
                             {
-                                _id: ObjectId(payload.agent_id)
+                                _id: ObjectId(agent_id)
                             },
 
                         ]
@@ -49,7 +49,7 @@ module.exports.getwithdraw_config = (body, payload) => {
     });
 }
 
-module.exports.getbankweb = (body, payload) => {
+module.exports.getbankweb = (body) => {
     // console.log(body);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('agent_bank_account')
@@ -60,13 +60,10 @@ module.exports.getbankweb = (body, payload) => {
                             //{ou_id : ObjectId(payload.ou)},
                             //{branch_id : ObjectId(payload.branch)},
                             {
-                                agent_id: ObjectId("629e381cb4839cabb5622da1")
+                                agent_id: ObjectId(body.agent_id)
                             },
                             {
-                                type: "withdraw"
-                            },
-                            {
-                                status: "active"
+                                _id : ObjectId(body.abank_id)
                             }
 
                         ]
@@ -105,7 +102,6 @@ module.exports.findbankmemb = (id) => {
                     $project: {
                         id: 1,
                         // name:"$name",
-                        // surename:"$",
                         memb_id:"$memb_id",
                         bank_id: "$bank_id",
                         account_name: "$account_name",
@@ -193,8 +189,6 @@ module.exports.counttrasaction = (agent_id, memb_id) => {
                                 memb_id: ObjectId(memb_id)
                             },
                             { approve_date: { $gte: new Date(moment().format('YYYY-MM-DD')) } }
-
-
                         ]
                     }
                 }
@@ -273,15 +267,15 @@ module.exports.Withrawcount = (_id, counter) => {
     });
 }
 
-module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, turnover) => {
+module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, turnover,body) => {
     console.log(payload)
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('withdraw')
             .insertOne({
-                agent_id: ObjectId(payload.agent_id),
+                agent_id: ObjectId(body.agent_id),
                 type: "withdraw",
                 date: new Date(moment().format()),
-                memb_id: ObjectId(payload.user_id),
+                memb_id: ObjectId(member.memb_id),
                 from_bank_id: ObjectId(bankweb.bank_id),
                 from_account_id: ObjectId(bankweb._id),
                 from_bank_name: bankweb.account_name,
@@ -306,7 +300,7 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
                 lock_status: "",
                 lock_by: "",
                 lock_date: null,
-                cr_by: payload.username,
+                cr_by: payload.user_id,
                 cr_date: new Date(moment().format()),
                 cr_prog: null,
                 upd_by: null,
