@@ -49,7 +49,7 @@ module.exports.getwithdraw_config = (agent_id) => {
     });
 }
 
-module.exports.getbankweb = (body) => {
+module.exports.getbankweb = (body,agent_id) => {
     // console.log(body);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('agent_bank_account')
@@ -60,10 +60,10 @@ module.exports.getbankweb = (body) => {
                             //{ou_id : ObjectId(payload.ou)},
                             //{branch_id : ObjectId(payload.branch)},
                             {
-                                agent_id: ObjectId(body.agent_id)
+                                agent_id: ObjectId(agent_id)
                             },
                             {
-                                _id : ObjectId(body.abank_id)
+                                _id : ObjectId(body.account_withdraw)
                             }
 
                         ]
@@ -84,6 +84,43 @@ module.exports.getbankweb = (body) => {
     });
 }
 
+module.exports.getbankweb_bonus = (agent_id) => {
+    // console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('agent_bank_account')
+            .aggregate([
+                {
+                    $match: {
+                        $and: [
+                            //{ou_id : ObjectId(payload.ou)},
+                            //{branch_id : ObjectId(payload.branch)},
+                            {
+                                agent_id: ObjectId(agent_id)
+                            },
+                            {
+                                type:"withdraw"
+                            },
+                            {
+                                sub_type:"bonus"
+                            }
+
+                        ]
+                    }
+                },
+                {
+                    $project: {
+                        id: 1,
+                        account_number: "$account_number",
+                        account_name: "$account_name",
+                        bank_id: "$bank_id"
+                    }
+                },
+
+            ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
 
 
 module.exports.findbankmemb = (id) => {

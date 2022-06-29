@@ -9,7 +9,6 @@ module.exports.withdraw = async function (req, res) {
     console.log(payload)
     const { body } = req
     console.log(body)
-
     try {
         let getagent = await model.getagent_id(body.memb_id).catch(() => { throw err });
         let checktrasaction = await model.checktrasaction(getagent[0].agent_id, body.memb_id).catch(() => { throw err });
@@ -18,7 +17,12 @@ module.exports.withdraw = async function (req, res) {
             if (getagent[0].agent_id !== null && getagent[0].agent_id !== '') {
                 let withdraw_configs = await model.getwithdraw_config(getagent[0].agent_id).catch(() => { throw err });
                 console.log(withdraw_configs)
-                let getbankweb = await model.getbankweb(body).catch(() => { throw err });
+                let getbankweb
+                if(body.account_withdraw === null || body.account_withdraw === ""){
+                    getbankweb = await model.getbankweb_bonus(getagent[0].agent_id).catch(() => { throw err });
+                }else{
+                    getbankweb = await model.getbankweb(body,getagent[0].agent_id).catch(() => { throw err });
+                }
                 console.log("getbankweb", getbankweb)
                 let member = await model.findbankmemb(body.memb_id).catch(() => { throw err });
                 console.log("member", member)
