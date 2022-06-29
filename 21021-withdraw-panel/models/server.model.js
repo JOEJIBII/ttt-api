@@ -199,6 +199,26 @@ module.exports.counttrasaction = (agent_id, memb_id) => {
 }
 
 
+module.exports.getagent_id = (memb_id) => {
+    // console.log(agent_id);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('member-Test')
+            .aggregate([
+                {
+                    $match: {
+                        $and: [
+                            {
+                                _id: ObjectId(memb_id)
+                            },
+                        ]
+                    }
+                }
+            ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
 module.exports.Withrawcount = (_id, counter) => {
     console.log(_id)
     return new Promise(async (resolve, reject) => {

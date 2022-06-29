@@ -11,34 +11,35 @@ module.exports.withdraw = async function (req, res) {
     console.log(body)
 
     try {
-        let checktrasaction = await model.checktrasaction(body.agent_id, body.user_id).catch(() => { throw err });
+        let getagent = await model.getagent_id(body.memb_id).catch(() => { throw err });
+        let checktrasaction = await model.checktrasaction(getagent[0].agent_id, body.memb_id).catch(() => { throw err });
         console.log("checktrasaction")
         if (checktrasaction.length === 0) {
-            if (body.agent_id !== null && body.agent_id !== '') {
-                let withdraw_configs = await model.getwithdraw_config(body.agent_id).catch(() => { throw err });
+            if (getagent[0].agent_id !== null && getagent[0].agent_id !== '') {
+                let withdraw_configs = await model.getwithdraw_config(getagent[0].agent_id).catch(() => { throw err });
                 console.log(withdraw_configs)
                 let getbankweb = await model.getbankweb(body).catch(() => { throw err });
                 console.log("getbankweb", getbankweb)
-                let member = await model.findbankmemb(body.user_id).catch(() => { throw err });
+                let member = await model.findbankmemb(body.memb_id).catch(() => { throw err });
                 console.log("member", member)
                 let profile = await functions.ProfilePD(member[0].mem_pd.memb_username, withdraw_configs[0]).catch(() => { throw err });
                 console.log("profile", profile)
-                let credit_balance = profile.result.result.data.balance
+                let credit_balance = Double(profile.result.result.data.balance)
                 console.log("credit_balance", credit_balance)
-                let withdraw = body.balance
+                let withdraw = Double(body.amount)
                 console.log("withdraw", withdraw)
                 if (withdraw <= credit_balance) {
                     let counter_config = withdraw_configs[0].counter
-                    let Counter = await model.counttrasaction(body.agent_id, body.user_id).catch(() => { throw err });
+                    let Counter = await model.counttrasaction(getagent[0].agent_id, body.memb_id).catch(() => { throw err });
                     console.log("counter", Counter.length)
-                    let note = [{ username: "System", note: "จำนวนการถอนของวันนี้ " + Counter.length, note_date: new Date(moment().format()) }]
+                    let note = body.description.concat([{ username: "System", note: "จำนวนการถอนของวันนี้ " + Counter.length, note_date: new Date(moment().format()) }])
                     //console.log("Counter_config", Counter.length)
                     if (Counter.length <= counter_config) {
                         let min_config = withdraw_configs[0].min
                         let max_config = withdraw_configs[0].max
                         if (withdraw >= min_config) {
                             if (withdraw <= max_config) {
-                                let getlastdeposit = await model.getlastdeposit(body.agent_id, body.user_id).catch(() => { throw err });
+                                let getlastdeposit = await model.getlastdeposit(getagent[0].agent_id, body.memb_id).catch(() => { throw err });
                                 let turn = Double()
                                 console.log("getlastdeposit", getlastdeposit)
                                 if (getlastdeposit.length !== 0) {
