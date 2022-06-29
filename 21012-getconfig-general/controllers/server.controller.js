@@ -17,7 +17,7 @@ module.exports.getconfiggeneral = async function (req, res) {
             res.send({
                 status: "200",
                 message: "success",
-                result_config:Result
+                result_config:Result[0]
             }).end();
         } else {
             res.send({ status: "201", message: 'not found data' }).end();
