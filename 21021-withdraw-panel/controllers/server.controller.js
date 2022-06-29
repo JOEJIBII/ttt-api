@@ -55,11 +55,17 @@ module.exports.withdraw = async function (req, res) {
                                 if (getlastdeposit.length !== 0) {
                                     if (getlastdeposit[0].ref_id !== null) {
                                         let checkturnover = await functions.checkturnover(member[0].mem_pd.memb_username, withdraw_configs[0], getlastdeposit[0].ref_id).catch(() => { throw err });
-                                        const { hdp, mixParlay, mixStep, casino, slot, card, lotto, keno, trade, poker, } = checkturnover.result.result.data
-                                        turn = Double(hdp.turn) + Double(mixParlay.turn) + Double(mixStep.turn) + Double(casino.turn) + Double(slot.turn) + Double(card.turn) + Double(lotto.turn) + Double(keno.turn) + Double(trade.turn) + Double(poker.turn)
-                                        note = note.concat([{ username: "System", note: "turnover " + turn, note_date: new Date(moment().format()) }])
-                                        const winlose = Double(hdp.wl) + Double(mixParlay.wl) + Double(mixStep.wl) + Double(casino.wl) + Double(slot.wl) + Double(card.wl) + Double(lotto.wl) + Double(keno.wl) + Double(trade.wl) + Double(poker.wl)
-                                        note = note.concat([{ username: "System", note: "winlose " + winlose, note_date: new Date(moment().format()) }])
+                                        console.log(checkturnover)
+                                        if(checkturnover.result.result.code === 100033){
+
+                                        }else{
+                                            const { hdp, mixParlay, mixStep, casino, slot, card, lotto, keno, trade, poker, } = checkturnover.result.result.data
+                                            turn = Double(hdp.turn) + Double(mixParlay.turn) + Double(mixStep.turn) + Double(casino.turn) + Double(slot.turn) + Double(card.turn) + Double(lotto.turn) + Double(keno.turn) + Double(trade.turn) + Double(poker.turn)
+                                            note = note.concat([{ username: "System", note: "turnover " + turn, note_date: new Date(moment().format()) }])
+                                            const winlose = Double(hdp.wl) + Double(mixParlay.wl) + Double(mixStep.wl) + Double(casino.wl) + Double(slot.wl) + Double(card.wl) + Double(lotto.wl) + Double(keno.wl) + Double(trade.wl) + Double(poker.wl)
+                                            note = note.concat([{ username: "System", note: "winlose " + winlose, note_date: new Date(moment().format()) }])
+                                        }
+                                        
                                     } //                     //console.log(checkturnover.result.result.data)
                                 }
                                 let suspendstatus = await functions.changestatus(member[0].mem_pd.memb_username, withdraw_configs[0]).catch(() => { throw err });

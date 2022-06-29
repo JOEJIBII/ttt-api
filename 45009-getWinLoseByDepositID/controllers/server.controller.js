@@ -29,7 +29,12 @@ module.exports.getWinLoseByDepositID = async (req,res) => {
             if(result["code"] === 0){
                 res.send({ status: "200" ,message: "success", result}).end();
             }else{
-                res.send({ status: "400" ,message: result,option,URL}).end();
+                if(result["code"] === 100033){
+                    res.send({ status: "100033" ,message: "success", result}).end();
+                }else{
+                    res.send({ status: "400" ,message: result,option,URL}).end();
+                }
+                
             }
 
         }).catch(error => {
