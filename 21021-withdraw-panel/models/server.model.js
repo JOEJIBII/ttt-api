@@ -324,12 +324,12 @@ module.exports.Withrawcount = (_id, counter) => {
     });
 }
 
-module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, turnover,body) => {
+module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, turnover,body,agent_id) => {
     console.log(payload)
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('withdraw')
             .insertOne({
-                agent_id: ObjectId(body.agent_id),
+                agent_id: ObjectId(agent_id),
                 type: "withdraw",
                 date: new Date(moment().format()),
                 memb_id: ObjectId(member.memb_id),
