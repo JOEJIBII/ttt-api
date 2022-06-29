@@ -2,6 +2,8 @@
 dist/
 node_modules/
 tests/e2e/reports/
+90000-cron-turnover/
+Other/
 
 # # local env files
 # .env.local
