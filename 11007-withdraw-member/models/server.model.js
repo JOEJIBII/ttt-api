@@ -323,7 +323,7 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
 module.exports.updatestatus = (payload) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection("member_Test")
+        await MongoDB.collection("member-Test")
             .updateOne({
                 _id: ObjectId(payload.user_id)
 
