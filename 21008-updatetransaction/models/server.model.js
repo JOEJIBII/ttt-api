@@ -236,7 +236,7 @@ module.exports.updatereject = (body, payload) => {
     });
 }
 
-module.exports.updatemember = (memb_id) => {
+module.exports.updatemember = (memb_id,payload) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('member-Test')
