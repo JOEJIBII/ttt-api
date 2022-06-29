@@ -13,13 +13,14 @@ module.exports.getwithdrawamount = async function (req, res) {
         //  let responses = await functions.Mappingdata(bankdeposit[0].bank_account_deposit).catch(() => {throw err});
         
         if (getwithdrawamount && getwithdrawamount.length) {
-            // console.log('Result',ResultMEMBER)
+             console.log('Result',getwithdrawamount)
             // const log = await functions.logs(req.body, req.headers.host).catch(() => { throw err });
+            let result = getwithdrawamount
             res.send({
                 status: "200",
                 message: "success",
                 //result:responses.bank_account
-                result:getwithdrawamount[0]
+                result:getwithdrawamount[0].withdraw_config
             }).end();
         } else {
             res.send({ status: "201", message: 'not found data' }).end();

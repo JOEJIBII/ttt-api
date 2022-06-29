@@ -28,9 +28,10 @@ module.exports.getwithdraw = (agent_id) => {
                         withdraw_config:"$withdraw_config.amount_select",
                        
                 }
-            }, {
-                $unwind:{ path:"$withdraw_config"}
-                  },
+            },
+            //  {
+            //     $unwind:{ path:"$withdraw_config"}
+            //       },
         ]).toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));

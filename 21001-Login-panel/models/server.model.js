@@ -60,7 +60,7 @@ module.exports.gen_token = (body) => {
         //agent_id:ObjectId(result[0].agent_id)
         //exp:moment.fomat()
     }
-    const gen_token = jwt.sign(data, jwtSecretKey, { expiresIn: '12H' })
+    const gen_token = jwt.sign(data, jwtSecretKey, { expiresIn: '48H' })
     const R = {
         token: gen_token,
     }

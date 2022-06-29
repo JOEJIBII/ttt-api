@@ -16,18 +16,13 @@ module.exports.logs = (body,ip) => {
     });
 }
 
-module.exports.Mappingdata = async (bank) => {
+module.exports.Mappingdata = async (value) => {
     return new Promise(async (resolve) => {
-        let memb = []
-        //console.log("member",Resulttoken)
-        bank.forEach(e => {
-            if(e.bank_status === "Active"){
-                 memb = memb.concat(e)
-            }
-        })
-        console.log(memb)
+        // let memb = []
+        // //console.log("member",Resulttoken
+        // console.log(memb)
         resolve({ 
-        "bank_account": memb.map(e => {
+        "result": value.map(e => {
                 return {
                     bank_id:Object(e.bank_id),
                     bank_account: e.bank_account,

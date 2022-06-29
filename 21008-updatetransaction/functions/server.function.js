@@ -78,7 +78,7 @@ module.exports.changestatus = async (username,conf) => {
             body: JSON.stringify({
                 "agentUsername": conf.prov_agentusername,
                 "key": conf.prov_key,
-                "username":conf.prov_agentusername +  username, 
+                "username":username, 
                 "status":"ACTIVE",
                 "whiteLabel":  conf.prov_whitelabel,  
                 "domain": conf.prov_domain,

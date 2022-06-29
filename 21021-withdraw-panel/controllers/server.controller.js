@@ -36,8 +36,13 @@ module.exports.withdraw = async function (req, res) {
                     let counter_config = withdraw_configs[0].counter
                     let Counter = await model.counttrasaction(getagent[0].agent_id, body.memb_id).catch(() => { throw err });
                     console.log("counter", Counter.length)
-                    let note = body.description.concat([{ username: "System", note: "จำนวนการถอนของวันนี้ " + Counter.length, note_date: new Date(moment().format()) }])
-                    //console.log("Counter_config", Counter.length)
+                    let note = null
+                    if(body.description !== null || body.description !== ""){
+                        note = note.concat([{ username: payload.username, note: body.description, note_date: new Date(moment().format()) }])
+                        note = note.concat([{ username: "System", note: "จำนวนการถอนของวันนี้ " + Counter.length, note_date: new Date(moment().format()) }])
+                    }else{
+                        note = [{ username: "System", note: "จำนวนการถอนของวันนี้ " + Counter.length, note_date: new Date(moment().format()) }]
+                    }
                     if (Counter.length <= counter_config) {
                         let min_config = withdraw_configs[0].min
                         let max_config = withdraw_configs[0].max
