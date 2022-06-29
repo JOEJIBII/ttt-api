@@ -319,3 +319,26 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
             .catch(error => reject(error));
     });
 }
+
+module.exports.updatestatus = (payload) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection("member_Test")
+            .updateOne({
+                _id: ObjectId(payload.user_id)
+
+            },
+             {
+                $set: {
+                    "status": "suspend",
+                    "upd_by": ObjectId(payload.user_id),
+                    "upd_date": new Date(moment().format()),
+                    "upd_prog": "11007-withdraw-member"
+                }
+            })
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+
+
+    });
+}

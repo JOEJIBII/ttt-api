@@ -40,6 +40,7 @@ module.exports.updatetransaction = async function (req, res) {
                                     await model.updateapprove(body, payload).catch(() => { throw err });
                                     await model.update_financial_withdraw_first(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
                                     //console.log(update)
+                                    let updatemember = await model.updatemember(getdocument[0].memb_id).catch(() => { throw err });
                                     let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
                                     let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
                                     res.send({
@@ -62,10 +63,11 @@ module.exports.updatetransaction = async function (req, res) {
                         } else {
                             if (body.status === "cancel") {
                                 let getdocument = await model.getdocument(body).catch(() => { throw err });
-                                //console.log(getdocument[0])
+                                //console.log(getdocument[0])updatemember
                                 let getconfig_pd = await model.getconfig_pd(getdocument[0].agent_id).catch(() => { throw err });
                                 let getmembpd = await model.getmembpd(getdocument[0].memb_id).catch(() => { throw err });
                                 let updatereject = await model.updatereject(body, payload).catch(() => { throw err });
+                                let updatemember = await model.updatemember(getdocument[0].memb_id).catch(() => { throw err });
                                 let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
                                 let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
                                 res.send({

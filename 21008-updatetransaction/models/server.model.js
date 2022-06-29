@@ -236,6 +236,28 @@ module.exports.updatereject = (body, payload) => {
     });
 }
 
+module.exports.updatemember = (memb_id) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('member-Test')
+            .updateOne({
+                _id: ObjectId(memb_id)
+
+            }, {
+                $set: {
+                    "status": 'active',
+                    "upd_by": ObjectId(payload.user_id),
+                    "upd_date": new Date(moment().format()),
+                    "upd_prog": "21008-updatetransaction"
+                }
+            })
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+
+
+    });
+}
+
 
 module.exports.upsertturnover = (memb_id, agent_id, amount, note) => {
     //console.log(body);

@@ -13,6 +13,7 @@ module.exports.getdeposithistory = async function (req, res) {
             
         let Result = await model.getdeposithistory(payload).catch(() => { throw err });
         console.log(Result)
+        Result = Result.sort(function(a, b){return new Date(b.request_date) - new Date(a.request_date)})
         if (Result && Result.length) {
             const log = await functions.logs(req.body,req.headers.host).catch(() => {throw err});
             res.send({
