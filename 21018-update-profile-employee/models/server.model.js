@@ -7,16 +7,14 @@ module.exports.updateemp = (body, payload) => {
     console.log(body);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('employee')
-            .updateOne({ _id: ObjectId(body.emp_id), },
+            .updateOne({ _id: ObjectId(payload.user_id), },
                 {
                     $set: {
-                        "pool": body.web_access,
-                        "username": body.username,
+                        //"pool": body.web_access,
                         "password": body.password,
                         "name": body.name,
                         "tel": body.tel,
                         "role": ObjectId(body.role),
-                        "avatar": body.avatar,
                         "status": body.status,
                         "upd_date": new Date(moment().format()),
                         "upd_by": ObjectId(payload.user_id),
