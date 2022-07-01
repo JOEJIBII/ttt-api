@@ -6,7 +6,12 @@ const { ObjectId, ObjectID } = require('mongodb');
 //const _ = require("lodash");
 module.exports.checkagent = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    req.headers["x-real-ip"]
+    const header = req.headers["x-real-ip"]
+    console.log("----------------------------------------------------------------------------")
+    console.log("header---------------",header)
+    console.log("----------------------------------------------------------------------------")
+    console.log("req---------------",req)
+    console.log("----------------------------------------------------------------------------")
     try {
             
         let Result = await model.checkagentid(req.body).catch(() => { throw err });
