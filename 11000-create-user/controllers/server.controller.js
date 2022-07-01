@@ -7,6 +7,7 @@ const functions = require('../functions/server.function');
 module.exports.registermember = async function (req, res) {
     res.setHeader('Content-type', 'application/json');
     let body = req.body.body
+    console.log(body)
     // const payload = JSON.parse(req.headers.payload)
     //console.log("ip",req.headers)
 
