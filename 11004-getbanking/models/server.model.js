@@ -8,7 +8,7 @@ const collectionhistory_log_api ="history_log_api"
 module.exports.getbanking = (body,payload) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
-        if(body.status === "Active"){
+        if(body.status === "active"){
             await MongoDB.collection(collectionbank)
             .aggregate([
                 {

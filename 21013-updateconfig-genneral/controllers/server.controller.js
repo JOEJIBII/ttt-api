@@ -19,7 +19,10 @@ module.exports.updateconfiggenneral = async function (req, res) {
                 message: "success",
                 //result_config:Result
             }).end();
+        }  else if (Result.modifiedCount === 0 && Result.matchedCount === 1) {
+            res.send({ status: "202", message: 'ไม่มีการอัพเดทข้อมูล'  }).end();
         } else {
+            
             res.send({ status: "201", message: 'update unsuccessful' }).end();
         }
                 

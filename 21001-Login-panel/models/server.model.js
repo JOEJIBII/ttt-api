@@ -37,8 +37,30 @@ module.exports.login = (body) => {
                             update_by:"$upd_by"
                             
                     }
+                },{$lookup:{
+                    from:"emp_role",
+                    localField:"role",
+                    foreignField:"_id",
+                    as:"role"
+            }},  {
+                    $unwind:{ path:"$role"}
+                      }, {
+                    $project:{
+                        _id:1,
+                            username:"$username",
+                            agent_pool:"$pool",
+                            name:"$name",
+                            tel:"$tel",
+                            status:"$status",
+                            avatar:"$avatar",
+                            role:"$role.name",
+                            status_newmember:"$status_newmember",
+                            create_date:"$create_date",
+                            update_date:"$update_date",
+                            update_by:"$update_by"
+                            
+                    }
                 },
-               
             ]).toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));

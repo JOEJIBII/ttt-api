@@ -22,7 +22,13 @@ module.exports.registermember = async function (req, res) {
                 const CONF = await model.findConF(body).catch(() => { throw err });
                 if (CONF.value !== null) {
                     const userTemp = CONF.value.provider.prov_agentusername + CONF.value.prefix + CONF.value.member.running_number
-                    let Result = await model.register(body, req.headers.host, CONF.value.prefix + CONF.value.member.running_number).catch(() => { throw err });
+                    let Result = ""
+                    if(body.request === "panel"){
+                        Result = await model.registerpanel(body, req.headers.host, CONF.value.prefix + CONF.value.member.running_number).catch(() => { throw err });
+                    }else{
+                        Result = await model.registermember(body, req.headers.host, CONF.value.prefix + CONF.value.member.running_number).catch(() => { throw err });
+                    }
+                    
                     if (Result.insertedId !== null && Result.insertedId !== '') {
                        let membbank = await model.insertbankmemb(Result.insertedId, body).catch(() => { throw err });
                         console.log("bank",membbank)

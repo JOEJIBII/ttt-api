@@ -6,10 +6,9 @@ const moment = require('moment');
 const today = dayjs();
 const collectionmember = "member-Test"
 const collectionCONFIGURATION = "agent"
-module.exports.register = (body, ip, _user) => {
+module.exports.registermember = (body, ip, _user) => {
     return new Promise(async (resolve, reject) => {
 
-        //console.log(CONF);
         await MongoDB.collection(collectionmember)
             .insertOne({
                 agent_id: objectId(body.agent_id),
@@ -21,17 +20,62 @@ module.exports.register = (body, ip, _user) => {
                 line_id: body.line_id,
                 name: body.name,
                 surname: body.surename,
-                birthday_date: body.birthday,
-                tag: body.tag.map(e => {
-                    return objectId(e)
-                }),
+                birthday_date: new Date(moment(body.birthday).format()),
                 channel: ObjectId(body.channel),
                 remark: body.remark,
-                register_ip: ip,
+                register_ip: body.register_ip,
                 register_date: new Date(moment().format()),
                 user_reference: body.user_reference,
                 promotion_status: body.promotion_status,
-                privilege: "normal",
+                privilege: ObjectId("62a8d9a4b4839cabb5622db1"),
+                financial: {
+                    deposit_first_time_amount: 0.00,
+                    deposit_first_time: null,
+                    deposit_count: 0,
+                    deposit_total_amount: 0.00,
+                    withdraw_first_time: 0,
+                    withdraw_count: 0,
+                    withdraw_total_amount: 0.00
+                },
+                status: 'active',
+                status_new_member: 'N',
+                cr_date: new Date(moment().format()),
+                cr_by: "11000-create-user",
+                cr_prog: "11000-create-user",
+                upd_date: null,
+                upd_by: null,
+                upd_prog: null
+            })
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
+module.exports.registerpanel = (body, ip, _user) => {
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection(collectionmember)
+            .insertOne({
+                agent_id: objectId(body.agent_id),
+                username: _user,
+                password: body.password,
+                tel: body.tel,
+                mobile_no: body.mobile_number,
+                pin: body.pin,
+                line_id: body.line_id,
+                name: body.name,
+                surname: body.surename,
+                birthday_date: new Date(moment(body.birthday).format()),
+                email:body.email,
+                // tag: body.tag.map(e => {
+                //     return objectId(e)
+                // }),
+                channel: ObjectId(body.channel),
+                remark: body.remark,
+                register_ip: body.register_ip,
+                register_date: new Date(moment().format()),
+                user_reference: body.user_reference,
+                //promotion_status: body.promotion_status,
+                privilege: ObjectId(body.privilege),
                 financial: {
                     deposit_first_time_amount: 0.00,
                     deposit_first_time: null,
