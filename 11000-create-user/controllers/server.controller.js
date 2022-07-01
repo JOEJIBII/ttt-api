@@ -9,12 +9,12 @@ module.exports.registermember = async function (req, res) {
     let body = req.body.body
     // const payload = JSON.parse(req.headers.payload)
     //console.log("ip",req.headers)
-    
+
     try {
         console.log(body.captchaID, body.value)
         let verifyCap = await functions.verifycaptcha(body.captchaID, body.value).catch(() => { throw err });
-      
-        if (verifyCap.status === "200" || body.request === "panel") {
+
+        if (verifyCap.status === "200") {
             let Ckbank = await model.CheckBankAccount(body).catch(() => { throw err });
             //console.log(Ckbank.length)
             let Cktel = await model.CheckTel(body).catch(() => { throw err });
@@ -22,18 +22,12 @@ module.exports.registermember = async function (req, res) {
                 const CONF = await model.findConF(body).catch(() => { throw err });
                 if (CONF.value !== null) {
                     const userTemp = CONF.value.provider.prov_agentusername + CONF.value.prefix + CONF.value.member.running_number
-                    let Result = ""
-                    if(body.request === "panel"){
-                        Result = await model.registerpanel(body, req.headers.host, CONF.value.prefix + CONF.value.member.running_number).catch(() => { throw err });
-                    }else{
-                        Result = await model.registermember(body, req.headers.host, CONF.value.prefix + CONF.value.member.running_number).catch(() => { throw err });
-                    }
-                    
+                    let Result = Result = await model.register(body, req.headers.host, CONF.value.prefix + CONF.value.member.running_number).catch(() => { throw err });
                     if (Result.insertedId !== null && Result.insertedId !== '') {
-                       let membbank = await model.insertbankmemb(Result.insertedId, body).catch(() => { throw err });
-                        console.log("bank",membbank)
-                     let membturnover =   await model.insertmembturnover(Result.insertedId, body).catch(() => { throw err });
-                        console.log("turnover",membturnover)
+                        let membbank = await model.insertbankmemb(Result.insertedId, body).catch(() => { throw err });
+                        console.log("bank", membbank)
+                        let membturnover = await model.insertmembturnover(Result.insertedId, body).catch(() => { throw err });
+                        console.log("turnover", membturnover)
                         const createacct = await model.createaccountprovider(body, Result.insertedId, CONF, userTemp).catch(() => { throw err });
                         await model.get_acct_pd(createacct.insertedId).catch(() => { throw err });
                         await functions.logs(body, Result.insertedId, req.headers.host).catch(() => { throw err });
@@ -41,10 +35,10 @@ module.exports.registermember = async function (req, res) {
                         if (regis.result.code === 0) {
                             res.send({
                                 status: "200",
+                                message: "success",
                                 Username: body.tel,
                                 Password: regis.Password,
                                 username_prov: regis.acct,
-                                message: "success"
                             }).end();
                         } else {
                             console.log(createacct.insertedId)
