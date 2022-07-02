@@ -39,6 +39,7 @@ module.exports = {
         "updatemember":"21017",
         "updateemp":"21018",
         "withdraw":"21021",
+        "getmyprofile":"21023",
         
     },
     "provieder": {
