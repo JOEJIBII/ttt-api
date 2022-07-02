@@ -37,7 +37,7 @@ module.exports.register = (body, ip, _user) => {
                     withdraw_count: 0,
                     withdraw_total_amount: 0.00
                 },
-                status: 'active',
+                status: body.status,
                 status_new_member: 'N',
                 cr_date: new Date(moment().format()),
                 cr_by: "11000-create-user",
