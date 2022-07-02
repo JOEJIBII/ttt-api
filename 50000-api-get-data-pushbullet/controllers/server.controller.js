@@ -70,7 +70,7 @@ const mainProcess = data => {
                                         title,
                                         body,
                                         application,
-                                        ref:null
+                                        ref:null,
                                         value: null
                                     };
                                     if (title === '⁨027777777⁩') {
