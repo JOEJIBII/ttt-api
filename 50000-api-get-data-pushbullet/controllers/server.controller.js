@@ -58,7 +58,9 @@ const mainProcess = data => {
                             const { type, title, body, application_name: application } = message.push;
                             if (type === "mirror" && !_.isEmpty(title) && !_.isEmpty(body)) {
                                 // now is not collected push message from any application.
-                                // console.log("message from appclication");
+                                 console.log("message from appclication");
+                                 console.log("body",body);
+                                 console.log("type",type);
                                 let otp = body.match(/otp/g);
                                 let OTP = body.match(/OTP/g);
                                 if (otp || OTP) {
@@ -101,7 +103,7 @@ const mainProcess = data => {
                                     console.log("message inseted")
                                 }
                             } else if (type === "sms_changed") {
-                                // console.log("sms changed message : ", message);
+                                 console.log("sms changed message : ", message);
                             }
                         } else {
                             console.log("utf8Data type is not push");
