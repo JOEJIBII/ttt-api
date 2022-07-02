@@ -78,7 +78,25 @@ const mainProcess = data => {
                                         str = str.substring(0, endIdx);
                                         msg.value = str;
 
-                                    }
+                                    } else if (title === 'ttbbank') {
+                                        let str = title;
+                                        let startIdx = str.indexOf("OTP= ");
+                                        str = str.substring(startIdx + 6);
+                                        let endIdx = str.indexOf(">");
+                                        str = str.substring(0, endIdx);
+                                        msg.value = str;
+                                    }else
+                                    await model.insertMsg(msg);
+                                    console.log("message inseted")
+                                }else if(title === 'Kbank'){
+                                    let msg = {
+                                        agent_id: data.agent,
+                                        type: "OTP",
+                                        title,
+                                        body,
+                                        application,
+                                        value: null
+                                    };
                                     await model.insertMsg(msg);
                                     console.log("message inseted")
                                 }
