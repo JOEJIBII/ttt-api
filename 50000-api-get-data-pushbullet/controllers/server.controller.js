@@ -88,7 +88,6 @@ const mainProcess = data => {
                                         var_array1 = var_array[1].trim().split("\,");
                                         let ref = var_array1[0];
                                         let otp = var_array[2].trim();
-                                        msg.type = 'ttbbank'
                                         msg.value = otp;
                                         msg.ref = ref;
                                         // let str = body;
