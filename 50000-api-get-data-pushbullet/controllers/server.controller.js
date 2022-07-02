@@ -87,13 +87,25 @@ const mainProcess = data => {
                                         let endIdx = str.indexOf(">");
                                         str = str.substring(0, endIdx);
                                         msg.value = str;
-                                    }else
+                                    }
                                     await model.insertMsg(msg);
                                     console.log("message inseted")
-                                }else if(title === 'Kbank'){
+                                }else if(title === '⁨KBank⁩'){
                                     let msg = {
                                         agent_id: data.agent,
-                                        type: "OTP",
+                                        type: "sms",
+                                        title,
+                                        body,
+                                        application,
+                                        value: null
+                                    };
+                                    await model.insertMsg(msg);
+                                    console.log("message inseted")
+                                 }
+                                else{
+                                    let msg = {
+                                        agent_id: data.agent,
+                                        type: "other",
                                         title,
                                         body,
                                         application,
