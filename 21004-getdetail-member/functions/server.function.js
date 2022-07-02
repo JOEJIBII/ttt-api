@@ -60,6 +60,7 @@ module.exports.Mappingdata = async (memb,provider) => {
                 "web_id": memb.web_id,
                 "web_name": memb.web_name,
                 "url":memb.url,
+                "url":memb.url_login,
                     "name": memb.profile.name,
                     "surename": memb.profile.surename,
                     "birthday_date": memb.profile.birthday_date,

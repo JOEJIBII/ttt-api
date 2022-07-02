@@ -174,6 +174,7 @@ console.log(agent_id);
                             web_id:"$agent_id",
                             web_name:"$agent.name",
                             url:"$agent.domain_name",
+                            url_login:"$agent.url_login",
                             tel:"$tel",
                             profile:"$profile",
                             banking_account:"$banking_account",
