@@ -98,7 +98,8 @@ module.exports.findbankmemb = (id) => {
                         $and: [
                             //{ou_id : ObjectId(payload.ou)},
                             //{branch_id : ObjectId(payload.branch)},
-                            { memb_id: ObjectId(id) }
+                            { memb_id: ObjectId(id) },
+                            { status: "active" }
                         ]
                     }
                 }, {

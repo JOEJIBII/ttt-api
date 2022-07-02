@@ -40,6 +40,7 @@ module.exports = {
         "updateemp":"21018",
         "withdraw":"21021",
         "getmyprofile":"21023",
+        "getallbanksetting":"21024",
         
     },
     "provieder": {

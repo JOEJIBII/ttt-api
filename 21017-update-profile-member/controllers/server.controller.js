@@ -11,17 +11,41 @@ module.exports.updateprofile = async function (req, res) {
     const body = req.body
     try {
         console.log("body.agent_id", body.agent_id)
-        let Result = await model.updatemember(body,payload).catch(() => { throw err });
-        //console.log(Result)
-        if (Result.modifiedCount === 1) {
-            const log = await functions.logs(req.body, req.headers.host).catch(() => { throw err });
-            res.send({
-                status: "200",
-                message: "success",
-                //result_config:Result
-            }).end();
+        let Result = await model.updatemember(body, payload).catch(() => { throw err });
+        if (Result.modifiedCount === 1 || Result.modifiedCount === 0 && Result.matchedCount === 1) {
+            let getbankmemb = await model.getbankmemb(body).catch(() => { throw err });
+            if (getbankmemb.length > 0) {
+                if (getbankmemb[0].account_number !== body.bank_account || getbankmemb[0].bank_id.toString() !== body.bank_id.toString()) {
+                    let updatebankmemb = await model.updatebankmemb(body).catch(() => { throw err });
+                    if (updatebankmemb.modifiedCount > 0) {
+                        let insertbankmemb = await model.insertbankmemb(body).catch(() => { throw err });
+                        if (insertbankmemb.insertedId !== null && insertbankmemb.insertedId !== "") {
+                            const log = await functions.logs(req.body, req.headers.host).catch(() => { throw err });
+                            res.send({
+                                status: "200",
+                                message: "success",
+                            }).end();
+                        } else {
+                            res.send({ status: "203", message: 'update ข้อมูลไม่สำเร็จ' }).end();
+                        }
+                    } else {
+                        res.send({ status: "203", message: 'update ข้อมูลไม่สำเร็จ' }).end();
+                    }
+                } else {
+                    res.send({ status: "202", message: 'ไม่มีการอัพเดทข้อมูล' }).end();
+                }
+            } else {
+                let insertbankmemb = await model.insertbankmemb(body).catch(() => { throw err });
+                if (insertbankmemb.insertedId !== null && insertbankmemb.insertedId !== "") {
+                    const log = await functions.logs(req.body, req.headers.host).catch(() => { throw err });
+                    res.send({
+                        status: "200",
+                        message: "success",
+                    }).end();
+                }
+            }
         } else {
-            res.send({ status: "201", message: 'update unsuccessful' }).end();
+            res.send({ status: "201", message: '' }).end();
         }
     } catch (error) {
         console.error(error);

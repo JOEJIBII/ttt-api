@@ -204,19 +204,7 @@ module.exports.insertbankmemb = (memb_id, body) => {
 
 module.exports.CheckBankAccount = (body) => {
     return new Promise(async (resolve, reject) => {
-        // let query = {
-        //     $and: [{
-        //         agent_id: ObjectId(body.agent_id)
-        //     }, { $or: [{
-        //         account_number: body.bank_acct
-        //     },{bank_id: ObjectId(body.bank_id)}
-        // ] }]
-        // }
-        // for (const i of body.banking_account) {
-        //     query.$and[1].$or.push({
-        //         $and: [{ "banking_account.bank_id": objectId(i.bank_id) }, { "banking_account.bank_acct": i.bank_acct }]
-        //     })
-        // }
+       
         console.log("test", body.agent_id, body.bank_acct, body.bank_id)
 
         await MongoDB.collection('memb_bank_account')

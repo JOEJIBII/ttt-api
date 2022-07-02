@@ -49,7 +49,7 @@ module.exports.getwithdraw_config = (agent_id) => {
     });
 }
 
-module.exports.getbankweb = (body,agent_id) => {
+module.exports.getbankweb = (body, agent_id) => {
     // console.log(body);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('agent_bank_account')
@@ -63,7 +63,7 @@ module.exports.getbankweb = (body,agent_id) => {
                                 agent_id: ObjectId(agent_id)
                             },
                             {
-                                _id : ObjectId(body.account_withdraw)
+                                _id: ObjectId(body.account_withdraw)
                             }
 
                         ]
@@ -98,10 +98,10 @@ module.exports.getbankweb_bonus = (agent_id) => {
                                 agent_id: ObjectId(agent_id)
                             },
                             {
-                                type:"withdraw"
+                                type: "withdraw"
                             },
                             {
-                                sub_type:"bonus"
+                                sub_type: "bonus"
                             }
 
                         ]
@@ -132,49 +132,50 @@ module.exports.findbankmemb = (id) => {
                         $and: [
                             //{ou_id : ObjectId(payload.ou)},
                             //{branch_id : ObjectId(payload.branch)},
-                            { memb_id: ObjectId(id) }
+                            { memb_id: ObjectId(id) },
+                            { status: "active" }
                         ]
                     }
                 }, {
                     $project: {
                         id: 1,
                         // name:"$name",
-                        memb_id:"$memb_id",
+                        memb_id: "$memb_id",
                         bank_id: "$bank_id",
                         account_name: "$account_name",
                         banking_account: "$account_number"
 
                     }
-                },{
+                }, {
                     $lookup: {
-                            from: "member_provider_account",
-                            localField: "memb_id",
-                            foreignField: "memb_id",
-                            as: "memb_pd"
+                        from: "member_provider_account",
+                        localField: "memb_id",
+                        foreignField: "memb_id",
+                        as: "memb_pd"
                     }
-            },{
-                $unwind: { path: "$memb_pd", preserveNullAndEmptyArrays: true }
-        },
-            {
-                $project: {
-                    id: 1,
-                    // name:"$name",
-                    memb_id:"$memb_id",
-                    bank_id: "$bank_id",
-                    account_name: "$account_name",
-                    banking_account: "$account_number",
-                    mem_pd: {
-                        $cond: [{
-                                $eq: [{ $ifNull: ["$memb_pd.username", null] }, null]
-                        },
-                                null,
-                        {
-                                memb_username: "$memb_pd.username",
-                        }]
+                }, {
+                    $unwind: { path: "$memb_pd", preserveNullAndEmptyArrays: true }
                 },
+                {
+                    $project: {
+                        id: 1,
+                        // name:"$name",
+                        memb_id: "$memb_id",
+                        bank_id: "$bank_id",
+                        account_name: "$account_name",
+                        banking_account: "$account_number",
+                        mem_pd: {
+                            $cond: [{
+                                $eq: [{ $ifNull: ["$memb_pd.username", null] }, null]
+                            },
+                                null,
+                            {
+                                memb_username: "$memb_pd.username",
+                            }]
+                        },
 
-                }
-            },
+                    }
+                },
             ]).toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));
@@ -324,7 +325,7 @@ module.exports.Withrawcount = (_id, counter) => {
     });
 }
 
-module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, turnover,body,agent_id) => {
+module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, turnover, body, agent_id) => {
     console.log(payload)
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('withdraw')
@@ -372,7 +373,7 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
 }
 
 
-module.exports.updatestatusmember = (payload,member_id) => {
+module.exports.updatestatusmember = (payload, member_id) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection("member-Test")
@@ -380,14 +381,14 @@ module.exports.updatestatusmember = (payload,member_id) => {
                 _id: ObjectId(member_id)
 
             },
-             {
-                $set: {
-                    "status": "suspend",
-                    "upd_by": ObjectId(payload.user_id),
-                    "upd_date": new Date(moment().format()),
-                    "upd_prog": "11007-withdraw-member"
-                }
-            })
+                {
+                    $set: {
+                        "status": "suspend",
+                        "upd_by": ObjectId(payload.user_id),
+                        "upd_date": new Date(moment().format()),
+                        "upd_prog": "11007-withdraw-member"
+                    }
+                })
             .then(result => resolve(result))
             .catch(error => reject(error));
 
