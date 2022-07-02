@@ -70,6 +70,7 @@ const mainProcess = data => {
                                         title,
                                         body,
                                         application,
+                                        ref:null
                                         value: null
                                     };
                                     if (title === '⁨027777777⁩') {
@@ -81,12 +82,18 @@ const mainProcess = data => {
                                         msg.value = str;
 
                                     } else if (title === 'ttbbank') {
-                                        let str = title;
-                                        let startIdx = str.indexOf("OTP= ");
+                                        let str = body;
+                                        let startIdx = str.indexOf("Bank Ref= ");
                                         str = str.substring(startIdx + 6);
-                                        let endIdx = str.indexOf(">");
+                                        let endIdx = str.indexOf(",");
                                         str = str.substring(0, endIdx);
-                                        msg.value = str;
+                                        msg.ref = str;
+                                        let otp = body;
+                                        let startIdx_otp = otp.indexOf("OTP= ");
+                                        otp = otp.substring(startIdx_otp + 6);
+                                        // let endIdx_otp = otp.indexOf(",");
+                                        // otp = otp.substring(0, endIdx_otp);
+                                        msg.value = otp;
                                     }
                                     await model.insertMsg(msg);
                                     console.log("message inseted")
