@@ -60,7 +60,7 @@ module.exports.getallemp = (body) => {
                 ,{$lookup:{
                     from:"emp_role",
                     localField:"role",
-                    foreignField:"name",
+                    foreignField:"_id",
                     as:"roles"
             }}, {
                 $unwind:{ path:"$roles" }
@@ -74,7 +74,7 @@ module.exports.getallemp = (body) => {
                         password:"$password",
                         name:"$name",
                         tel:"$tel",
-                        role:"$role",
+                        role:"$roles.name",
                         role_description:"$roles.description",
                         avatar:"$avatar",
                         status:"$status",
