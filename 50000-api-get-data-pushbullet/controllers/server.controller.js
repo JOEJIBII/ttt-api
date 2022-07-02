@@ -81,7 +81,7 @@ const mainProcess = data => {
                                         str = str.substring(0, endIdx);
                                         msg.value = str;
 
-                                    } else if (title === 'ttbbank') {
+                                    } else if (title === '⁨ttbbank⁩') {
                                         let var_array
                                         let var_array1
                                         var_array = body.split("\=");
