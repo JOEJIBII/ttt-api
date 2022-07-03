@@ -37,7 +37,13 @@ module.exports.bankdeposit = (agent_id) => {
                     description:"$description",
                     status:"$status",
                     type : "$type",
-                    sub_type : "$sub_type"
+                    sub_type : "$sub_type",
+                    memb_bank:"$memb_bank",
+                    bank_auto_status:"$bank_auto_status",
+                    bank_auto_config:"$bank_auto_config",
+                    sms_auto_status:"$sms_auto_status",
+                    sms_auto_config:"$sms_auto_config",
+                    privilege:"$privilege"
                 }
             },{$lookup:{
                         from:"bank",
@@ -60,9 +66,55 @@ module.exports.bankdeposit = (agent_id) => {
                             description:"$description",
                             bank_status:"$status",
                             type : "$type",
-                            sub_type : "$sub_type"
+                            sub_type : "$sub_type",
+                            memb_bank:"$memb_bank",
+                            bank_auto_status:"$bank_auto_status",
+                            bank_auto_config:"$bank_auto_config",
+                            sms_auto_status:"$sms_auto_status",
+                            sms_auto_config:"$sms_auto_config",
+                            privilege:"$privilege"
                         }
+                    },
+                    {$lookup:{
+                        from:"bank",
+                        localField:"memb_bank",
+                        foreignField:"_id",
+                        as:"banks"
+                }},  {
+                    $unwind: { path: "$banks", preserveNullAndEmptyArrays: true }
+            },
+                {
+                    $project:{
+                        _id:1,
+                        bank_id : "$bank_id",
+                        bank_account : "$bank_account",
+                        account_name : "$account_name",
+                        bank_name_th : "$bank_name_th",
+                        bank_name_en : "$bank_name_en",
+                        bank_code : "$bank_code",
+                        description:"$description",
+                        bank_status:"$status",
+                        type : "$type",
+                        sub_type : "$sub_type",
+                        memb_bank: {
+                            $cond: [{
+                                    $eq: [{ $ifNull: ["$banks.code", null] }, null]
+                            },
+                                    "",
+                            {
+                                memb_bank_id:"$memb_bank",
+                                memb_bank_nameth:"$banks.nameth",
+                                memb_bank_nameen:"$banks.nameen",
+                                memb_bank_code:"$banks.code",
+                            }]
+                    },
+                        bank_auto_status:"$bank_auto_status",
+                        bank_auto_config:"$bank_auto_config",
+                        sms_auto_status:"$sms_auto_status",
+                        sms_auto_config:"$sms_auto_config",
+                        privilege:"$privilege"
                     }
+                },
         ]).toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));

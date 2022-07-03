@@ -41,6 +41,7 @@ module.exports = {
         "withdraw":"21021",
         "getmyprofile":"21023",
         "getallbanksetting":"21024",
+        "insertbank":"21020",
         
     },
     "provieder": {
