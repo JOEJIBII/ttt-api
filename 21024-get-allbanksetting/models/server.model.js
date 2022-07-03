@@ -100,7 +100,7 @@ module.exports.bankdeposit = (agent_id) => {
                             $cond: [{
                                     $eq: [{ $ifNull: ["$banks.code", null] }, null]
                             },
-                                    "",
+                                    null,
                             {
                                 memb_bank_id:"$memb_bank",
                                 memb_bank_nameth:"$banks.nameth",
