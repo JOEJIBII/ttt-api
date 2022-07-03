@@ -20,6 +20,9 @@ module.exports.bankdeposit = (agent_id) => {
                         },  
                         {
                             status:{$not:{$eq:"delete"}}
+                        },
+                        {
+                            sub_type:{$not:{$eq:"bonus"}}
                         }
                       
                     ]
