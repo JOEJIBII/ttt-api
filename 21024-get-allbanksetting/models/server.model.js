@@ -93,7 +93,7 @@ module.exports.bankdeposit = (agent_id) => {
                         bank_name_en : "$bank_name_en",
                         bank_code : "$bank_code",
                         description:"$description",
-                        bank_status:"$status",
+                        bank_status:"$bank_status",
                         type : "$type",
                         sub_type : "$sub_type",
                         memb_bank: {
