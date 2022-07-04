@@ -32,18 +32,19 @@ module.exports = {
         "logoff": "21010",
         "getprefix": "21011",
         "getconfiggeneral": "21012",
-        "updateconfgenneral":"21013",
-        "historylasted":"21014",
-        "getbanktrnsaction":"21015",
-        "historybyId":"21016",
-        "updatemember":"21017",
-        "updateemp":"21018",
-        "withdraw":"21021",
-        "getmyprofile":"21023",
-        "getallbanksetting":"21024",
-        "insertbank":"21020",
-        "updatebank":"21019",
-        
+        "updateconfgenneral": "21013",
+        "historylasted": "21014",
+        "getbanktrnsaction": "21015",
+        "historybyId": "21016",
+        "updatemember": "21017",
+        "updateemp": "21018",
+        "withdraw": "21021",
+        "getmyprofile": "21023",
+        "getallbanksetting": "21024",
+        "insertbank": "21020",
+        "updatebank": "21019",
+        "getbankautotranfer": "21025"
+
     },
     "provieder": {
         "create-member": "45000", //Complete
