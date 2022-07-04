@@ -63,6 +63,8 @@ const mainProcess = data => {
                                  console.log("type",type);
                                 let otp = body.match(/otp/g);
                                 let OTP = body.match(/OTP/g);
+                                console.log("OTP",OTP);
+                                console.log("otp",otp);
                                 if (otp || OTP) {
                                     let msg = {
                                         agent_id: data.agent,
