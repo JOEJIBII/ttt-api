@@ -46,7 +46,9 @@ module.exports = {
         "getbankautotranfer": "21025",
         "updatebankautotranfer": "21026",
         "getsmsautotranfer": "21027",
-        "updatesmsautotranfer": "21028"
+        "updatesmsautotranfer": "21028",
+        "getpushbulletsetting":"21029",
+        "updatepushbulletsetting":"21030"
 
     },
     "provieder": {
