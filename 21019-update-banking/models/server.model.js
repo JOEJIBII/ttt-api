@@ -12,6 +12,14 @@ module.exports.updatebank = (body, payload) => {
     } else {
         _membbank = { memb_bank: ObjectId(body.memb_bank) }
     }
+    let _privilege = {
+
+    }
+    if(body.privilege === null || body.privilege === ""){
+        _privilege= { privilege:null}
+    }else{
+        _privilege= { privilege:(body.privilege)}
+    }
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('agent_bank_account')
             .updateOne({ _id: ObjectId(body._id), agent_id: ObjectId(body.agent_id) },
@@ -22,7 +30,7 @@ module.exports.updatebank = (body, payload) => {
                         account_name: body.bank_account_name,
                         memb_bank: _membbank.memb_bank,
                         description: body.description,
-                        privilege: body.privilege,
+                        privilege: _privilege.privilege,
                         status: body.status,
                         type: body.type,
                         sub_type: body.type,

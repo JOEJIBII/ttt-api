@@ -24,7 +24,7 @@ module.exports.getautotranfer = (body,bank_id) => {
                             status:"active"
                         },
                         {
-                            bank_auto_status:"inactive"
+                            sms_auto_status:"inactive"
                         },
                         {
                             sub_type:{$not:{$eq:"bonus"}}

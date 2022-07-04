@@ -2,7 +2,7 @@ const model = require('../models/server.model');
 const functions = require('../functions/server.function')
 const { urlencoded } = require("express");
 //const _ = require("lodash");
-module.exports.getbankautotranfer = async function (req, res) {
+module.exports.getsmsautotranfer = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     const payload = JSON.parse(req.headers.payload)
     const body = req.body

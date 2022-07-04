@@ -13,6 +13,14 @@ module.exports.insertbank = (body,payload) => {
     }else{
         _membbank= { memb_bank:ObjectId(body.memb_bank)}
     }
+    let _privilege = {
+
+    }
+    if(body.privilege === null || body.privilege === ""){
+        _privilege= { privilege:null}
+    }else{
+        _privilege= { privilege:ObjectId(body.privilege)}
+    }
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('agent_bank_account')
             .insertOne({
@@ -26,7 +34,7 @@ module.exports.insertbank = (body,payload) => {
                 bank_auto_config:null,
                 sms_auto_status:"inactive",
                 sms_auto_config:null,
-                privilege:null,
+                privilege:_privilege.privilege,
                 status: body.status,
                 type:body.type,
                 sub_type:body.type,

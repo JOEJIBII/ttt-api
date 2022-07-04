@@ -43,7 +43,10 @@ module.exports = {
         "getallbanksetting": "21024",
         "insertbank": "21020",
         "updatebank": "21019",
-        "getbankautotranfer": "21025"
+        "getbankautotranfer": "21025",
+        "updatebankautotranfer": "21026",
+        "getsmsautotranfer": "21027",
+        "updatesmsautotranfer": "21028"
 
     },
     "provieder": {
