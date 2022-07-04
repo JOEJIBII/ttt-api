@@ -8,7 +8,7 @@ module.exports.getbankautotranfer = async function (req, res) {
     const body = req.body
     try {
         let type = body.type
-        let getautotranfer = await model.getautotranfer(body.agent_id).catch(() => { throw err });
+        let getautotranfer = await model.getautotranfer(body).catch(() => { throw err });
         //let bankwithdraw = await model.bankwithdraw(body.agent_id).catch(() => { throw err });
             if (getautotranfer && getautotranfer.length) {
                 res.send({ status: "200", message: "success", result: getautotranfer }).end();

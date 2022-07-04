@@ -6,7 +6,7 @@ const moment = require('moment');
 //const collectionmember = "member-Test"
 const collectionCONFIGURATION ="configuration"
 const collectionhistory_log_api ="history_log_api"
-module.exports.getautotranfer = (agent_id) => {
+module.exports.getautotranfer = (body) => {
     // console.log(agent_id);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('agent_bank_account')
@@ -15,7 +15,7 @@ module.exports.getautotranfer = (agent_id) => {
                 $match : {
                     $and : [
                         { 
-                            agent_id : ObjectId(agent_id)
+                            agent_id : ObjectId(body.agent_id)
                         },  
                         {
                             status:{$not:{$eq:"delete"}}
@@ -28,7 +28,10 @@ module.exports.getautotranfer = (agent_id) => {
                         },
                         {
                             sub_type:{$not:{$eq:"bonus"}}
-                        }
+                        },
+                        {
+                            sub_type:body.type
+                        },
                       
                     ]
                 }
