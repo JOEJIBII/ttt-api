@@ -6,11 +6,12 @@ const moment = require('moment');
 const collectionmember = "member"
 const collectionCONFIGURATION ="configuration"
 const collectionhistory_log_api ="history_log_api"
-module.exports.getallemp = (body) => {
+module.exports.getallemp = (agent_id) => {
    // console.log(body);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('employee')
             .aggregate([
+                
                 {
                     $project:{
                         _id:1,
@@ -85,7 +86,13 @@ module.exports.getallemp = (body) => {
 
                         
                     }
-                }
+                }, {
+                    $match: {
+                        $and: [
+                            { "web_id": ObjectId(agent_id) },
+                        ]
+                    }
+                },
            
             ]).toArray()
             .then(result => resolve(result))
@@ -115,3 +122,33 @@ module.exports.findConF = (body) => {
     });
 }
 
+
+
+
+
+module.exports.getagent_id = (user_id) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('employee')
+            .aggregate([
+
+                {
+                    $match: {
+                        $and: [
+                            { _id: ObjectId(user_id) },
+                        ]
+                    }
+                },{
+                    $project: {
+                        _id: 1,
+                       agent_id : "$pool.agent_pool"
+                    }
+                }
+
+            ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+
+
+    });
+}

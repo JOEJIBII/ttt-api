@@ -7,8 +7,22 @@ module.exports.getallemployee = async function (req, res) {
     const payload = JSON.parse(req.headers.payload)
     //console.log(payload)
     try {
+        let pool = await model.getagent_id(payload.user_id).catch(() => { throw err });
+        let ResultMEMBER =null
+        let T = []
+        console.log(pool)
+        var agent_id = pool[0].agent_id
+        for (var i=0; i < agent_id.length; i++) {
+            console.log(agent_id[i])
+           // Result = await model.getprefix(agent_id[i]).catch(() => { throw err });
+           ResultMEMBER = await model.getallemp(agent_id[i]).catch(() => { throw err });
+            console.log(ResultMEMBER)
+            T = T.concat(ResultMEMBER)
+         }
+         ResultMEMBER = T
 
-        let ResultMEMBER = await model.getallemp().catch(() => { throw err });
+
+       // let ResultMEMBER = await model.getallemp().catch(() => { throw err });
          console.log(ResultMEMBER)
         if (ResultMEMBER && ResultMEMBER.length) {
             // console.log('Result',ResultMEMBER)
