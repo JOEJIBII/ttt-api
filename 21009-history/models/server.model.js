@@ -426,6 +426,69 @@ module.exports.getdeposit = () => {
                                                 lock_date: "$lock_date"
                                         }
                                 },
+
+                                {
+                                        $lookup: {
+                                                from: "emp_role",
+                                                localField: "Checked.checker_role",
+                                                foreignField: "_id",
+                                                as: "role"
+                                        }
+                                },
+                                {
+                                        $unwind: { path: "$role", preserveNullAndEmptyArrays: true }
+                                }, 
+                                {
+                                        $project: {
+                                                id: 1,
+                                                type: "$type",
+                                                sub_type: "$sub_type",
+                                                amount: "$amount",
+                                                request_date: "$request_date",
+                                                status: "$status",
+                                                description: "$description",
+                                                agent_id: "$agent_id",
+                                                web_name: "$web_name",
+                                                web_aka: "$web_aka",
+                                                web_prefix: "$web_prefix",
+                                                memb_id: "$memb_id",
+                                                memb_username: "$memb_username",
+                                                memb_status: "$memb_status",
+                                                memb_name: "$memb_name",
+                                                memb_bank: "$memb_bank",
+                                                memb_banking_th: "$memb_banking_th",
+                                                memb_banking_en: "$memb_banking_en",
+                                                memb_banking_code: "$memb_banking_code",
+                                                from_bank_id: "$from_bank_id",
+                                                from_account_id: "$from_account_id",
+                                                web_account_nameth: "$web_account_nameth",
+                                                web_account_nameen: "$web_account_nameen",
+                                                web_account_code: "$web_account_code",
+                                                web_account_name: "$web_account_name",
+                                                web_account_number: "$web_account_number",
+                                                to_bank_id: "$to_bank_id",
+                                                to_account_id: "$to_account_id",
+                                                Checked: {
+                                                        $cond: [{
+                                                                $eq: [{ $ifNull: ["$role.name", null] }, null]
+                                                        },
+                                                                null,
+                                                        {
+                                                                check_by: "$Checked.check_by",
+                                                                checked_date: "$Checked.checked_date",
+                                                                checker_username: "$Checked.checker_username",
+                                                                checker_name: "$Checked.checker_name",
+                                                                checker_tel: "$Checked.checker_tel",
+                                                                checker_role: "$role.name",
+                                                                checker_avatar: "$Checked.checker_avatar",
+                                                        }]
+                                                },
+                                                lock_status: "$lock_status",
+                                                lock_by: "$lock_by",
+                                                lock_date: "$lock_date"
+                                        }
+                                },
+
                                 {
                                         $lookup: {
                                                 from: "employee",
@@ -479,6 +542,63 @@ module.exports.getdeposit = () => {
                                                                 lock_date: "$lock_date",
                                                                 lock_role: "$emplock.role",
                                                                 lock_avatar: "$emplock.avatar",
+                                                        }]
+                                                },
+
+                                        }
+                                },
+                                {
+                                        $lookup: {
+                                                from: "emp_role",
+                                                localField: "lock.lock_role",
+                                                foreignField: "_id",
+                                                as: "role"
+                                        }
+                                },
+                                {
+                                        $unwind: { path: "$role", preserveNullAndEmptyArrays: true }
+                                }, {
+                                        $project: {
+                                                id: 1,
+                                                type: "$type",
+                                                sub_type: "$sub_type",
+                                                amount: "$amount",
+                                                request_date: "$request_date",
+                                                status: "$status",
+                                                description: "$description",
+                                                agent_id: "$agent_id",
+                                                web_name: "$web_name",
+                                                web_aka: "$web_aka",
+                                                web_prefix: "$web_prefix",
+                                                memb_id: "$memb_id",
+                                                memb_username: "$memb_username",
+                                                memb_status: "$memb_status",
+                                                memb_name: "$memb_name",
+                                                memb_bank: "$memb_bank",
+                                                memb_banking_th: "$memb_banking_th",
+                                                memb_banking_en: "$memb_banking_en",
+                                                memb_banking_code: "$memb_banking_code",
+                                                from_bank_id: "$from_bank_id",
+                                                from_account_id: "$from_account_id",
+                                                web_account_nameth: "$web_account_nameth",
+                                                web_account_nameen: "$web_account_nameen",
+                                                web_account_code: "$web_account_code",
+                                                web_account_name: "$web_account_name",
+                                                web_account_number: "$web_account_number",
+                                                to_bank_id: "$to_bank_id",
+                                                to_account_id: "$to_account_id",
+                                                Checked: "$Checked",
+                                                lock: {
+                                                        $cond: [{
+                                                                $eq: [{ $ifNull: ["$role.name", null] }, null]
+                                                        },
+                                                                null,
+                                                        {
+                                                                lock_status: "$lock.lock_status",
+                                                                lock_by: "$lock.lock_by",
+                                                                lock_date: "$lock.lock_date",
+                                                                lock_role: "$role.name",
+                                                                lock_avatar: "$lock.lock_avatar",
                                                         }]
                                                 },
 
@@ -962,6 +1082,63 @@ module.exports.getwithdraw = () => {
                                                                 lock_date: "$lock_date",
                                                                 lock_role: "$emplock.role",
                                                                 lock_avatar: "$emplock.avatar",
+                                                        }]
+                                                },
+
+                                        }
+                                },{
+                                        $lookup: {
+                                                from: "emp_role",
+                                                localField: "lock_role",
+                                                foreignField: "_id",
+                                                as: "role"
+                                        }
+                                },
+                                {
+                                        $unwind: { path: "$role", preserveNullAndEmptyArrays: true }
+                                },
+                                {
+                                        $project: {
+                                                id: 1,
+                                                type: "$type",
+                                                sub_type: "$sub_type",
+                                                amount: "$amount",
+                                                request_date: "$request_date",
+                                                status: "$status",
+                                                description: "$description",
+                                                agent_id: "$agent_id",
+                                                web_name: "$web_name",
+                                                web_aka: "$web_aka",
+                                                web_prefix: "$web_prefix",
+                                                memb_id: "$memb_id",
+                                                memb_username: "$memb_username",
+                                                memb_status: "$memb_status",
+                                                memb_name: "$memb_name",
+                                                memb_bank: "$memb_bank",
+                                                memb_banking_th: "$memb_banking_th",
+                                                memb_banking_en: "$memb_banking_en",
+                                                memb_banking_code: "$memb_banking_code",
+                                                from_bank_id: "$from_bank_id",
+                                                from_account_id: "$from_account_id",
+                                                web_account_nameth: "$web_account_nameth",
+                                                web_account_nameen: "$web_account_nameen",
+                                                web_account_code: "$web_account_code",
+                                                web_account_name: "$web_account_name",
+                                                web_account_number: "$web_account_number",
+                                                to_bank_id: "$to_bank_id",
+                                                to_account_id: "$to_account_id",
+                                                Checked: "$Checked",
+                                                lock: {
+                                                        $cond: [{
+                                                                $eq: [{ $ifNull: ["$role.name", null] }, null]
+                                                        },
+                                                                null,
+                                                        {
+                                                                lock_status: "$lock.lock_status",
+                                                                lock_by: "$lock.lock_by",
+                                                                lock_date: "$lock.lock_date",
+                                                                lock_role: "$role.name",
+                                                                lock_avatar: "$lock.lock_avatar",
                                                         }]
                                                 },
 
