@@ -24,7 +24,6 @@ module.exports.registermember = async function (req, res) {
                     await model.get_acct_pd(createacct.insertedId).catch(() => { throw err });
                     await functions.logs(body, Result.insertedId, req.headers.host).catch(() => { throw err });
                     const regis = await functions.registermemberPD(CONF, userTemp).catch(() => { throw err });
-                    getdetailmember
                     if (regis.result.code === 0) {
                         let getdetailmember = await model.getdetailmember(Result.insertedId, body).catch(() => { throw err });
                         res.send({
