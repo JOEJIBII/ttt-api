@@ -34,6 +34,7 @@ module.exports.bankdeposit = (agent_id) => {
                     bank_id : "$bank_id",
                     bank_account : "$account_number",
                     account_name : "$account_name",
+                    bank_auto_config:"$bank_auto_config",
                     description:"$description",
                     status:"$status",
                     type : "$type"
@@ -55,6 +56,7 @@ module.exports.bankdeposit = (agent_id) => {
                             account_name : "$account_name",
                             bank_name_th : "$banks.nameth",
                             bank_name_en : "$banks.nameen",
+                            bank_auto_config:"$bank_auto_config",
                             bank_code : "$banks.code",
                             description:"$description",
                             bank_status:"$status",
