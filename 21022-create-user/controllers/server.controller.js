@@ -10,7 +10,7 @@ module.exports.registermember = async function (req, res) {
     try {
         let Ckbank = await model.CheckBankAccount(body).catch(() => { throw err });
         let Cktel = await model.CheckTel(body).catch(() => { throw err });
-        if (Cktel.length == 0 && Ckbank.length == 0) {
+        if (Cktel.length === 0 && Ckbank.length === 0) {
             const CONF = await model.findConF(body).catch(() => { throw err });
             if (CONF.value !== null) {
                 const userTemp = CONF.value.provider.prov_agentusername + CONF.value.prefix + CONF.value.member.running_number
@@ -25,7 +25,10 @@ module.exports.registermember = async function (req, res) {
                     await functions.logs(body, Result.insertedId, req.headers.host).catch(() => { throw err });
                     const regis = await functions.registermemberPD(CONF, userTemp).catch(() => { throw err });
                     if (regis.result.code === 0) {
+                        console.log(Result.insertedId, body)
                         let getdetailmember = await model.getdetailmember(Result.insertedId, body).catch(() => { throw err });
+                        console.log(getdetailmember)
+                        console.log(getdetailmember[0])
                         res.send({
                             status: "200",
                             message: "success",

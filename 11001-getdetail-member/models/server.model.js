@@ -80,9 +80,10 @@ module.exports.getdetailmember = (user_id,agent_id) => {
                          update_by:"$update_by"
                         
                 }
-            }, {
-                $unwind:{ path:"$profile.channel"}
-                  },
+            }, 
+            // {
+            //     $unwind:{ path:"$profile.channel"}
+            //       },
                   {
                     $match: {
                               $expr: {
