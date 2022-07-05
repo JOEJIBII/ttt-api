@@ -64,7 +64,7 @@ module.exports.registerpanel = (body, ip, _user) => {
                 line_id: body.line_id,
                 name: body.name,
                 surname: body.surename,
-                birthday_date: new Date(moment(body.birthday).format()),
+                birthday_date: body.birthday,
                 email:body.email,
                 // tag: body.tag.map(e => {
                 //     return objectId(e)

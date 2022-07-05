@@ -20,7 +20,7 @@ module.exports.register = (body, ip, _user) => {
                 line_id: body.line_id,
                 name: body.name,
                 surname: body.surename,
-                birthday_date: new Date(moment(body.birthday).format()),
+                birthday_date: body.birthday,
                 email:body.email,
                 channel: ObjectId(body.channel),
                 remark: body.remark,
