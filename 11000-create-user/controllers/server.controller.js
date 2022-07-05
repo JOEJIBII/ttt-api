@@ -12,18 +12,23 @@ module.exports.registermember = async function (req, res) {
     //console.log("ip",req.headers)
 
     try {
-        console.log(body.captchaID, body.value)
+        //console.log(body.captchaID, body.value)
         let verifyCap = await functions.verifycaptcha(body.captchaID, body.value).catch(() => { throw err });
 
         if (verifyCap.status === "200") {
             let Ckbank = await model.CheckBankAccount(body).catch(() => { throw err });
             //console.log(Ckbank.length)
             let Cktel = await model.CheckTel(body).catch(() => { throw err });
-            if (Cktel.length == 0 && Ckbank.length == 0) {
+            console.log(Ckbank.length)
+            console.log(Cktel.length)
+            if (Cktel.length === 0 && Ckbank.length === 0) {
                 const CONF = await model.findConF(body).catch(() => { throw err });
+                console.log("cof",CONF.value)
                 if (CONF.value !== null) {
                     const userTemp = CONF.value.provider.prov_agentusername + CONF.value.prefix + CONF.value.member.running_number
-                    let Result = Result = await model.register(body, req.headers.host, CONF.value.prefix + CONF.value.member.running_number).catch(() => { throw err });
+                    console.log("userTemp",userTemp)
+                    let Result = await model.register(body,CONF.value.prefix + CONF.value.member.running_number).catch(() => { throw err });
+                    console.log("Result",Result)
                     if (Result.insertedId !== null && Result.insertedId !== '') {
                         let membbank = await model.insertbankmemb(Result.insertedId, body).catch(() => { throw err });
                         console.log("bank", membbank)
@@ -33,6 +38,7 @@ module.exports.registermember = async function (req, res) {
                         await model.get_acct_pd(createacct.insertedId).catch(() => { throw err });
                         await functions.logs(body, Result.insertedId, req.headers.host).catch(() => { throw err });
                         const regis = await functions.registermemberPD(CONF, userTemp).catch(() => { throw err });
+                        console.log("regis",regis)
                         if (regis.result.code === 0) {
                             res.send({
                                 status: "200",

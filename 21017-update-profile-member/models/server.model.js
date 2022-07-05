@@ -6,7 +6,7 @@ const { ObjectId, Double } = require('mongodb');
 module.exports.updatemember = (body, payload) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('member-Test')
+        await MongoDB.collection('member')
             .updateOne({ _id: ObjectId(body.memb_id), agent_id: ObjectId(body.agent_id) },
                 {
                     $set: {

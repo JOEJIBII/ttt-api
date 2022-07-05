@@ -14,7 +14,7 @@ module.exports.updatepassword = (memb_id,agent_id,pass) => {
     // console.log(passddd)
     // console.log("salt",salt)
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('member-Test')
+        await MongoDB.collection('member')
         .updateOne({_id: ObjectId(memb_id), agent_id : ObjectId(agent_id)},
         {
             $set : {
@@ -50,7 +50,7 @@ module.exports.updatepassword = (memb_id,agent_id,pass) => {
 //     // console.log(passddd)
 //     // console.log("salt",salt)
 //     return new Promise(async (resolve, reject) => {
-//     await MongoDB.collection('member-Test').aggregate([
+//     await MongoDB.collection('member').aggregate([
 //             {
 //                 $match : {
 //                     $and : [

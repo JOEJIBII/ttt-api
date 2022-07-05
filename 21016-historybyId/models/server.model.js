@@ -283,7 +283,7 @@ module.exports.getdeposit = (doc_id) => {
                                 },
                                 {
                                         $lookup: {
-                                                from: "member-Test",
+                                                from: "member",
                                                 localField: "memb_id",
                                                 foreignField: "_id",
                                                 as: "memb_acc"
@@ -690,7 +690,7 @@ module.exports.getwithdraw = (doc_id) => {
                                 },
                                 {
                                         $lookup: {
-                                                from: "member-Test",
+                                                from: "member",
                                                 localField: "memb_id",
                                                 foreignField: "_id",
                                                 as: "memb_acc"

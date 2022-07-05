@@ -4,9 +4,9 @@ const dayjs = require('dayjs');
 const { ObjectId } = require('mongodb');
 const moment = require('moment');
 const today = dayjs();
-const collectionmember = "member-Test"
+const collectionmember = "member"
 const collectionCONFIGURATION = "agent"
-module.exports.register = (body, ip, _user) => {
+module.exports.register = (body, _user) => {
     return new Promise(async (resolve, reject) => {
 
         await MongoDB.collection(collectionmember)
@@ -20,7 +20,7 @@ module.exports.register = (body, ip, _user) => {
                 line_id: body.line_id,
                 name: body.name,
                 surname: body.surename,
-                birthday_date: new Date(moment(body.birthday).format()),
+                birthday_date: body.birthday,
                 channel: ObjectId(body.channel),
                 remark: body.remark,
                 ipinfo:body.ipinfo,
@@ -205,7 +205,7 @@ module.exports.insertbankmemb = (memb_id, body) => {
 module.exports.CheckBankAccount = (body) => {
     return new Promise(async (resolve, reject) => {
        
-        console.log("test", body.agent_id, body.bank_acct, body.bank_id)
+        //console.log("test", body.agent_id, body.bank_acct, body.bank_id)
 
         await MongoDB.collection('memb_bank_account')
 

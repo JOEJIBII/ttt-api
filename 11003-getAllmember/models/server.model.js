@@ -3,7 +3,7 @@ const dayjs = require('dayjs');
 const { ObjectId } = require('mongodb');
 const today = dayjs();
 const moment = require('moment');
-const collectionmember = "member-Test"
+const collectionmember = "member"
 const collectionCONFIGURATION ="configuration"
 const collectionhistory_log_api ="history_log_api"
 module.exports.getallmember = (body) => {

@@ -1,6 +1,6 @@
 const { MongoDB } = require('../configs/connection_mongodb');
 const { ObjectId } = require('mongodb');
-const collectionmember = "member-Test"
+const collectionmember = "member"
 module.exports.getconf = (payload) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {

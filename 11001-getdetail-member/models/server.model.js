@@ -1,7 +1,7 @@
 const { MongoDB } = require('../configs/connection_mongodb');
 const objectId = require('mongodb').ObjectId;
 const { ObjectId } = require('mongodb');
-const collectionmember = "member-Test"
+const collectionmember = "member"
 const collectionCONFIGURATION ="configuration"
 //const collectionhistory_log_api ="history_log_api"
 module.exports.getdetailmember = (user_id,agent_id) => {

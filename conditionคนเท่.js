@@ -2,7 +2,7 @@
 // bank_id ObjectId("6280b6899826206073109d4b") 
 // account no : "1234567890"
 
-db.getCollection("member-Test").aggregate([
+db.getCollection("member").aggregate([
                 {
                     $match : {
                        $and:[{

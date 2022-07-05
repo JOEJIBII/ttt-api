@@ -100,7 +100,7 @@ module.exports.getbanktobystatus = (agentid) => {
 module.exports.getagentid = (body) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('member-Test')
+        await MongoDB.collection('member')
         .aggregate([
             {
                 $match: {

@@ -3,7 +3,7 @@ const { MongoDB } = require('../configs/connection_mongodb');
 const { ObjectId, Double, ObjectID } = require('mongodb');
 const moment = require('moment');
 const { withdraw } = require('../controllers/server.controller');
-const collectionmember = "member-Test"
+const collectionmember = "member"
 const collectionCONFIGURATION = "configuration"
 //const collectionhistory_log_api ="history_log_api"
 module.exports.getwithdraw_config = (agent_id) => {
@@ -240,7 +240,7 @@ module.exports.counttrasaction = (agent_id, memb_id) => {
 module.exports.getagent_id = (memb_id) => {
     // console.log(agent_id);
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('member-Test')
+        await MongoDB.collection('member')
             .aggregate([
                 {
                     $match: {
@@ -376,7 +376,7 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
 module.exports.updatestatusmember = (payload, member_id) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection("member-Test")
+        await MongoDB.collection("member")
             .updateOne({
                 _id: ObjectId(member_id)
 

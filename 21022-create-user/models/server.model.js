@@ -4,7 +4,7 @@ const dayjs = require('dayjs');
 const { ObjectId } = require('mongodb');
 const moment = require('moment');
 const today = dayjs();
-const collectionmember = "member-Test"
+const collectionmember = "member"
 const collectionCONFIGURATION = "agent"
 
 module.exports.register = (body, ip, _user) => {

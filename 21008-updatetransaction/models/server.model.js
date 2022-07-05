@@ -93,7 +93,7 @@ module.exports.getmemb = (memb_id) => {
     // console.log(body);
     return new Promise(async (resolve, reject) => {
 
-        await MongoDB.collection('member-Test')
+        await MongoDB.collection('member')
 
             .aggregate([
                 {
@@ -239,7 +239,7 @@ module.exports.updatereject = (body, payload) => {
 module.exports.updatemember = (memb_id,payload) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('member-Test')
+        await MongoDB.collection('member')
             .updateOne({
                 _id: ObjectId(memb_id)
 
@@ -332,7 +332,7 @@ module.exports.updatecredit = (agent_id, credit, payload) => {
 module.exports.update_financial = (memb_id, amount, payload) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('member-Test')
+        await MongoDB.collection('member')
             .updateOne({
                 _id: ObjectId(memb_id)
 
@@ -357,7 +357,7 @@ module.exports.update_financial_withdraw = (memb_id, amount, payload) => {
     console.log("update", amount);
     console.log("memb_id", memb_id);
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('member-Test')
+        await MongoDB.collection('member')
             .updateOne({
                 _id: ObjectId(memb_id)
             }, {
@@ -383,7 +383,7 @@ module.exports.update_financial_withdraw = (memb_id, amount, payload) => {
 module.exports.update_financial_first = (memb_id, amount, payload) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('member-Test')
+        await MongoDB.collection('member')
             .updateOne({
                 _id: ObjectId(memb_id)
 
@@ -410,7 +410,7 @@ module.exports.update_financial_withdraw_first = (memb_id, amount, payload) => {
     console.log("update", amount);
     console.log("memb_id", memb_id);
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('member-Test')
+        await MongoDB.collection('member')
             .updateOne({
                 _id: ObjectId(memb_id)
             }, {
