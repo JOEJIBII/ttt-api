@@ -57,7 +57,7 @@ module.exports.findConF = (body) => {
         await MongoDB.collection(collectionCONFIGURATION)
             .findOneAndUpdate(
                 {
-                    domain_name: body.domain_name
+                    _id:ObjectId(body.agent_id)
                 },
                 {
                     $inc: {
