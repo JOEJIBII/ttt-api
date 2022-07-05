@@ -3,11 +3,18 @@ const objectId = require('mongodb').ObjectId;
 const dayjs = require('dayjs');
 
 const { ObjectId } = require('mongodb');
-module.exports.getprefix = () => {
+module.exports.getprefix = (agent_id) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('agent')
             .aggregate([
+                {
+                    $match: {
+                        $and: [
+                            { _id: ObjectId(agent_id) },
+                        ]
+                    }
+                },
 
                 {
                     $project: {
@@ -15,6 +22,34 @@ module.exports.getprefix = () => {
                         name: "$name",
                         status: "$status",
                         domain_name: "$domain_name"
+                    }
+                }
+
+            ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+
+
+    });
+}
+
+
+module.exports.getagent_id = (user_id) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('employee')
+            .aggregate([
+
+                {
+                    $match: {
+                        $and: [
+                            { _id: ObjectId(user_id) },
+                        ]
+                    }
+                },{
+                    $project: {
+                        _id: 1,
+                       agent_id : "$pool"
                     }
                 }
 

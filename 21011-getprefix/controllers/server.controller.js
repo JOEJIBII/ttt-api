@@ -7,9 +7,11 @@ const functions = require('../functions/server.function');
 module.exports.getprefix = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     req.headers["x-real-ip"]
+    const payload = JSON.parse(req.headers.payload)
     try {
-            
-        let Result = await model.getprefix().catch(() => { throw err });
+        let pool = await model.getagent_id(payload.user_id).catch(() => { throw err });
+        console.log(pool[0].agent_id[0].agent_pool)
+        let Result = await model.getprefix(pool[0].agent_id[0].agent_pool).catch(() => { throw err });
         console.log(Result)
         if (Result && Result.length) {
             const log = await functions.logs(req.body,req.headers.host).catch(() => {throw err});
