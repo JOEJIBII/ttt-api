@@ -10,9 +10,20 @@ module.exports.getprefix = async function (req, res) {
     const payload = JSON.parse(req.headers.payload)
     try {
         let pool = await model.getagent_id(payload.user_id).catch(() => { throw err });
-        console.log(pool[0].agent_id[0].agent_pool)
-        let Result = await model.getprefix(pool[0].agent_id[0].agent_pool).catch(() => { throw err });
-        console.log(Result)
+        let Result =null
+        let T = []
+        console.log(pool)
+        var agent_id = pool[0].agent_id
+        for (var i=0; i < agent_id.length; i++) {
+            console.log(agent_id[i])
+            let j = i -1
+            Result = await model.getprefix(agent_id[i]).catch(() => { throw err });
+            console.log(Result)
+            T = T.concat(Result)
+         }
+         Result = T
+        //let Result = await model.getprefix(pool[0].agent_id[0]).catch(() => { throw err });
+       // console.log(Result)
         if (Result && Result.length) {
             const log = await functions.logs(req.body,req.headers.host).catch(() => {throw err});
             res.send({

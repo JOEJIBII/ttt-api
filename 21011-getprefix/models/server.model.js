@@ -33,7 +33,6 @@ module.exports.getprefix = (agent_id) => {
     });
 }
 
-
 module.exports.getagent_id = (user_id) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
@@ -49,7 +48,7 @@ module.exports.getagent_id = (user_id) => {
                 },{
                     $project: {
                         _id: 1,
-                       agent_id : "$pool"
+                       agent_id : "$pool.agent_pool"
                     }
                 }
 
