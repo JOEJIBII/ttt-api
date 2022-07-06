@@ -10,11 +10,11 @@ module.exports.checkagent = async function (req, res) {
     console.log("----------------------------------------------------------------------------")
     console.log("header---------------",header)
     console.log("----------------------------------------------------------------------------")
-    console.log("req---------------",req.origin)
+    console.log("req---------------",req.headers.origin)
     console.log("----------------------------------------------------------------------------")
     try {
             
-        let Result = await model.checkagentid(req.body).catch(() => { throw err });
+        let Result = await model.checkagentid(req.headers.origin).catch(() => { throw err });
         console.log(Result[0]._id)
         if (Result && Result.length) {
             const log = await functions.logs(req.body,req.headers.host).catch(() => {throw err});

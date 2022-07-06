@@ -2,7 +2,7 @@ const { MongoDB } = require('../configs/connection_mongodb');
 const moment = require('moment');
 const collectionCONFIGURATION ="configuration"
 const collectionhistory_log_api ="history_log_api"
-module.exports.checkagentid = (body) => {
+module.exports.checkagentid = (domain) => {
     console.log(body);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('agent')
@@ -13,7 +13,7 @@ module.exports.checkagentid = (body) => {
                             //{ou_id : ObjectId(payload.ou)},
                           //{branch_id : ObjectId(payload.branch)},
                             { 
-                                domain_name : body.domain_name
+                                domain_name : domain
                             }
 
                         ]
