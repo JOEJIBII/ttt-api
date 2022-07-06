@@ -2,7 +2,15 @@ const { MongoDB } = require('../configs/connection_mongodb');
 const moment = require('moment');
 const collectionCONFIGURATION ="configuration"
 const collectionhistory_log_api ="history_log_api"
-module.exports.checkagentid = (domain) => {
+module.exports.checkagentid = (domainweb,body) => {
+    // console.log(domainweb);
+    // console.log(body);
+    var domain = null
+    if(body.hasOwnProperty('domain_name')){
+        domain = body.domain_name
+    }else{
+        domain = domainweb
+    }
     console.log(domain);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('agent')
@@ -10,12 +18,9 @@ module.exports.checkagentid = (domain) => {
                 {
                     $match : {
                         $and : [
-                            //{ou_id : ObjectId(payload.ou)},
-                          //{branch_id : ObjectId(payload.branch)},
                             { 
                                 domain_name : domain
                             }
-
                         ]
                     }
                 },

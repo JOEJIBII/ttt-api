@@ -7,14 +7,14 @@ const { ObjectId, ObjectID } = require('mongodb');
 module.exports.checkagent = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     const header = req.headers["x-real-ip"]
-    console.log("----------------------------------------------------------------------------")
-    console.log("header---------------",header)
-    console.log("----------------------------------------------------------------------------")
-    console.log("req---------------",req.headers.origin)
-    console.log("----------------------------------------------------------------------------")
+    // console.log("----------------------------------------------------------------------------")
+    // console.log("header---------------",header)
+    // console.log("----------------------------------------------------------------------------")
+    // console.log("req---------------",req.headers.origin)
+    // console.log("----------------------------------------------------------------------------")
     try {
             
-        let Result = await model.checkagentid(req.headers.origin).catch(() => { throw err });
+        let Result = await model.checkagentid(req.headers.origin,req.body).catch(() => { throw err });
         console.log(Result[0]._id)
         if (Result && Result.length) {
             const log = await functions.logs(req.body,req.headers.host).catch(() => {throw err});
