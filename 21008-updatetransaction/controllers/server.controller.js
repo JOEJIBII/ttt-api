@@ -39,7 +39,7 @@ module.exports.updatetransaction = async function (req, res) {
 
                                     await model.updateapprove(body, payload).catch(() => { throw err });
                                     await model.update_financial_withdraw_first(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
-                                    //console.log(update)
+                                    console.log(getmembpd[0].username, getconfig_pd[0])
                                     let updatemember = await model.updatemember(getdocument[0].memb_id,payload).catch(() => { throw err });
                                     let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
                                     let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
@@ -52,6 +52,8 @@ module.exports.updatetransaction = async function (req, res) {
                                     await model.updateapprove(body, payload).catch(() => { throw err });
                                     await model.update_financial_withdraw(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
                                     let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
+                                    let updatemember = await model.updatemember(getdocument[0].memb_id,payload).catch(() => { throw err });
+                                    let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
                                     //await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
                                     res.send({
                                         status: "200",
@@ -149,6 +151,7 @@ module.exports.updatetransaction = async function (req, res) {
                                         await model.update_financial(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
                                         //await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
                                         let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
+                                        let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
                                         res.send({
                                             status: "200",
                                             message: "success",
