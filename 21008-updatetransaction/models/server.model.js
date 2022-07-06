@@ -192,7 +192,6 @@ module.exports.updatechecked = (body, payload) => {
         await MongoDB.collection(body.type)
             .updateOne({
                 _id: ObjectId(body.doc_id)
-
             }, {
                 $set: {
                     "status": body.status,
@@ -206,8 +205,6 @@ module.exports.updatechecked = (body, payload) => {
             })
             .then(result => resolve(result))
             .catch(error => reject(error));
-
-
     });
 }
 
@@ -242,7 +239,6 @@ module.exports.updatemember = (memb_id,payload) => {
         await MongoDB.collection('member')
             .updateOne({
                 _id: ObjectId(memb_id)
-
             }, {
                 $set: {
                     "status": 'active',
