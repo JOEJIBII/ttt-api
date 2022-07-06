@@ -3,7 +3,7 @@ const moment = require('moment');
 const collectionCONFIGURATION ="configuration"
 const collectionhistory_log_api ="history_log_api"
 module.exports.checkagentid = (domain) => {
-    console.log(body);
+    console.log(domain);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('agent')
             .aggregate([
