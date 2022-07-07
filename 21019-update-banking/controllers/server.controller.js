@@ -1,6 +1,6 @@
 const model = require('../models/server.model');
 const functions = require('../functions/server.function');
-module.exports.insertbanking = async function (req, res) {
+module.exports.updatebanking = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     req.headers["x-real-ip"]
     const body = req.body
