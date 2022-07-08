@@ -51,6 +51,9 @@ module.exports = {
         "updatepushbulletsetting":"21030"
 
     },
+    search:{
+        "searchmember":"31000"
+    },
     "provieder": {
         "create-member": "45000", //Complete
         "deposit": "45001", //Complete
