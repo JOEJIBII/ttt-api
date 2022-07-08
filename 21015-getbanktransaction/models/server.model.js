@@ -25,6 +25,7 @@ module.exports.bankdeposit = (agent_id) => {
                         { 
                             sub_type : "deposit"
                         }, 
+                        { status:{ $eq: "active"}  }
                     ]
                 }
             },
@@ -87,6 +88,7 @@ module.exports.bankwithdraw = (agent_id) => {
                         { 
                             sub_type : "withdraw"
                         }, 
+                        { status:{ $eq: "active"}  }
                     ]
                 }
             },
