@@ -12,16 +12,24 @@ module.exports.historylasted = async function (req, res) {
     const body = req.body
     //console.log(payload)
     try {
-        let deposit = await model.getdeposit().catch(() => { throw err });
-        //console.log(deposit.approve_by)
-        
-        let withdraw = await model.getwithdraw().catch(() => { throw err });
-        //console.log(withdraw)
-        let result  = deposit.concat(withdraw);
+        let deposit = null
+        let withdraw = null
+        let pool = await model.getagent_id(payload.user_id).catch(() => { throw err });
+        let result = []
+        console.log(pool)
+        var agent_id = pool[0].agent_id
+        for (var i=0; i < agent_id.length; i++) {
+            console.log(agent_id[i])
+            deposit = await model.getdeposit(agent_id[i]).catch(() => { throw err });
+            withdraw = await model.getwithdraw(agent_id[i]).catch(() => { throw err });
+           
+            result  = deposit.concat(withdraw);
+         }
         result = result.sort(function(a, b){return new Date(b.approve_by.approve_date) - new Date(a.approve_by.approve_date)})
                 res.send({
                     status: "200",
                     message: "success",
+                    total: result.length,
                     result 
                 }).end();
 

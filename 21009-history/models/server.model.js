@@ -3,7 +3,34 @@ const moment = require('moment');
 const { ObjectId } = require('mongodb');
 
 
-module.exports.getdeposit = () => {
+module.exports.getagent_id = (user_id) => {
+        //console.log(body);
+        return new Promise(async (resolve, reject) => {
+                await MongoDB.collection('employee')
+                        .aggregate([
+
+                                {
+                                        $match: {
+                                                $and: [
+                                                        { _id: ObjectId(user_id) },
+                                                ]
+                                        }
+                                }, {
+                                        $project: {
+                                                _id: 1,
+                                                agent_id: "$pool.agent_pool"
+                                        }
+                                }
+
+                        ]).toArray()
+                        .then(result => resolve(result))
+                        .catch(error => reject(error));
+
+
+        });
+}
+
+module.exports.getdeposit = (agent_id) => {
         // console.log(body);
         return new Promise(async (resolve, reject) => {
 
@@ -12,9 +39,13 @@ module.exports.getdeposit = () => {
                         .aggregate([
                                 {
                                         $match: {
-                                                $or: [
-                                                        { status: "pending" }, { status: "check" },{ status: "save" }
-                                                ]
+
+                                                $and:[{
+                                                        agent_id:ObjectId(agent_id)
+
+                                                },{$or: [
+                                                        { status: "pending" }, { status: "check" }, { status: "save" }
+                                                ]}]  
                                         }
                                 }, {
                                         $project: {
@@ -437,7 +468,7 @@ module.exports.getdeposit = () => {
                                 },
                                 {
                                         $unwind: { path: "$role", preserveNullAndEmptyArrays: true }
-                                }, 
+                                },
                                 {
                                         $project: {
                                                 id: 1,
@@ -611,7 +642,7 @@ module.exports.getdeposit = () => {
         });
 }
 
-module.exports.getwithdraw = () => {
+module.exports.getwithdraw = (agent_id) => {
         // console.log(body);
         return new Promise(async (resolve, reject) => {
 
@@ -620,11 +651,13 @@ module.exports.getwithdraw = () => {
                         .aggregate([
                                 {
                                         $match: {
-                                                $or: [
-                                                        //{ou_id : ObjectId(payload.ou)},
-                                                        //{branch_id : ObjectId(payload.branch)},
+
+                                                $and:[{
+                                                        agent_id:ObjectId(agent_id)
+
+                                                },{$or: [
                                                         { status: "pending" }, { status: "check" }, { status: "save" }
-                                                ]
+                                                ]}]  
                                         }
                                 }, {
                                         $project: {
@@ -1086,7 +1119,7 @@ module.exports.getwithdraw = () => {
                                                 },
 
                                         }
-                                },{
+                                }, {
                                         $lookup: {
                                                 from: "emp_role",
                                                 localField: "lock_role",
@@ -1144,7 +1177,7 @@ module.exports.getwithdraw = () => {
 
                                         }
                                 },
-                                
+
 
 
                         ]).toArray()

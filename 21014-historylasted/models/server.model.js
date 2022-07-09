@@ -3,7 +3,35 @@ const moment = require('moment');
 const { ObjectId } = require('mongodb');
 
 
-module.exports.getdeposit = () => {
+module.exports.getagent_id = (user_id) => {
+        //console.log(body);
+        return new Promise(async (resolve, reject) => {
+                await MongoDB.collection('employee')
+                        .aggregate([
+
+                                {
+                                        $match: {
+                                                $and: [
+                                                        { _id: ObjectId(user_id) },
+                                                ]
+                                        }
+                                }, {
+                                        $project: {
+                                                _id: 1,
+                                                agent_id: "$pool.agent_pool"
+                                        }
+                                }
+
+                        ]).toArray()
+                        .then(result => resolve(result))
+                        .catch(error => reject(error));
+
+
+        });
+}
+
+
+module.exports.getdeposit = (agent_id) => {
         // console.log(body);
         return new Promise(async (resolve, reject) => {
 
@@ -12,27 +40,33 @@ module.exports.getdeposit = () => {
                         .aggregate([
                                 {
                                         $match: {
-                                                $or: [
-                                                        { status: "approve" }, { status: "cancel" }
+                                                $and: [{
+                                                        agent_id: ObjectId(agent_id)
+                                                }, {
+                                                        $or: [
+                                                                { status: "approve" }, { status: "cancel" }
+                                                        ]
+                                                }
                                                 ]
+
                                         }
                                 }, {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
-                                                description:"$description",
+                                                description: "$description",
                                                 from_bank_id: "$from_bank_id",
                                                 from_account_id: "$from_account_id",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
                                         }
@@ -55,11 +89,11 @@ module.exports.getdeposit = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_prov.username",
@@ -69,8 +103,8 @@ module.exports.getdeposit = () => {
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                         }
                                 }, {
                                         $lookup: {
@@ -91,11 +125,11 @@ module.exports.getdeposit = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -105,8 +139,8 @@ module.exports.getdeposit = () => {
                                                 from_account_id: "$from_account_id",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
                                         }
@@ -129,11 +163,11 @@ module.exports.getdeposit = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -146,8 +180,8 @@ module.exports.getdeposit = () => {
                                                 from_account_id: "$from_account_id",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
                                         }
@@ -170,11 +204,11 @@ module.exports.getdeposit = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -190,8 +224,8 @@ module.exports.getdeposit = () => {
                                                 web_account_code: "$banking_agent.code",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
                                         }
@@ -216,11 +250,11 @@ module.exports.getdeposit = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -238,8 +272,8 @@ module.exports.getdeposit = () => {
                                                 web_account_number: "$agent_account.account_number",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
                                         }
@@ -264,11 +298,11 @@ module.exports.getdeposit = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$webagent.domain_name",
                                                 web_aka: "$webagent.name",
@@ -289,8 +323,8 @@ module.exports.getdeposit = () => {
                                                 web_account_number: "$web_account_number",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
                                         }
@@ -316,11 +350,11 @@ module.exports.getdeposit = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 web_aka: "$web_aka",
@@ -342,8 +376,8 @@ module.exports.getdeposit = () => {
                                                 web_account_number: "$web_account_number",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
                                                 // Checked:{
@@ -359,24 +393,24 @@ module.exports.getdeposit = () => {
                                 },
                                 {
                                         $lookup: {
-                                            from: "employee",
-                                            localField: "check_by",
-                                            foreignField: "_id",
-                                            as: "emp"
+                                                from: "employee",
+                                                localField: "check_by",
+                                                foreignField: "_id",
+                                                as: "emp"
                                         }
-                                    },
-                                    {
+                                },
+                                {
                                         $unwind: { path: "$emp", preserveNullAndEmptyArrays: true }
-                                    },
+                                },
                                 {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 web_aka: "$web_aka",
@@ -398,42 +432,43 @@ module.exports.getdeposit = () => {
                                                 web_account_number: "$web_account_number",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 checked: {
                                                         $cond: [{
-                                                            $eq: [{ $ifNull: ["$emp.username", null] }, null]
+                                                                $eq: [{ $ifNull: ["$emp.username", null] }, null]
                                                         },
-                                                            null,
+                                                                null,
                                                         {
-                                                            check_by: "$check_by",
-                                                            checked_date: "$checked_date",
-                                                            checker_username: "$emp.username",
-                                                            checker_name: "$emp.name",
-                                                            checker_tel: "$emp.tel",
-                                                            checker_role: "$emp.role",
-                                                            checker_avatar: "$emp.avatar",
+                                                                check_by: "$check_by",
+                                                                checked_date: "$checked_date",
+                                                                checker_username: "$emp.username",
+                                                                checker_name: "$emp.name",
+                                                                checker_tel: "$emp.tel",
+                                                                checker_role: "$emp.role",
+                                                                checker_avatar: "$emp.avatar",
                                                         }]
-                                                    }
+                                                }
                                         }
                                 },
-                                {  $lookup: {
-                                        from: "emp_role",
-                                        localField: "checked.checker_role",
-                                        foreignField: "_id",
-                                        as: "role"
-                                    }
-                                },  {
+                                {
+                                        $lookup: {
+                                                from: "emp_role",
+                                                localField: "checked.checker_role",
+                                                foreignField: "_id",
+                                                as: "role"
+                                        }
+                                }, {
                                         $unwind: { path: "$role", preserveNullAndEmptyArrays: true }
                                 }, {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 web_aka: "$web_aka",
@@ -455,31 +490,32 @@ module.exports.getdeposit = () => {
                                                 web_account_number: "$web_account_number",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 checked: {
                                                         $cond: [{
-                                                            $eq: [{ $ifNull: ["$checked", null] }, null]
+                                                                $eq: [{ $ifNull: ["$checked", null] }, null]
                                                         },
-                                                            null,
+                                                                null,
                                                         {
-                                                            check_by: "$checked.check_by",
-                                                            checked_date: "$checked.checked_date",
-                                                            checker_username: "$checked.checker_username",
-                                                            checker_name: "$checked.checker_name",
-                                                            checker_tel: "$checked.checker_tel",
-                                                            checker_role: "$role.name",
-                                                            checker_avatar: "$checked.checker_avatar",
+                                                                check_by: "$checked.check_by",
+                                                                checked_date: "$checked.checked_date",
+                                                                checker_username: "$checked.checker_username",
+                                                                checker_name: "$checked.checker_name",
+                                                                checker_tel: "$checked.checker_tel",
+                                                                checker_role: "$role.name",
+                                                                checker_avatar: "$checked.checker_avatar",
                                                         }]
-                                                    }
+                                                }
                                         }
                                 },
-                                {  $lookup: {
-                                        from: "employee",
-                                        localField: "approve_by",
-                                        foreignField: "_id",
-                                        as: "emp"
-                                    }
+                                {
+                                        $lookup: {
+                                                from: "employee",
+                                                localField: "approve_by",
+                                                foreignField: "_id",
+                                                as: "emp"
+                                        }
                                 }, {
                                         $unwind: { path: "$emp", preserveNullAndEmptyArrays: true }
                                 },
@@ -487,11 +523,11 @@ module.exports.getdeposit = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 web_aka: "$web_aka",
@@ -513,42 +549,43 @@ module.exports.getdeposit = () => {
                                                 web_account_number: "$web_account_number",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                checked:"$checked",
+                                                checked: "$checked",
                                                 approve_by: {
                                                         $cond: [{
-                                                            $eq: [{ $ifNull: ["$emp.username", null] }, null]
+                                                                $eq: [{ $ifNull: ["$emp.username", null] }, null]
                                                         },
-                                                            null,
+                                                                null,
                                                         {
-                                                            approve_by: "$approve_by",
-                                                            approve_date: "$approve_date",
-                                                            approve_username: "$emp.username",
-                                                            approve_name: "$emp.name",
-                                                            approve_tel: "$emp.tel",
-                                                            approve_role: "$emp.role",
-                                                            approve_avatar: "$emp.avatar",
+                                                                approve_by: "$approve_by",
+                                                                approve_date: "$approve_date",
+                                                                approve_username: "$emp.username",
+                                                                approve_name: "$emp.name",
+                                                                approve_tel: "$emp.tel",
+                                                                approve_role: "$emp.role",
+                                                                approve_avatar: "$emp.avatar",
                                                         }]
-                                                    }
+                                                }
                                         }
-                                },{  $lookup: {
-                                        from: "emp_role",
-                                        localField: "approve_by.approve_role",
-                                        foreignField: "_id",
-                                        as: "role"
-                                    }
-                                },  {
+                                }, {
+                                        $lookup: {
+                                                from: "emp_role",
+                                                localField: "approve_by.approve_role",
+                                                foreignField: "_id",
+                                                as: "role"
+                                        }
+                                }, {
                                         $unwind: { path: "$role", preserveNullAndEmptyArrays: true }
                                 },
-                                
+
                                 {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 web_aka: "$web_aka",
@@ -570,17 +607,17 @@ module.exports.getdeposit = () => {
                                                 web_account_number: "$web_account_number",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                checked:"$checked",
-                                                approve_by: 
-                                                        {
-                                                            approve_by: "$approve_by.approve_by",
-                                                            approve_date: "$approve_by.approve_date",
-                                                            approve_username: "$approve_by.approve_username",
-                                                            approve_name: "$approve_by.approve_name",
-                                                            approve_tel: "$approve_by.approve_tel",
-                                                            approve_role: "$role.name",
-                                                            approve_avatar: "$approve_by.approve_avatar",
-                                                    }
+                                                checked: "$checked",
+                                                approve_by:
+                                                {
+                                                        approve_by: "$approve_by.approve_by",
+                                                        approve_date: "$approve_by.approve_date",
+                                                        approve_username: "$approve_by.approve_username",
+                                                        approve_name: "$approve_by.approve_name",
+                                                        approve_tel: "$approve_by.approve_tel",
+                                                        approve_role: "$role.name",
+                                                        approve_avatar: "$approve_by.approve_avatar",
+                                                }
                                         }
                                 },
 
@@ -590,7 +627,7 @@ module.exports.getdeposit = () => {
         });
 }
 
-module.exports.getwithdraw = () => {
+module.exports.getwithdraw = (agent_id) => {
         // console.log(body);
         return new Promise(async (resolve, reject) => {
 
@@ -599,29 +636,33 @@ module.exports.getwithdraw = () => {
                         .aggregate([
                                 {
                                         $match: {
-                                                $or: [
-                                                        //{ou_id : ObjectId(payload.ou)},
-                                                        //{branch_id : ObjectId(payload.branch)},
-                                                        { status: "approve" }, { status: "cancel" }
+                                                $and: [{
+                                                        agent_id: ObjectId(agent_id)
+                                                }, {
+                                                        $or: [
+                                                                { status: "approve" }, { status: "cancel" }
+                                                        ]
+                                                }
                                                 ]
+
                                         }
                                 }, {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 from_bank_id: "$from_bank_id",
                                                 from_account_id: "$from_account_id",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
                                         }
@@ -634,23 +675,23 @@ module.exports.getwithdraw = () => {
                                         }
                                 }, {
                                         $unwind: { path: "$memb_prov" }
-                                }, 
+                                },
                                 {
                                         $match: {
                                                 $expr: {
                                                         $eq: ["$memb_prov.memb_id", "$memb_id"]
                                                 }
                                         }
-                                }, 
+                                },
                                 {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_prov.username",
@@ -658,8 +699,8 @@ module.exports.getwithdraw = () => {
                                                 from_account_id: "$from_account_id",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
                                         }
@@ -682,11 +723,11 @@ module.exports.getwithdraw = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -696,8 +737,8 @@ module.exports.getwithdraw = () => {
                                                 from_account_id: "$from_account_id",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
                                         }
@@ -720,11 +761,11 @@ module.exports.getwithdraw = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -737,8 +778,8 @@ module.exports.getwithdraw = () => {
                                                 from_account_id: "$from_account_id",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
                                         }
@@ -761,11 +802,11 @@ module.exports.getwithdraw = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -781,8 +822,8 @@ module.exports.getwithdraw = () => {
                                                 web_account_code: "$banking_agent.code",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
                                         }
@@ -807,11 +848,11 @@ module.exports.getwithdraw = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -829,8 +870,8 @@ module.exports.getwithdraw = () => {
                                                 web_account_number: "$agent_account.account_number",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
                                         }
@@ -855,11 +896,11 @@ module.exports.getwithdraw = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$webagent.domain_name",
                                                 web_aka: "$webagent.name",
@@ -880,8 +921,8 @@ module.exports.getwithdraw = () => {
                                                 web_account_number: "$web_account_number",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
                                         }
@@ -907,11 +948,11 @@ module.exports.getwithdraw = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 web_aka: "$web_aka",
@@ -933,19 +974,20 @@ module.exports.getwithdraw = () => {
                                                 web_account_number: "$web_account_number",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
-                                                
+
                                         }
                                 },
-                                {  $lookup: {
-                                        from: "employee",
-                                        localField: "check_by",
-                                        foreignField: "_id",
-                                        as: "emp"
-                                    }
+                                {
+                                        $lookup: {
+                                                from: "employee",
+                                                localField: "check_by",
+                                                foreignField: "_id",
+                                                as: "emp"
+                                        }
                                 },
                                 {
                                         $unwind: { path: "$emp", preserveNullAndEmptyArrays: true }
@@ -954,11 +996,11 @@ module.exports.getwithdraw = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 web_aka: "$web_aka",
@@ -980,42 +1022,43 @@ module.exports.getwithdraw = () => {
                                                 web_account_number: "$web_account_number",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 checked: {
                                                         $cond: [{
-                                                            $eq: [{ $ifNull: ["$emp.username", null] }, null]
+                                                                $eq: [{ $ifNull: ["$emp.username", null] }, null]
                                                         },
-                                                            null,
+                                                                null,
                                                         {
-                                                            check_by: "$check_by",
-                                                            checked_date: "$checked_date",
-                                                            checker_username: "$emp.username",
-                                                            checker_name: "$emp.name",
-                                                            checker_tel: "$emp.tel",
-                                                            checker_role: "$emp.role",
-                                                            checker_avatar: "$emp.avatar",
+                                                                check_by: "$check_by",
+                                                                checked_date: "$checked_date",
+                                                                checker_username: "$emp.username",
+                                                                checker_name: "$emp.name",
+                                                                checker_tel: "$emp.tel",
+                                                                checker_role: "$emp.role",
+                                                                checker_avatar: "$emp.avatar",
                                                         }]
-                                                    }
+                                                }
                                         }
                                 },
-                                {  $lookup: {
-                                        from: "emp_role",
-                                        localField: "checked.checker_role",
-                                        foreignField: "_id",
-                                        as: "role"
-                                    }
-                                },  {
+                                {
+                                        $lookup: {
+                                                from: "emp_role",
+                                                localField: "checked.checker_role",
+                                                foreignField: "_id",
+                                                as: "role"
+                                        }
+                                }, {
                                         $unwind: { path: "$role", preserveNullAndEmptyArrays: true }
                                 }, {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 web_aka: "$web_aka",
@@ -1037,31 +1080,32 @@ module.exports.getwithdraw = () => {
                                                 web_account_number: "$web_account_number",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                approve_by:"$approve_by",
-                                                approve_date:"$approve_date",
+                                                approve_by: "$approve_by",
+                                                approve_date: "$approve_date",
                                                 checked: {
                                                         $cond: [{
-                                                            $eq: [{ $ifNull: ["$checked", null] }, null]
+                                                                $eq: [{ $ifNull: ["$checked", null] }, null]
                                                         },
-                                                            null,
+                                                                null,
                                                         {
-                                                            check_by: "$checked.check_by",
-                                                            checked_date: "$checked.checked_date",
-                                                            checker_username: "$checked.checker_username",
-                                                            checker_name: "$checked.checker_name",
-                                                            checker_tel: "$checked.checker_tel",
-                                                            checker_role: "$role.name",
-                                                            checker_avatar: "$checked.checker_avatar",
+                                                                check_by: "$checked.check_by",
+                                                                checked_date: "$checked.checked_date",
+                                                                checker_username: "$checked.checker_username",
+                                                                checker_name: "$checked.checker_name",
+                                                                checker_tel: "$checked.checker_tel",
+                                                                checker_role: "$role.name",
+                                                                checker_avatar: "$checked.checker_avatar",
                                                         }]
-                                                    }
+                                                }
                                         }
                                 },
-                                {  $lookup: {
-                                        from: "employee",
-                                        localField: "approve_by",
-                                        foreignField: "_id",
-                                        as: "emp"
-                                    }
+                                {
+                                        $lookup: {
+                                                from: "employee",
+                                                localField: "approve_by",
+                                                foreignField: "_id",
+                                                as: "emp"
+                                        }
                                 }, {
                                         $unwind: { path: "$emp", preserveNullAndEmptyArrays: true }
                                 },
@@ -1069,11 +1113,11 @@ module.exports.getwithdraw = () => {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 web_aka: "$web_aka",
@@ -1095,42 +1139,43 @@ module.exports.getwithdraw = () => {
                                                 web_account_number: "$web_account_number",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                checked:"$checked",
+                                                checked: "$checked",
                                                 approve_by: {
                                                         $cond: [{
-                                                            $eq: [{ $ifNull: ["$emp.username", null] }, null]
+                                                                $eq: [{ $ifNull: ["$emp.username", null] }, null]
                                                         },
-                                                            null,
+                                                                null,
                                                         {
-                                                            approve_by: "$approve_by",
-                                                            approve_date: "$approve_date",
-                                                            approve_username: "$emp.username",
-                                                            approve_name: "$emp.name",
-                                                            approve_tel: "$emp.tel",
-                                                            approve_role: "$emp.role",
-                                                            approve_avatar: "$emp.avatar",
+                                                                approve_by: "$approve_by",
+                                                                approve_date: "$approve_date",
+                                                                approve_username: "$emp.username",
+                                                                approve_name: "$emp.name",
+                                                                approve_tel: "$emp.tel",
+                                                                approve_role: "$emp.role",
+                                                                approve_avatar: "$emp.avatar",
                                                         }]
-                                                    }
+                                                }
                                         }
-                                },{  $lookup: {
-                                        from: "emp_role",
-                                        localField: "approve_by.approve_role",
-                                        foreignField: "_id",
-                                        as: "role"
-                                    }
-                                },  {
+                                }, {
+                                        $lookup: {
+                                                from: "emp_role",
+                                                localField: "approve_by.approve_role",
+                                                foreignField: "_id",
+                                                as: "role"
+                                        }
+                                }, {
                                         $unwind: { path: "$role", preserveNullAndEmptyArrays: true }
                                 },
-                                
+
                                 {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
-                                                sub_type:"$sub_type",
+                                                sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 request_date: "$request_date",
                                                 status: "$status",
-                                                description:"$description",
+                                                description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 web_aka: "$web_aka",
@@ -1152,17 +1197,17 @@ module.exports.getwithdraw = () => {
                                                 web_account_number: "$web_account_number",
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
-                                                checked:"$checked",
-                                                approve_by: 
-                                                        {
-                                                            approve_by: "$approve_by.approve_by",
-                                                            approve_date: "$approve_by.approve_date",
-                                                            approve_username: "$approve_by.approve_username",
-                                                            approve_name: "$approve_by.approve_name",
-                                                            approve_tel: "$approve_by.approve_tel",
-                                                            approve_role: "$role.name",
-                                                            approve_avatar: "$approve_by.approve_avatar",
-                                                    }
+                                                checked: "$checked",
+                                                approve_by:
+                                                {
+                                                        approve_by: "$approve_by.approve_by",
+                                                        approve_date: "$approve_by.approve_date",
+                                                        approve_username: "$approve_by.approve_username",
+                                                        approve_name: "$approve_by.approve_name",
+                                                        approve_tel: "$approve_by.approve_tel",
+                                                        approve_role: "$role.name",
+                                                        approve_avatar: "$approve_by.approve_avatar",
+                                                }
                                         }
                                 },
 
