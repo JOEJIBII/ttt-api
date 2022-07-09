@@ -21,6 +21,14 @@ module.exports.insertbank = (body,payload) => {
     }else{
         _privilege= { privilege:ObjectId(body.privilege)}
     }
+
+    var qrcode = null
+    if(body.qr_code === null || body.qr_code === ""){
+        qrcode = null
+    }else{
+        qrcode = body.qr_code
+    }
+
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('agent_bank_account')
             .insertOne({
@@ -30,6 +38,7 @@ module.exports.insertbank = (body,payload) => {
                 account_name:  body.bank_account_name,
                 memb_bank:_membbank.memb_bank,
                 description:body.description,
+                qr_code:qrcode,
                 bank_auto_status:"inactive",
                 bank_auto_config:null,
                 sms_auto_status:"inactive",

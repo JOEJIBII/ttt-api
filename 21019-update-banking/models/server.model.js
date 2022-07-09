@@ -20,6 +20,12 @@ module.exports.updatebank = (body, payload) => {
     }else{
         _privilege= { privilege:(body.privilege)}
     }
+    var qrcode = null
+    if(body.qr_code === null || body.qr_code === ""){
+        qrcode = null
+    }else{
+        qrcode = body.qr_code
+    }
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('agent_bank_account')
             .updateOne({ _id: ObjectId(body._id), agent_id: ObjectId(body.agent_id) },
@@ -30,6 +36,7 @@ module.exports.updatebank = (body, payload) => {
                         account_name: body.bank_account_name,
                         memb_bank: _membbank.memb_bank,
                         description: body.description,
+                        qr_code:qrcode,
                         privilege: _privilege.privilege,
                         status: body.status,
                         type: body.type,
