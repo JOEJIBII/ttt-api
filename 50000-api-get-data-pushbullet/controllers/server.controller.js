@@ -27,6 +27,86 @@ module.exports = async () => {
     }
     // }, null, true);
 }
+function split_Kbank(word){
+    let var_array
+    //let var_array1
+    let slip_type
+    let cr_date
+    let cr_time
+    let from_acc
+    let from_acc_name
+    let from_bank_id
+    let channel
+    let to_acc
+    let to_acc_name
+    let to_bank_id
+    let amount
+  
+    var_array = word.split(" ");
+    cr_date = var_array[0];
+    cr_time = var_array[1];
+     
+    if( word.includes("เงินเข้า") == true ){
+      slip_type = "deposit";
+      channel = 'Bank Transfer';
+      let var_array1 = word.match(/(\d+)(((.|,)\d+)+)?/g);
+      //console.log(var_array1);
+      amount = var_array1[2];
+      to_bank_id = var_array1[1];
+      to_acc = null;
+      to_acc_name = null;
+      from_acc = null;
+      from_acc_name = null;
+      from_bank_id = null;
+  
+  
+    }else if(word.includes("รับโอนจาก") == true){
+      slip_type = "deposit";
+      channel = 'Bank Transfer';
+      let var_array1 = word.match(/(\d+)(((.|,)\d+)+)?/g);
+      //console.log(var_array1);
+      amount = var_array1[3];
+      to_bank_id = var_array1[1];
+      from_acc = var_array1[2];
+      to_acc = null;
+      to_acc_name = null;
+      from_acc_name = null;
+      from_bank_id = null;
+  
+  
+    }else if(word.includes("เงินออก") == true){
+      slip_type = "withdraw";
+      channel = 'Bank Transfer';
+      let var_array1 = word.match(/(\d+)(((.|,)\d+)+)?/g);
+      //console.log(var_array1);
+      amount = '-'+var_array1[2];
+      from_acc = var_array1[1];
+      to_acc = null;
+      to_acc_name = null;
+      from_acc_name = null;
+      from_bank_id = null;
+      to_bank_id = null;
+  
+    }else if(word.includes("หักบช") == true){
+      slip_type = "withdraw";
+      channel = 'Bank Transfer';
+      let var_array1 = word.match(/(\d+)(((.|,)\d+)+)?/g);
+      //console.log(var_array1);
+      amount = '-'+var_array1[3];
+      from_acc =  var_array1[1];
+      to_bank_id = var_array1[2];
+      to_acc = null;
+      to_acc_name = null;
+      from_acc_name = null;
+      from_bank_id = null;
+  
+    }else{
+  
+    }
+  
+    return {slip_type,cr_date,cr_time,from_acc,from_acc_name,from_bank_id,to_acc,to_acc_name,to_bank_id,channel,amount,word};
+  
+  }
 
 const mainProcess = data => {
     return new Promise(async (resolve, reject) => {
@@ -116,6 +196,8 @@ const mainProcess = data => {
                                         application,
                                         value: null
                                     };
+                                    //let Kbank_Sms = split_Kbank(body);
+                                    //await model.insert_SMS_dp(split_Kbank(body));
                                     await model.insertMsg(msg);
                                     console.log("message inseted")
                                  }
@@ -133,8 +215,26 @@ const mainProcess = data => {
                                 }
                             } else if (type === "sms_changed") {
                                  console.log("sms changed message : ", message);
+                                 console.log("title : ", message.push.notifications[0].title);
+                                 if ( message.push.notifications[0].title === 'KBank') {
+                                    let msg = {
+                                        agent_id: data.agent,
+                                        type: "sms_changed",
+                                        title: message.push.notifications[0].title,
+                                        body: message.push.notifications[0].body,
+                                        application: "sms",
+                                        value: null
+                                    };
+                                    //let Kbank_Sms = split_Kbank(body);
+                                    console.log(data.agent);
+                                    await model.insert_SMS_dp(split_Kbank(msg.body),data.agent)
+                                    await model.insertMsg(msg);
+                                    console.log("message inseted")
+                                 }
+
                             }
                         } else {
+                           
                             console.log("utf8Data type is not push");
                         }
                     } else {
