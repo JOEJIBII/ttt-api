@@ -14,8 +14,7 @@ module.exports.getallmember = (body) => {
                 {
                     $match : {
                         $and : [
-                            //{ou_id : ObjectId(payload.ou)},
-                          //{branch_id : ObjectId(payload.branch)},
+
                             { 
                                 agent_id : ObjectId(body.agent_id)
                             }

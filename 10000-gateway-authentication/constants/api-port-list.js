@@ -48,7 +48,8 @@ module.exports = {
         "getsmsautotranfer": "21027",
         "updatesmsautotranfer": "21028",
         "getpushbulletsetting":"21029",
-        "updatepushbulletsetting":"21030"
+        "updatepushbulletsetting":"21030",
+        "returnwinloss":"21031"
 
     },
     search:{
