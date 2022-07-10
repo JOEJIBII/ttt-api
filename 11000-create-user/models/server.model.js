@@ -7,8 +7,15 @@ const today = dayjs();
 const collectionmember = "member"
 const collectionCONFIGURATION = "agent"
 module.exports.register = (body, _user) => {
+    let channel = null
+    if(body.channel === null || body.channel === "")
+    {
+        channel = ObjectId("62cac682978756a407ef73ad")
+    }
+    else{
+        channel = ObjectId(body.channel)
+    }
     return new Promise(async (resolve, reject) => {
-
         await MongoDB.collection(collectionmember)
             .insertOne({
                 agent_id: objectId(body.agent_id),
@@ -21,7 +28,7 @@ module.exports.register = (body, _user) => {
                 name: body.name,
                 surname: body.surename,
                 birthday_date: body.birthday,
-                channel: ObjectId(body.channel),
+                channel: channel,
                 remark: body.remark,
                 ipinfo:body.ipinfo,
                 register_date: new Date(moment().format()),

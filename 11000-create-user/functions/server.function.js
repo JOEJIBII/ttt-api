@@ -22,6 +22,7 @@ const fetch = require('node-fetch');
 
 
 module.exports.registermemberPD = async (req, _user,name,surename) => {
+
     return new Promise(async (resolve, reject) => {
 
         let info = req.value
