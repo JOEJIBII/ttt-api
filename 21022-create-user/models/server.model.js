@@ -11,7 +11,7 @@ module.exports.register = (body, ip, _user) => {
     let channel = null
     if(body.channel === null || body.channel === "")
     {
-        channel = null
+        channel = ObjectId("profile.channel.channel_id")
     }
     else{
         channel = ObjectId(body.channel)
@@ -220,7 +220,7 @@ module.exports.get_acct_pd = (_id) => {
             .aggregate([{
                 $match: {
                     '$and': [
-                        { agent_id: ObjectId(_id) },
+                        { _id: ObjectId(_id) },
                     ]
                 },
             }]).toArray()
@@ -363,7 +363,7 @@ module.exports.getdetailmember = (user_id, body) => {
                     }
                 },
                   {
-                     $unwind:{ path:"$profile.channel"}
+                     $unwind:{ path:"$profile.channel", preserveNullAndEmptyArrays: true}
                        },
                 {
                     $match: {
