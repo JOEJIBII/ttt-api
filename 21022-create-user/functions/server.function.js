@@ -21,7 +21,7 @@ const { ObjectId } = require('mongodb');
 const fetch = require('node-fetch');
 
 
-module.exports.registermemberPD = async (req, _user) => {
+module.exports.registermemberPD = async (req, _user,name,surename) => {
     return new Promise(async (resolve, reject) => {
 
         let info = req.value
@@ -32,6 +32,7 @@ module.exports.registermemberPD = async (req, _user) => {
                 "agentUsername": info.provider.prov_agentusername,
                 "key": info.provider.prov_key,
                 "username": _user, //Gen Number
+                "name":name + " "+ surename, 
                 "password": info.prefix + "123456",
                 "web": info.provider.prov_whitelabel
             })

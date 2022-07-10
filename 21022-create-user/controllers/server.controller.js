@@ -24,7 +24,7 @@ module.exports.registermember = async function (req, res) {
                     const createacct = await model.createaccountprovider(body, Result.insertedId, CONF, userTemp).catch(() => { throw err });
                     await model.get_acct_pd(createacct.insertedId).catch(() => { throw err });
                     await functions.logs(body, Result.insertedId, req.headers.host).catch(() => { throw err });
-                    const regis = await functions.registermemberPD(CONF, userTemp).catch(() => { throw err });
+                    const regis = await functions.registermemberPD(CONF, userTemp,body.name,body.surename).catch(() => { throw err });
                     if (regis.result.code === 0) {
                         console.log(Result.insertedId, body)
                         let getdetailmember = await model.getdetailmember(Result.insertedId, body).catch(() => { throw err });
