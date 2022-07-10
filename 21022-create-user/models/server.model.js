@@ -11,7 +11,7 @@ module.exports.register = (body, ip, _user) => {
     let channel = null
     if(body.channel === null || body.channel === "")
     {
-        channel = ObjectId("profile.channel.channel_id")
+        channel = ObjectId("62cac682978756a407ef73ad")
     }
     else{
         channel = ObjectId(body.channel)
