@@ -8,6 +8,22 @@ const collectionmember = "member"
 const collectionCONFIGURATION = "agent"
 
 module.exports.register = (body, ip, _user) => {
+    let channel = null
+    if(body.channel === null || body.channel === "")
+    {
+        channel = null
+    }
+    else{
+        channel = ObjectId(body.channel)
+    }
+    let privilege = null
+    if(body.privilege === null || body.privilege === "")
+    {
+        privilege = null
+    }
+    else{
+        privilege = ObjectId(body.privilege)
+    }
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(collectionmember)
             .insertOne({
@@ -22,12 +38,12 @@ module.exports.register = (body, ip, _user) => {
                 surname: body.surename,
                 birthday_date: body.birthday,
                 email: body.email,
-                channel: ObjectId(body.channel),
+                channel: channel,
                 remark: body.remark,
                 ipinfo: body.ipinfo,
                 register_date: new Date(moment().format()),
                 user_reference: body.user_reference,
-                privilege: ObjectId(body.privilege),
+                privilege: privilege,
                 financial: {
                     deposit_first_time_amount: 0.00,
                     deposit_first_time: null,
@@ -91,23 +107,23 @@ module.exports.createaccountprovider = (body, _id, CONF, _user) => {
     });
 }
 
-module.exports.createaccountprovider = (body, _id, CONF, _user) => {
-    return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('member_provider_account')
-            .insertOne({
-                memb_id: _id,
-                username: _user,
-                password: CONF.value.prefix + "123456",
-                prov_id: CONF.value.provider.prov_id,
-                flagregister: "N",
-                cr_by: "11000-create-user",
-                cr_date: new Date(moment().format()),
-                cr_prog: "11000-create-user",
-            })
-            .then(result => resolve(result))
-            .catch(error => reject(error));
-    });
-}
+// module.exports.createaccountprovider = (body, _id, CONF, _user) => {
+//     return new Promise(async (resolve, reject) => {
+//         await MongoDB.collection('member_provider_account')
+//             .insertOne({
+//                 memb_id: _id,
+//                 username: _user,
+//                 password: CONF.value.prefix + "123456",
+//                 prov_id: CONF.value.provider.prov_id,
+//                 flagregister: "N",
+//                 cr_by: "11000-create-user",
+//                 cr_date: new Date(moment().format()),
+//                 cr_prog: "11000-create-user",
+//             })
+//             .then(result => resolve(result))
+//             .catch(error => reject(error));
+//     });
+// }
 
 module.exports.insertmembturnover = (memb_id, body) => {
     return new Promise(async (resolve, reject) => {
@@ -216,6 +232,30 @@ module.exports.removemember = (_id) => {
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(collectionmember).deleteOne({
             _id: ObjectId(_id)
+        }
+        )
+
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
+module.exports.removemember_turnover = (_id) => {
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('memb_turnover').deleteOne({
+            memb_id: ObjectId(_id)
+        }
+        )
+
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
+module.exports.removebankmemb = (_id) => {
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('memb_turnover').deleteOne({
+            memb_id: ObjectId(_id)
         }
         )
 

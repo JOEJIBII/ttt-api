@@ -14,6 +14,7 @@ module.exports.registermember = async function (req, res) {
             const CONF = await model.findConF(body).catch(() => { throw err });
             if (CONF.value !== null) {
                 const userTemp = CONF.value.provider.prov_agentusername + CONF.value.prefix + CONF.value.member.running_number
+                console.log("userTemp",userTemp)
                 let Result = await model.register(body, req.headers.host, CONF.value.prefix + CONF.value.member.running_number).catch(() => { throw err });
                 if (Result.insertedId !== null && Result.insertedId !== '') {
                     let membbank = await model.insertbankmemb(Result.insertedId, body).catch(() => { throw err });
@@ -39,6 +40,8 @@ module.exports.registermember = async function (req, res) {
                         console.log(createacct.insertedId)
                         console.log(Result.insertedId)
                         const delete_mem = await model.removemember(Result.insertedId).catch(() => { throw err });
+                        await model.removemember_turnover(Result.insertedId).catch(() => { throw err });
+                        await model.removebankmemb(Result.insertedId).catch(() => { throw err });
                         console.log(delete_mem)
                         if (delete_mem.deletedCount === 1) {
                             const delete_mem_pd = await model.removememberpd(createacct.insertedId).catch(() => { throw err });
