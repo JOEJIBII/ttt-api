@@ -20,6 +20,7 @@ module.exports.searchmember = (body,payload) => {
                                agent_id:ObjectId(body.agent_id) 
                             },{$or : [{username :{$regex: new RegExp(`${body.text}`,"i")}},
                             {name : {$regex: new RegExp(`${body.text}`,"i")}},
+                            {surname : {$regex: new RegExp(`${body.text}`,"i")}},
                            {mobile_no : {$regex: new RegExp(`${body.text}`,"i")}}
                             ]}
                         ]
