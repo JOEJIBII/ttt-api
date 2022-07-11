@@ -69,7 +69,7 @@ module.exports.withdraw = async function (req, res) {
                                     } //                     //console.log(checkturnover.result.result.data)updatestatusmember
                                 }
                                 let suspendstatus = await functions.changestatus(member[0].mem_pd.memb_username, withdraw_configs[0]).catch(() => { throw err });
-                                let updatestatusmember = await functions.updatestatusmember(body.memb_id, payload).catch(() => { throw err });
+                                let updatestatusmember = await model.updatestatusmember(body.memb_id, payload).catch(() => { throw err });
                                 if (suspendstatus.result.status === "200") {
                                      let OpenPO = await model.InsertDocWithdraw(payload, withdraw, member[0], getbankweb[0], note, turn,body,getagent[0].agent_id).catch(() => { throw err });
                                      if (OpenPO.insertedId !== null && OpenPO.insertedId !== '') {
