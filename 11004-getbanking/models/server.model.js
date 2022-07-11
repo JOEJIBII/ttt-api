@@ -58,11 +58,13 @@ module.exports.getbanking = (body,payload) => {
                             banknameth:"$nameth",
                             banknameen:"$nameen",
                             bankcode:"$code",
-                            status:"$status"
+                            status:"$status",
+                            priority:"$priority"
                     }
                 }
                 
-            ]).toArray()
+            ]).sort({priority:1})
+            .toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));
 
