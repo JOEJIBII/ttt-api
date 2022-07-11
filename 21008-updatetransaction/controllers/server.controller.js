@@ -15,7 +15,7 @@ module.exports.updatetransaction = async function (req, res) {
         if (body.type === "withdraw") {
             let checkpermission = await model.getdocument(body).catch(() => { throw err });
             let note = checkpermission[0].description
-            if (body.description !== null || body.description !== "") {
+            if (body.description !== null && body.description !== "") {
                 if(note === null ){
                     note = []
                     note = note.concat([{ username: payload.username, note: body.description, note_date: new Date(moment().format()) }])
@@ -124,7 +124,7 @@ module.exports.updatetransaction = async function (req, res) {
                 
                 let checkpermission = await model.getdocument(body).catch(() => { throw err });
                 let note = checkpermission[0].description
-                if (body.description !== null || body.description !== "") {
+                if (body.description !== null && body.description !== "") {
                     if(note === null ){
                         note = []
                         note = note.concat([{ username: payload.username, note: body.description, note_date: new Date(moment().format()) }])

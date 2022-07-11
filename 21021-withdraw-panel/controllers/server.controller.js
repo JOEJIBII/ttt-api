@@ -38,7 +38,7 @@ module.exports.withdraw = async function (req, res) {
                     let Counter = await model.counttrasaction(getagent[0].agent_id, body.memb_id).catch(() => { throw err });
                     console.log("counter", Counter.length)
                     let note = []
-                    if(body.description !== null || body.description !== ""){
+                    if(body.description !== null && body.description !== ""){
                         note = note.concat([{ username: payload.username, note: body.description, note_date: new Date(moment().format()) }])
                         note = note.concat([{ username: "System", note: "จำนวนการถอนของวันนี้ " + Counter.length, note_date: new Date(moment().format()) }])
                     }else{

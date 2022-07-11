@@ -22,7 +22,7 @@ module.exports.deposit = async function (req, res) {
             }
             let note = null
             let description = req.body.description.trim()
-            if (description !== null || description !== "") {
+            if (description !== null && description !== "") {
                 console.log("Description",req.body.description)
                 note = []
                 note = note.concat([{ username: payload.username, note: req.body.description, note_date: new Date(moment().format()) }])
