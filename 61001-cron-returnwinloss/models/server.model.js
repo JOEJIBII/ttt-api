@@ -1,4 +1,4 @@
-const { MongoDB } = require('../configs/connection_mongodb');
+const { MongoDB } = require("../build/mongodb");
 const objectId = require('mongodb').ObjectId;
 const moment = require('moment');
 const { ObjectId, Double } = require('mongodb');
@@ -105,7 +105,7 @@ module.exports.updatefiletransaction = (ID,status) => {
     });
 }
 
-module.exports.findtransaction = (ID,body) => {
+module.exports.findalltransaction = () => {
     // console.log(agent_id);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('winloss_transaction')
@@ -114,17 +114,15 @@ module.exports.findtransaction = (ID,body) => {
                 $match : {
                     $and : [
                         { 
-                            _id : ObjectId(ID)
+                            status : "pending"
                         },
-                        { 
-                            agent_id : ObjectId(body.agent_id)
-                        },    
                     ]
                 }
             },
             {
                 $project:{
                     _id:1,
+                    agent_id:"$agent_id",
                     trasaction_file:"$trasaction_file",
                     cr_by:"$cr_by"
                 }
@@ -134,6 +132,7 @@ module.exports.findtransaction = (ID,body) => {
             .catch(error => reject(error));
     });
 }
+
 
 module.exports.findmemberId = (username,agent_id) => {
     // console.log(agent_id);
@@ -146,9 +145,7 @@ module.exports.findmemberId = (username,agent_id) => {
                         { 
                             username : username
                         },
-                        // { 
-                        //     agent_id : ObjectId(agent_id)
-                        // },    
+   
                     ]
                 }
             },
