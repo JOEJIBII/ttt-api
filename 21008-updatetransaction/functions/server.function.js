@@ -80,7 +80,7 @@ module.exports.changestatus = async (username,conf) => {
                 "key": conf.prov_key,
                 "username":username, 
                 "status":"ACTIVE",
-                "whiteLabel":  conf.prov_whitelabel,  
+                "whiteLabel":conf.prov_whitelabel,  
                 "domain": conf.prov_domain,
                 "prefix":conf.prov_prefix
             })

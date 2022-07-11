@@ -20,8 +20,9 @@ module.exports.deposit = async function (req, res) {
                 console.log("getbanktobyaccount_id", bankto)
 
             }
-            let note = []
+            let note = null
             if (req.body.description !== null || req.body.description !== "") {
+                note = []
                 note = note.concat([{ username: payload.username, note: req.body.description, note_date: new Date(moment().format()) }])
                 //note = note.concat([{ username: "System", note: "จำนวนการถอนของวันนี้ " + Counter.length, note_date: new Date(moment().format()) }])
             } 

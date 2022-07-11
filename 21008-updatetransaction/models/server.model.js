@@ -2,7 +2,7 @@ const { MongoDB } = require('../configs/connection_mongodb');
 const moment = require('moment');
 const { ObjectId, Double } = require('mongodb');
 
-module.exports.updateapprove = (body, payload) => {
+module.exports.updateapprove = (body, payload,notes) => {
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(body.type)
             .updateOne({
@@ -11,7 +11,7 @@ module.exports.updateapprove = (body, payload) => {
             }, {
                 $set: {
                     "status": body.status,
-                    "description":body.description,
+                    "description":notes,
                     "approve_by": ObjectId(payload.user_id),
                     "approve_date": new Date(moment().format()),
                     "upd_by": ObjectId(payload.user_id),
@@ -186,7 +186,7 @@ module.exports.updatelock = (body,payload) => {
     });
 }
 
-module.exports.updatechecked = (body, payload) => {
+module.exports.updatechecked = (body, payload,notes) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(body.type)
@@ -195,7 +195,7 @@ module.exports.updatechecked = (body, payload) => {
             }, {
                 $set: {
                     "status": body.status,
-                    "description":body.description,
+                    "description": notes,
                     "check_by": ObjectId(payload.user_id),
                     "check_date": new Date(moment().format()),
                     "upd_by": ObjectId(payload.user_id),
@@ -208,7 +208,7 @@ module.exports.updatechecked = (body, payload) => {
     });
 }
 
-module.exports.updatereject = (body, payload) => {
+module.exports.updatereject = (body, payload,notes) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(body.type)
@@ -218,7 +218,7 @@ module.exports.updatereject = (body, payload) => {
             }, {
                 $set: {
                     "status": body.status,
-                    "description":body.description,
+                    "description":notes,
                     "approve_by": ObjectId(payload.user_id),
                     "approve_date": new Date(moment().format()),
                     "upd_by": ObjectId(payload.user_id),

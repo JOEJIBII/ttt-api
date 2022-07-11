@@ -1,5 +1,6 @@
 const model = require('../models/server.model');
 const functions = require('../functions/server.function');
+const moment = require('moment');
 
 //const { urlencoded } = require("express");
 
@@ -10,12 +11,23 @@ module.exports.updatetransaction = async function (req, res) {
     const payload = JSON.parse(req.headers.payload)
     const body = req.body
     try {
+        
         if (body.type === "withdraw") {
             let checkpermission = await model.getdocument(body).catch(() => { throw err });
+            let note = checkpermission[0].description
+            if (body.description !== null || body.description !== "") {
+                if(note === null ){
+                    note = []
+                    note = note.concat([{ username: payload.username, note: body.description, note_date: new Date(moment().format()) }])
+                }else{
+                    note = note.concat([{ username: payload.username, note: body.description, note_date: new Date(moment().format()) }])
+                }
+                
+            }
             if (checkpermission[0].lock_status === "lock") {
                 if (checkpermission[0].lock_by.toString() === payload.user_id.toString()) {
                     if (body.status === "check" || body.status === "save") {
-                        let updatecheck = await model.updatechecked(body, payload).catch(() => { throw err });
+                        let updatecheck = await model.updatechecked(body, payload, note).catch(() => { throw err });
                         let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
                         res.send({
                             status: "200",
@@ -37,10 +49,10 @@ module.exports.updatetransaction = async function (req, res) {
                                 //console.log("-----------------------",getmemb[0].financial.withdraw_first_time)
                                 if (getmemb[0].financial.withdraw_first_time === null || getmemb[0].financial.withdraw_first_time === "0") {
 
-                                    await model.updateapprove(body, payload).catch(() => { throw err });
+                                    await model.updateapprove(body, payload, note).catch(() => { throw err });
                                     await model.update_financial_withdraw_first(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
                                     console.log(getmembpd[0].username, getconfig_pd[0])
-                                    let updatemember = await model.updatemember(getdocument[0].memb_id,payload).catch(() => { throw err });
+                                    let updatemember = await model.updatemember(getdocument[0].memb_id, payload).catch(() => { throw err });
                                     let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
                                     let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
                                     res.send({
@@ -49,10 +61,10 @@ module.exports.updatetransaction = async function (req, res) {
                                         credit_web: withdrawPD.result.data.agent.afterCredit
                                     }).end();
                                 } else {
-                                    await model.updateapprove(body, payload).catch(() => { throw err });
+                                    await model.updateapprove(body, payload, note).catch(() => { throw err });
                                     await model.update_financial_withdraw(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
                                     let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
-                                    let updatemember = await model.updatemember(getdocument[0].memb_id,payload).catch(() => { throw err });
+                                    let updatemember = await model.updatemember(getdocument[0].memb_id, payload).catch(() => { throw err });
                                     let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
                                     //await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
                                     res.send({
@@ -68,8 +80,8 @@ module.exports.updatetransaction = async function (req, res) {
                                 //console.log(getdocument[0])updatemember
                                 let getconfig_pd = await model.getconfig_pd(getdocument[0].agent_id).catch(() => { throw err });
                                 let getmembpd = await model.getmembpd(getdocument[0].memb_id).catch(() => { throw err });
-                                let updatereject = await model.updatereject(body, payload).catch(() => { throw err });
-                                let updatemember = await model.updatemember(getdocument[0].memb_id,payload).catch(() => { throw err });
+                                let updatereject = await model.updatereject(body, payload, note).catch(() => { throw err });
+                                let updatemember = await model.updatemember(getdocument[0].memb_id, payload).catch(() => { throw err });
                                 let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
                                 let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
                                 res.send({
@@ -109,11 +121,22 @@ module.exports.updatetransaction = async function (req, res) {
             }
         } else {
             if (body.type === "deposit") {
+                
                 let checkpermission = await model.getdocument(body).catch(() => { throw err });
+                let note = checkpermission[0].description
+                if (body.description !== null || body.description !== "") {
+                    if(note === null ){
+                        note = []
+                        note = note.concat([{ username: payload.username, note: body.description, note_date: new Date(moment().format()) }])
+                    }else{
+                        note = note.concat([{ username: payload.username, note: body.description, note_date: new Date(moment().format()) }])
+                    }
+                    
+                }
                 if (checkpermission[0].lock_status === "lock") {
                     if (checkpermission[0].lock_by.toString() === payload.user_id.toString()) {
                         if (body.status === "check" || body.status === "save") {
-                            let updatecheck = await model.updatechecked(body, payload).catch(() => { throw err });
+                            let updatecheck = await model.updatechecked(body, payload, note).catch(() => { throw err });
                             let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
                             res.send({
                                 status: "200",
@@ -137,7 +160,7 @@ module.exports.updatetransaction = async function (req, res) {
                                     }
                                     let getmemb = await model.getmemb(getdocument[0].memb_id).catch(() => { throw err });
                                     if (getmemb[0].financial.deposit_first_time === null || getmemb[0].financial.deposit_first_time === "0") {
-                                        await model.updateapprove(body, payload).catch(() => { throw err });
+                                        await model.updateapprove(body, payload, note).catch(() => { throw err });
                                         await model.update_financial_first(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
                                         let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
                                         let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
@@ -147,7 +170,7 @@ module.exports.updatetransaction = async function (req, res) {
                                             credit_web: depositPD.result.data.agent.afterCredit
                                         }).end();
                                     } else {
-                                        await model.updateapprove(body, payload).catch(() => { throw err });
+                                        await model.updateapprove(body, payload, note).catch(() => { throw err });
                                         await model.update_financial(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
                                         //await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
                                         let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
@@ -164,7 +187,7 @@ module.exports.updatetransaction = async function (req, res) {
                                     let getdocument = await model.getdocument(body).catch(() => { throw err });
                                     let getconfig_pd = await model.getconfig_pd(getdocument[0].agent_id).catch(() => { throw err });
                                     let getmembpd = await model.getmembpd(getdocument[0].memb_id).catch(() => { throw err });
-                                    let updatereject = await model.updatereject(body, payload).catch(() => { throw err });
+                                    let updatereject = await model.updatereject(body, payload, note).catch(() => { throw err });
                                     let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
                                     let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
                                     res.send({
