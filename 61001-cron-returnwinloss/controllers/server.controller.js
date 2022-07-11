@@ -49,6 +49,7 @@ const mainProcess = data => {
             if(data.trasaction_file !== null){
                 for (var i = 0; i < trasaction.length; i++) {
                     // console.log(trasaction[i])
+                    let updatefile = await model.updatefiletransaction(data._id, "processing").catch(() => { throw err });
                     console.log("round"[i])
                     let getmemb_id = await model.findmemberId(trasaction[i].username, data.agent_id).catch(() => { throw err });
                     // console.log("getmemb_id",getmemb_id[0])

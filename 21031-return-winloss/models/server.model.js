@@ -55,7 +55,8 @@ module.exports.insertwinloss = (body, payload,) => {
                         username: e.username,
                         amount: e.amount,
                         type:e.type,
-                        note:e.note
+                        note:e.note,
+                        status:"pending"
                     }
                 }),
                 status: "pending",
