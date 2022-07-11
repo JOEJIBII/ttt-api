@@ -130,7 +130,7 @@ module.exports.getagentid = (body) => {
 
 
 
-module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agentid) => {
+module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agentid,notes) => {
    // console.log(payload)
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('deposit')
@@ -153,7 +153,8 @@ module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agentid) => {
                 approve_by : null,
                 approve_date:null,
                 status : 'pending',
-                description:body.description,
+                //description:body.description,
+                description: notes,
                 turnover_status:null,
                 turnover_date:null,
                 turnover_value:null,
