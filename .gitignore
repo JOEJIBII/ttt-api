@@ -4,7 +4,6 @@ node_modules/
 tests/e2e/reports/
 90000-cron-turnover/
 Other/
-21032-getreturn-winloss/
 # # local env files
 # .env.local
 # .env.*.local
