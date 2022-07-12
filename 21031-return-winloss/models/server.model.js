@@ -48,12 +48,11 @@ module.exports.insertwinloss = (body, payload,) => {
             .insertOne({
                 agent_id: ObjectId(body.agent_id),
                 file_name: body.file_name,
-                //trasaction_file: body.trasaction_file,
-                trasaction_file: body.trasaction_file.map(e => {
+                transaction_file: body.transaction_file.map(e => {
                     return {
                         no: e.no,
                         username: e.username,
-                        amount: e.amount,
+                        amount: Double(e.amount),
                         type:e.type,
                         note:e.note,
                         status:"pending"

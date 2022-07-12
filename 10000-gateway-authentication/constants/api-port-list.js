@@ -50,7 +50,8 @@ module.exports = {
         "getpushbulletsetting":"21029",
         "updatepushbulletsetting":"21030",
         "returnwinloss":"21031",
-        "getreturnwinloss":"21032"
+        "getreturnwinloss":"21032",
+        "getreturnwinlossbyid":"21033",
 
     },
     search:{
