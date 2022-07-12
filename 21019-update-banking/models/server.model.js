@@ -7,7 +7,7 @@ module.exports.updatebank = (body, payload) => {
     let _membbank = {
 
     }
-    if (body.memb_bank === null || body.memb_bank === "") {
+    if (body.memb_bank === null && body.memb_bank === "") {
         _membbank = { memb_bank: "" }
     } else {
         _membbank = { memb_bank: ObjectId(body.memb_bank) }
@@ -15,13 +15,13 @@ module.exports.updatebank = (body, payload) => {
     let _privilege = {
 
     }
-    if(body.privilege === null || body.privilege === ""){
+    if(body.privilege === null && body.privilege === ""){
         _privilege= { privilege:null}
     }else{
         _privilege= { privilege:(body.privilege)}
     }
     var qrcode = null
-    if(body.qr_code === null || body.qr_code === ""){
+    if(body.qr_code === null && body.qr_code === ""){
         qrcode = null
     }else{
         qrcode = body.qr_code
