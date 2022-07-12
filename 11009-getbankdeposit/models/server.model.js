@@ -61,7 +61,7 @@ module.exports.bankdeposit = (agent_id) => {
                             bank_name_th : "$banks.nameth",
                             bank_name_en : "$banks.nameen",
                             bank_auto_config:"$bank_auto_config",
-                            qr_code:"$bank_auto_config.qr_code",
+                            qr_code:"$qr_code",
                             bank_code : "$banks.code",
                             description:"$description",
                             bank_status:"$status",
