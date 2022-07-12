@@ -45,8 +45,8 @@ const mainProcess = data => {
             //console.log("getmemb_id",getmemb_id[0])
             let getbankagent = await model.getbankagent(data.agent_id).catch(() => { throw err });
             // console.log("getbankagent",getbankagent[0])
-            var trasaction = data.trasaction_file
-            if(data.trasaction_file !== null){
+            var trasaction = data.transaction_file
+            if(data.transaction_file !== null){
                 for (var i = 0; i < trasaction.length; i++) {
                     // console.log(trasaction[i])
                     let updatefile = await model.updatefiletransaction(data._id, "processing").catch(() => { throw err });

@@ -48,8 +48,8 @@ module.exports.insertwinloss = (body, payload,) => {
             .insertOne({
                 agent_id: ObjectId(body.agent_id),
                 file_name: body.file_name,
-                //trasaction_file: body.trasaction_file,
-                trasaction_file: body.trasaction_file.map(e => {
+                //transaction_file: body.transaction_file,
+                transaction_file: body.transaction_file.map(e => {
                     return {
                         no: e.no,
                         username: e.username,
@@ -74,13 +74,13 @@ module.exports.insertwinloss = (body, payload,) => {
 module.exports.updatetransaction = (ID, row_no, status,description) => {
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('winloss_transaction')
-            .updateOne({ _id: ObjectId(ID), "trasaction_file.no": Number(row_no) },
+            .updateOne({ _id: ObjectId(ID), "transaction_file.no": Number(row_no) },
                 {
                     $set: {
-                        "trasaction_file.$.status": status,
-                        "trasaction_file.$.description": description,
-                        "trasaction_file.$.upd_date": moment(new Date()).format(),
-                        "trasaction_file.$.upd_by": "21031-return-winloss"
+                        "transaction_file.$.status": status,
+                        "transaction_file.$.description": description,
+                        "transaction_file.$.upd_date": moment(new Date()).format(),
+                        "transaction_file.$.upd_by": "21031-return-winloss"
                     }
                 }, { upsert: true })
             .then(result => resolve(result))
@@ -123,7 +123,7 @@ module.exports.findalltransaction = () => {
                 $project:{
                     _id:1,
                     agent_id:"$agent_id",
-                    trasaction_file:"$trasaction_file",
+                    transaction_file:"$transaction_file",
                     cr_by:"$cr_by"
                 }
             },
