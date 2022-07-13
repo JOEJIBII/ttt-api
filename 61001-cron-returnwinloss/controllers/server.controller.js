@@ -13,11 +13,11 @@ module.exports = async () => {
     new CronJob("*/10 * * * * *", async () => {
         try {
             console.log("start")
-            working = false;
-            if (!working) {
+            let findtransaction = await model.findalltransaction().catch(() => { throw err });
+            // if (!working) {
                 //console.log("working")
                 //working === false && mainProcess();
-                let findtransaction = await model.findalltransaction().catch(() => { throw err });
+               
                 // console.log("findtransaction",findtransaction.length)
                 if (findtransaction.length > 0) {
                     for (var i = 0; i < findtransaction.length; i++) {
@@ -28,7 +28,7 @@ module.exports = async () => {
                 } else {
                     working = true;
                 }
-            }
+            // }
         } catch (error) {
             console.error("main process error on ", new Date().toISOString());
             console.error(error);
