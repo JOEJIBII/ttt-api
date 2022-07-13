@@ -63,21 +63,23 @@ const mainProcess = data => {
                             let call = await fx.depositPD(cof[0], trasaction[i].username, trasaction[i].amount).catch(() => { throw err });
                             //console.log(call)
                             if (call.result.msg === "SUCCESS") {
-                                await model.updatetransaction(data._id, trasaction[i].no, "success", null).catch(() => { throw err });
+                                await model.updatetransaction(data._id, trasaction[i].no, "success", note,getmemb_id[0].memb_id).catch(() => { throw err });
                                 // body,payload,bankform,bankto,agent_id,memb_id
                                 await model.InsertDocdeposit(trasaction[i], data.cr_by, getmemb_bank[0], getbankagent[0], data.agent_id, getmemb_id[0].memb_id,note,call.result.refId).catch(() => { throw err });
 
                             } else {
                                 //not success provider
-                                await model.updatetransaction(data._id, trasaction[i].no, call.result.msg,).catch(() => { throw err });
+                                await model.updatetransaction(data._id, trasaction[i].no, call.result.msg,getmemb_id[0].memb_id).catch(() => { throw err });
                             }
                         } else {
                             //not found bankmember
-                            await model.updatetransaction(data._id, trasaction[i].no, "failed", "ไม่พบ bank member").catch(() => { throw err });
+                            note = note.concat[{ username: "system", note: "ไม่พบ bank member", note_date: new Date(moment().format()) }]
+                            await model.updatetransaction(data._id, trasaction[i].no, "failed", note,getmemb_id[0].memb_id).catch(() => { throw err });
                         }
                     } else {
                         //not found member
-                        await model.updatetransaction(data._id, trasaction[i].no, "failed", "ไม่พบ member").catch(() => { throw err });
+                        note = note.concat[{ username: "system", note: "ไม่พบ member", note_date: new Date(moment().format()) }]
+                        await model.updatetransaction(data._id, trasaction[i].no, "failed", note,getmemb_id[0].memb_id).catch(() => { throw err });
                     }
                 }
                 let updatefile = await model.updatefiletransaction(data._id, "success").catch(() => { throw err });
