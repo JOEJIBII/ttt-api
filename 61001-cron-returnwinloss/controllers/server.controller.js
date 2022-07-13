@@ -13,10 +13,10 @@ module.exports = async () => {
     new CronJob("*/10 * * * * *", async () => {
         try {
             console.log("start")
-            working === false
+            working = false
              if (working !== false) {
                 console.log("working")
-                working === false
+                working = false
                 let findtransaction = await model.findalltransaction().catch(() => { throw err });
                 console.log("findtransaction",findtransaction.length)
                 if (findtransaction.length > 0) {
