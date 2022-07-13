@@ -2,6 +2,7 @@ const { CronJob } = require("cron");
 const { round } = require("lodash");
 const ObjectDriver = new Map();
 const _ = require("lodash");
+const moment = require('moment');
 
 const fx = require("../functions/server.function");
 const model = require("../models/server.model");
@@ -13,7 +14,7 @@ module.exports = async () => {
     new CronJob("*/10 * * * * *", async () => {
         try {
             console.log("start")
-            working = false
+            //working = false
              if (working !== false) {
                 console.log("working")
                 working = false
@@ -54,7 +55,7 @@ const mainProcess = data => {
                     //let updatefile = await model.updatefiletransaction(data._id, "processing").catch(() => { throw err });
                     console.log("round"[i])
                     let getmemb_id = await model.findmemberId(trasaction[i].username, data.agent_id).catch(() => { throw err });
-                    // console.log("getmemb_id",getmemb_id[0])
+                     console.log("getmemb_id",getmemb_id[0])
                     if (getmemb_id.length > 0) {
                         let getmemb_bank = await model.getbankmember(getmemb_id[0].memb_id, data.agent_id).catch(() => { throw err });
                         //console.log("getmemb_bank",getmemb_bank[0])
@@ -73,13 +74,13 @@ const mainProcess = data => {
                             }
                         } else {
                             //not found bankmember
-                            note = note.concat[{ username: "system", note: "ไม่พบ bank member", note_date: new Date(moment().format()) }]
+                            note = note.concat([{ username: "system", note: "ไม่พบ bank member", note_date: new Date(moment().format()) }])
                             await model.updatetransaction(data._id, trasaction[i].no, "failed", note,getmemb_id[0].memb_id).catch(() => { throw err });
                         }
                     } else {
                         //not found member
-                        note = note.concat[{ username: "system", note: "ไม่พบ member", note_date: new Date(moment().format()) }]
-                        await model.updatetransaction(data._id, trasaction[i].no, "failed", note,getmemb_id[0].memb_id).catch(() => { throw err });
+                        note = note.concat([{ username: "system", note: "ไม่พบ member", note_date: new Date(moment().format()) }])
+                        await model.updatetransaction(data._id, trasaction[i].no, "failed", note).catch(() => { throw err });
                     }
                 }
                 let updatefile = await model.updatefiletransaction(data._id, "success").catch(() => { throw err });

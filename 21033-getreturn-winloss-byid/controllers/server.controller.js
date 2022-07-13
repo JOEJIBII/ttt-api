@@ -7,14 +7,10 @@ module.exports.getreturnwinlossbyid = async function (req, res) {
     const payload = JSON.parse(req.headers.payload)
     const body = req.body
     try {
-
-        
-       
          let result_summary = await model.getreturnwinloss_summary(body.file_id).catch(() => { throw err });
          let result = await model.getreturnwinloss_transaction(body.file_id).catch(() => { throw err });
-        
         if (result && result.length) {
-            res.send({ status: "200", message: "success", summary: result_summary ,transaction: result[0].transaction_file  }).end();
+            res.send({ status: "200", message: "success", summary: result_summary[0] ,transaction: result[0].transaction_file  }).end();
         } else {
             res.send({ status: "202", message: 'not found data' }).end();
         }

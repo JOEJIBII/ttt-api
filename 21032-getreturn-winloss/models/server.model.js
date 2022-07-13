@@ -128,6 +128,7 @@ module.exports.getreturnwinloss = (agent_id) => {
                         amountCash: "$amountCash",
                         amountBonus: "$amountBonus",
                         cr_by: "$emp.username",
+                        cr_avatar:"$emp.avatar",
                         cr_date: "$cr_date",
                         upd_date: "$upd_date"
                     }
