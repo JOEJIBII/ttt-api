@@ -101,7 +101,25 @@ module.exports.findalltransaction = () => {
                     cr_by:"$cr_by",
                     cr_date:"$cr_date"
                 }
-            },
+            },{
+                $lookup: {
+                    from: "employee",
+                    localField: "cr_by",
+                    foreignField: "_id",
+                    as: "emp"
+                }
+            },{
+                $unwind: { path: "$emp" }
+            },{
+                $project:{
+                    _id:1,
+                    agent_id:"$agent_id",
+                    transaction_file:"$transaction_file",
+                    cr_by:"$cr_by",
+                    cr_by_name:"$emp.username",
+                    cr_date:"$cr_date"
+                }
+            }
         ]).toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));
@@ -148,9 +166,9 @@ module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agent_id,memb_id
                  amount: body.amount,
                  silp_date: null,
                  silp_image: null,
-                 request_by:payload.user_id,
+                 request_by:ObjectId(payload),
                  request_date:new Date(moment().format()),
-                 approve_by : payload.user_id,
+                 approve_by : ObjectId(payload),
                  approve_date:new Date(moment().format()),
                  status : "approve",
                  description:notes,
@@ -161,7 +179,7 @@ module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agent_id,memb_id
                  lock_status:"",
                  lock_by:"",
                  lock_date:null,
-                 cr_by:  payload.user_id,
+                 cr_by:  ObjectId(payload),
                  cr_date:new Date(moment().format()),
                  cr_prog: "61001-cron-returnwinloss",
                  upd_by :null,
