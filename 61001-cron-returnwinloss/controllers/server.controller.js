@@ -13,7 +13,7 @@ module.exports = async () => {
     new CronJob("*/10 * * * * *", async () => {
         try {
             console.log("start")
-            
+            working === false
              if (working !== false) {
                 console.log("working")
                 working === false
