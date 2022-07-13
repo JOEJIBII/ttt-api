@@ -45,12 +45,17 @@ module.exports.getconfig_pd = (agent_id) => {
 
 
 
-module.exports.updatetransaction = (ID, row_no, status,description) => {
+module.exports.updatetransaction = (ID, row_no, status,description,memb_id) => {
+    let _memb_id = null 
+    if(memb_id !==null && memb_id !== ""){
+        _memb_id = ObjectId(memb_id)
+    }
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('winloss_transaction')
             .updateOne({ _id: ObjectId(ID), "transaction_file.no": Number(row_no) },
                 {
                     $set: {
+                        "memb_id" : _memb_id,
                         "transaction_file.$.status": status,
                         "transaction_file.$.description": description,
                         "transaction_file.$.upd_date": new Date(moment().format()),
