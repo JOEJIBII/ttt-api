@@ -17,14 +17,14 @@ module.exports = async () => {
                 //console.log("working")
                 //working === false && mainProcess();
                 let findtransaction = await model.findalltransaction().catch(() => { throw err });
-              // console.log("findtransaction",findtransaction.length)
-                if (findtransaction.length > 0 ) {
+                // console.log("findtransaction",findtransaction.length)
+                if (findtransaction.length > 0) {
                     for (var i = 0; i < findtransaction.length; i++) {
-                        console.log("ROUND",[i])
+                        console.log("ROUND", [i])
                         await mainProcess(findtransaction[i]);
                     }
                     working = true;
-                }else{
+                } else {
                     working = true;
                 }
             }
@@ -41,14 +41,15 @@ const mainProcess = data => {
         try {
             let cof = await model.getconfig_pd(data.agent_id).catch(() => { throw err });
             //console.log("cof",cof[0])
-            //let findtransaction = await model.findtransaction(data._id, body).catch(() => { throw err });
-            //console.log("getmemb_id",getmemb_id[0])
             let getbankagent = await model.getbankagent(data.agent_id).catch(() => { throw err });
             // console.log("getbankagent",getbankagent[0])
             var trasaction = data.transaction_file
-            if(data.transaction_file !== null){
+            if (data.transaction_file !== null) {
                 for (var i = 0; i < trasaction.length; i++) {
-                    // console.log(trasaction[i])
+                    let note = checkpermission[0].description
+                    if (body.description !== null && body.description !== "") {
+                        let note = note.concat([{ username: data.cr_by, note: trasaction[i].description, note_date: new Date(data.cr_date) }])
+                    }
                     let updatefile = await model.updatefiletransaction(data._id, "processing").catch(() => { throw err });
                     console.log("round"[i])
                     let getmemb_id = await model.findmemberId(trasaction[i].username, data.agent_id).catch(() => { throw err });
@@ -57,41 +58,37 @@ const mainProcess = data => {
                         let getmemb_bank = await model.getbankmember(getmemb_id[0].memb_id, data.agent_id).catch(() => { throw err });
                         //console.log("getmemb_bank",getmemb_bank[0])
                         if (getmemb_bank.length > 0) {
-                            //console.log("getmemb_bank",getmemb_bank[0])
-                            //console.log("confix",cof[0])
-                            //console.log("username",trasaction[i].username)
-                            //console.log("amount",trasaction[i].amount)
-                            //console.log("confix",cof[0])
+
                             let call = await fx.depositPD(cof[0], trasaction[i].username, trasaction[i].amount).catch(() => { throw err });
                             //console.log(call)
                             if (call.result.msg === "SUCCESS") {
                                 await model.updatetransaction(data._id, trasaction[i].no, "success", null).catch(() => { throw err });
                                 // body,payload,bankform,bankto,agent_id,memb_id
-                                await model.InsertDocdeposit(trasaction[i], data.cr_by, getmemb_bank[0], getbankagent[0], data.agent_id, getmemb_id[0].memb_id).catch(() => { throw err });
-    
+                                await model.InsertDocdeposit(trasaction[i], data.cr_by, getmemb_bank[0], getbankagent[0], data.agent_id, getmemb_id[0].memb_id,note,call.result.refId).catch(() => { throw err });
+
                             } else {
                                 //not success provider
                                 await model.updatetransaction(data._id, trasaction[i].no, call.result.msg,).catch(() => { throw err });
                             }
                         } else {
                             //not found bankmember
-                            await model.updatetransaction(data._id, trasaction[i].no, "fail", "ไม่พบ bank member").catch(() => { throw err });
+                            await model.updatetransaction(data._id, trasaction[i].no, "failed", "ไม่พบ bank member").catch(() => { throw err });
                         }
                     } else {
                         //not found member
-                        await model.updatetransaction(data._id, trasaction[i].no, "fail", "ไม่พบ member").catch(() => { throw err });
+                        await model.updatetransaction(data._id, trasaction[i].no, "failed", "ไม่พบ member").catch(() => { throw err });
                     }
                 }
                 let updatefile = await model.updatefiletransaction(data._id, "success").catch(() => { throw err });
                 if (updatefile.modifiedCount > 0) {
-                   // res.send({ status: "200", message: 'success' }).end();
-                   working = true;
-                   console.log("success")
+                    // res.send({ status: "200", message: 'success' }).end();
+                    working = true;
+                    console.log("success")
                 }
-            }else {
-                let updatefile = await model.updatefiletransaction(data._id, "fail").catch(() => { throw err });
+            } else {
+                let updatefile = await model.updatefiletransaction(data._id, "failed").catch(() => { throw err });
             }
-            
+
             resolve(true);
         } catch (error) {
             reject(error);

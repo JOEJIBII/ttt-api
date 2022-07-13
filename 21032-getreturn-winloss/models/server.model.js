@@ -45,7 +45,7 @@ module.exports.getreturnwinloss = (agent_id) => {
                         all: { $sum: 1 },
                         pending: { $sum: { $cond: [{ $eq: ["$c_status", "pending"] }, 1, 0] } },
                         success: { $sum: { $cond: [{ $eq: ["$c_status", "success"] }, 1, 0] } },
-                        fail: { $sum: { $cond: [{ $eq: ["$c_status", "fail"] }, 1, 0] } },
+                        fail: { $sum: { $cond: [{ $eq: ["$c_status", "failed"] }, 1, 0] } },
                         amountCash: { $sum: { $cond: [{ $eq: ["$c_type", "cash"] }, "$c_amount", 0] } },
                         amountBonus: { $sum: { $cond: [{ $eq: ["$c_type", "bonus"] }, "$c_amount", 0] } },
                         data: { $first: { _id: "$_id", file_name: "$file_name", status: "$status", agent_id: "$agent_id", cr_by: "$cr_by", cr_date: "$cr_date", upd_date: "$upd_date" } },

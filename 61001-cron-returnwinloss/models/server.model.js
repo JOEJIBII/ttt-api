@@ -2,6 +2,7 @@ const { MongoDB } = require("../build/mongodb");
 const objectId = require('mongodb').ObjectId;
 const moment = require('moment');
 const { ObjectId, Double } = require('mongodb');
+const { normalizeUnits } = require("moment");
 
 
 
@@ -42,34 +43,7 @@ module.exports.getconfig_pd = (agent_id) => {
     });
 }
 
-module.exports.insertwinloss = (body, payload,) => {
-    return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('winloss_transaction')
-            .insertOne({
-                agent_id: ObjectId(body.agent_id),
-                file_name: body.file_name,
-                //transaction_file: body.transaction_file,
-                transaction_file: body.transaction_file.map(e => {
-                    return {
-                        no: e.no,
-                        username: e.username,
-                        amount: e.amount,
-                        type:e.type,
-                        note:e.note
-                    }
-                }),
-                status: "pending",
-                cr_by: ObjectId(payload.user_id),
-                cr_date: moment(new Date()).format(),
-                cr_prog: "21031-return-winloss",
-                upd_by: null,
-                upd_date: null,
-                upd_prog: null
-            })
-            .then(result => resolve(result))
-            .catch(error => reject(error));
-    });
-}
+
 
 module.exports.updatetransaction = (ID, row_no, status,description) => {
     return new Promise(async (resolve, reject) => {
@@ -79,7 +53,7 @@ module.exports.updatetransaction = (ID, row_no, status,description) => {
                     $set: {
                         "transaction_file.$.status": status,
                         "transaction_file.$.description": description,
-                        "transaction_file.$.upd_date": moment(new Date()).format(),
+                        "transaction_file.$.upd_date": new Date(moment().format()),
                         "transaction_file.$.upd_by": "21031-return-winloss"
                     }
                 }, { upsert: true })
@@ -96,7 +70,7 @@ module.exports.updatefiletransaction = (ID,status) => {
                     $set: {
                         status: status,
                         upd_by:"21031-return-winloss",
-                        upd_date:moment(new Date()).format(),
+                        upd_date:new Date(moment().format()),
                         upd_prog:"21031-return-winloss"
                     }
                 }, { upsert: true })
@@ -124,7 +98,8 @@ module.exports.findalltransaction = () => {
                     _id:1,
                     agent_id:"$agent_id",
                     transaction_file:"$transaction_file",
-                    cr_by:"$cr_by"
+                    cr_by:"$cr_by",
+                    cr_date:"$cr_date"
                 }
             },
         ]).toArray()
@@ -155,7 +130,7 @@ module.exports.findmemberId = (username,agent_id) => {
     });
 }
 
-module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agent_id,memb_id) => {
+module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agent_id,memb_id,notes,ref_id) => {
     // console.log(payload)
      return new Promise(async (resolve, reject) => {
          await MongoDB.collection('deposit')
@@ -164,7 +139,7 @@ module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agent_id,memb_id
                  type:bankto.type,
                  sub_type:bankto.sub_type,
                  bank_transaction_id : null,
-                 date:moment(new Date()).format(),
+                 date:new Date(moment().format()),
                  memb_id: ObjectId(memb_id),
                  from_bank_id: ObjectId(bankform.bank_id),
                  from_account_id: ObjectId(bankform._id),
@@ -174,23 +149,23 @@ module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agent_id,memb_id
                  silp_date: null,
                  silp_image: null,
                  request_by:payload.user_id,
-                 request_date:moment(new Date()).format(),
-                 approve_by : null,
-                 approve_date:null,
-                 status : "success",
-                 description:"bonus",
+                 request_date:new Date(moment().format()),
+                 approve_by : payload.user_id,
+                 approve_date:new Date(moment().format()),
+                 status : "approve",
+                 description:notes,
                  turnover_status:null,
                  turnover_date:null,
                  turnover_value:null,
-                 ref_id:null,
+                 ref_id:ObjectId(ref_id),
                  lock_status:"",
                  lock_by:"",
                  lock_date:null,
                  cr_by:  payload.user_id,
-                 cr_date:moment(new Date()).format(),
-                 cr_prog: null,
-                 upd_by : null,
-                 upd_date: null,
+                 cr_date:new Date(moment().format()),
+                 cr_prog: "61001-cron-returnwinloss",
+                 upd_by :null,
+                 upd_date:null,
                  upd_prog:null
  
              })
