@@ -46,7 +46,7 @@ const mainProcess = data => {
             var trasaction = data.transaction_file
             if (data.transaction_file !== null) {
                 for (var i = 0; i < trasaction.length; i++) {
-                     let note = note.concat([{ username: data.cr_by, note: trasaction[i].description, note_date: new Date(data.cr_date) }])
+                     let note = [{ username: data.cr_by, note: trasaction[i].description, note_date: new Date(data.cr_date) }]
                     let updatefile = await model.updatefiletransaction(data._id, "processing").catch(() => { throw err });
                     console.log("round"[i])
                     let getmemb_id = await model.findmemberId(trasaction[i].username, data.agent_id).catch(() => { throw err });
