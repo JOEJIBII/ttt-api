@@ -13,22 +13,25 @@ module.exports = async () => {
     new CronJob("*/10 * * * * *", async () => {
         try {
             console.log("start")
-            let findtransaction = await model.findalltransaction().catch(() => { throw err });
-            // if (!working) {
-                //console.log("working")
-                //working === false && mainProcess();
-               
-                // console.log("findtransaction",findtransaction.length)
+            
+             if (working !== false) {
+                console.log("working")
+                working === false
+                let findtransaction = await model.findalltransaction().catch(() => { throw err });
+                console.log("findtransaction",findtransaction.length)
                 if (findtransaction.length > 0) {
                     for (var i = 0; i < findtransaction.length; i++) {
                         console.log("ROUND", [i])
+                        let updatefile = await model.updatefiletransaction(findtransaction[i]._id, "processing").catch(() => { throw err });
                         await mainProcess(findtransaction[i]);
                     }
                     working = true;
                 } else {
                     working = true;
                 }
-            // }
+            }else{
+                working = true;
+            }
         } catch (error) {
             console.error("main process error on ", new Date().toISOString());
             console.error(error);
@@ -48,7 +51,7 @@ const mainProcess = data => {
             if (data.transaction_file !== null) {
                 for (var i = 0; i < trasaction.length; i++) {
                      let note = [{ username: data.cr_by_name, note: trasaction[i].description, note_date: new Date(data.cr_date) }]
-                    let updatefile = await model.updatefiletransaction(data._id, "processing").catch(() => { throw err });
+                    //let updatefile = await model.updatefiletransaction(data._id, "processing").catch(() => { throw err });
                     console.log("round"[i])
                     let getmemb_id = await model.findmemberId(trasaction[i].username, data.agent_id).catch(() => { throw err });
                     // console.log("getmemb_id",getmemb_id[0])
