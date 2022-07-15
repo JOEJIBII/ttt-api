@@ -21,7 +21,7 @@ module.exports.addemployee = (body,payload) => {
                 password: body.password,
                 name: body.name,
                 tel: body.tel,
-                role:body.role,
+                role:ObjectId(body.role),
                 avatar:body.avatar,
                 status: body.status,
                 cr_date: new Date(moment().format()),
