@@ -136,6 +136,7 @@ module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agentid,notes) =
         await MongoDB.collection('deposit')
             .insertOne({
                 agent_id: ObjectId(agentid.agent_id),
+                channel:"panel",
                 type:bankto.type,
                 sub_type:bankto.sub_type,
                 bank_transaction_id : null,

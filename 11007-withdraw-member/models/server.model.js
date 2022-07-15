@@ -280,6 +280,7 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
         await MongoDB.collection('withdraw')
             .insertOne({
                 agent_id: ObjectId(payload.agent_id),
+                channel:"web",
                 type: "withdraw",
                 date: new Date(moment().format()),
                 memb_id: ObjectId(payload.user_id),
