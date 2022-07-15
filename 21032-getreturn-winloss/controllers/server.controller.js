@@ -16,10 +16,12 @@ module.exports.getreturnwinloss = async function (req, res) {
         let temp = []
         for (var i=0; i < agent_id.length; i++) {
             //console.log(agent_id[i])
+            
             result = await model.getreturnwinloss(agent_id[i]).catch(() => { throw err });
             temp  = result.concat(temp);
          }
         result = temp
+        result = result.sort(function(a, b){return new Date(b.cr_date) - new Date(a.cr_date)})
         if (result && result.length) {
             res.send({ status: "200", message: "success", result: result }).end();
         } else {

@@ -25,7 +25,7 @@ module.exports.historylasted = async function (req, res) {
            
             result  = deposit.concat(withdraw);
          }
-        result = result.sort(function(a, b){return new Date(b.approve_by.approve_date) - new Date(a.approve_by.approve_date)})
+        result = result.sort(function(a, b){return new Date(a.approve_by.approve_date) - new Date(b.approve_by.approve_date)})
                 res.send({
                     status: "200",
                     message: "success",
