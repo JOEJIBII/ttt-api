@@ -41,19 +41,23 @@ function split_Kbank(word){
     let to_acc_name
     let to_bank_id
     let amount
+    let balance
   
     var_array = word.split(" ");
     cr_date = var_array[0];
     cr_time = var_array[1];
+    
      
     if( word.includes("เงินเข้า") == true ){
       slip_type = "deposit";
       channel = 'Bank Transfer';
       let var_array1 = word.match(/(\d+)(((.|,)\d+)+)?/g);
-      //console.log(var_array1);
+
+      console.log(var_array1);
+      balance = var_array1[3];
       amount = var_array1[2];
-      to_bank_id = var_array1[1];
-      to_acc = null;
+      to_acc = var_array1[1];
+      to_bank_id = 'kbank';
       to_acc_name = null;
       from_acc = null;
       from_acc_name = null;
@@ -64,47 +68,65 @@ function split_Kbank(word){
       slip_type = "deposit";
       channel = 'Bank Transfer';
       let var_array1 = word.match(/(\d+)(((.|,)\d+)+)?/g);
-      //console.log(var_array1);
+      console.log(var_array1);
+      balance = var_array1[4];
       amount = var_array1[3];
-      to_bank_id = var_array1[1];
+      to_acc = var_array1[1];
+      to_bank_id = 'kbank';
       from_acc = var_array1[2];
-      to_acc = null;
       to_acc_name = null;
       from_acc_name = null;
-      from_bank_id = null;
+      from_bank_id = 'kbank';
   
   
     }else if(word.includes("เงินออก") == true){
       slip_type = "withdraw";
       channel = 'Bank Transfer';
       let var_array1 = word.match(/(\d+)(((.|,)\d+)+)?/g);
-      //console.log(var_array1);
+      console.log(var_array1);
+      balance = var_array1[3];
       amount = '-'+var_array1[2];
       from_acc = var_array1[1];
       to_acc = null;
       to_acc_name = null;
       from_acc_name = null;
-      from_bank_id = null;
+      from_bank_id = 'kbank';
       to_bank_id = null;
   
     }else if(word.includes("หักบช") == true){
       slip_type = "withdraw";
       channel = 'Bank Transfer';
       let var_array1 = word.match(/(\d+)(((.|,)\d+)+)?/g);
-      //console.log(var_array1);
+      console.log(var_array1);
+      balance = var_array1[4];
       amount = '-'+var_array1[3];
       from_acc =  var_array1[1];
-      to_bank_id = var_array1[2];
-      to_acc = null;
+      to_acc = var_array1[2];
+      to_bank_id = 'kbank';
       to_acc_name = null;
       from_acc_name = null;
-      from_bank_id = null;
+      from_bank_id = 'kbank';
   
     }else{
-  
+      let var_array1 = word.match(/(\d+)(((.|,)\d+)+)?/g);
+      console.log(var_array1);
+      balance = var_array1[4];
+      slip_type = 'balance';
+      to_acc = var_array1[3];
+      to_acc = null;
+      to_acc_name = null;
+      to_bank_id = null;
+      from_acc_name = null;
+      from_bank_id = null;
+      from_acc = null;
+      channel = null;
+      amount = null;
+    
     }
-  
-    return {slip_type,cr_date,cr_time,from_acc,from_acc_name,from_bank_id,to_acc,to_acc_name,to_bank_id,channel,amount,word};
+    if(amount != null){amount = amount.replace(/\,/g, '');};
+    if(balance != null ){balance = balance.replace(/\,/g, '');};
+    console.log(balance);
+    return {slip_type,cr_date,cr_time,from_acc,from_acc_name,from_bank_id,to_acc,to_acc_name,to_bank_id,channel,amount,word,balance};
   
   }
 
@@ -230,7 +252,32 @@ const mainProcess = data => {
                                     await model.insert_SMS_dp(split_Kbank(msg.body),data.agent)
                                     await model.insertMsg(msg);
                                     console.log("message inseted")
+                                 };
+                                 if ( message.push.notifications[0].title === 'ttbbank' && message.push.notifications[0].body.includes('OTP') == true ) {
+                                    let msg = {
+                                        agent_id: data.agent,
+                                        type: "OTP",
+                                        title: message.push.notifications[0].title,
+                                        body: message.push.notifications[0].body,
+                                        application: "sms",
+                                        ref:null,
+                                        value: null
+                                    };
+                                    let var_array
+                                        let var_array1
+                                        var_array = msg.body.split("\=");
+                                        var_array1 = var_array[1].trim().split("\,");
+                                        let ref = var_array1[0];
+                                        let otp = var_array[2].trim();
+                                        msg.value = otp;
+                                        msg.ref = ref;
+                                    //let Kbank_Sms = split_Kbank(body);
+                                    console.log(data.agent);
+                                    //await model.insert_SMS_dp(split_Kbank(msg.body),data.agent)
+                                    await model.insertMsg(msg);
+                                    console.log("message inseted")
                                  }
+                                 
 
                             }
                         } else {

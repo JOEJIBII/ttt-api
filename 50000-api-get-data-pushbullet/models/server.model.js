@@ -44,8 +44,8 @@ module.exports.insert_SMS_dp = (data,agent_id) => {
             .collection("bank_transaction")
             .insertOne({
               agent_id:ObjectId(agent_id),
-              date:new Date(data.date),
-              time:data.time,
+              date:data.cr_date,
+              time:data.cr_time,
               msg:data.word,
               amount:Number(data.amount),
               channel:data.channel,
@@ -56,10 +56,11 @@ module.exports.insert_SMS_dp = (data,agent_id) => {
               to_account_number:data.to_acc,
               to_account_name:data.to_acc_name,
               to_bank_id:data.to_bank_id,
+              balance:data.balance,
               status:"pending",
-              cr_by:"robot",
-              cr_date: moment().format(),
-              cr_prog:"50000 API",
+              cr_by:"PushBullet",
+              cr_date: new Date(moment().format()),
+              cr_prog:"50000 API PushBullet",
               upd_by:null,
               upd_date: null,
               upd_prog:null
