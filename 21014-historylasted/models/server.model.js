@@ -44,7 +44,7 @@ module.exports.getdeposit = (agent_id) => {
                                                         agent_id: ObjectId(agent_id)
                                                 }, {
                                                         $or: [
-                                                                { status: "approve" }, { status: "cancel" }
+                                                                { status: "approve" }, { status: "cancel" },{status:"processing"},{status:"success"}
                                                         ]
                                                 }
                                                 ]

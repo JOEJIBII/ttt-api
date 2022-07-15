@@ -65,7 +65,7 @@ const mainProcess = data => {
                             //console.log(call)
                             if (call.result.msg === "SUCCESS") {
                                 await model.updatetransaction(data._id, trasaction[i].no, "success", note,getmemb_id[0].memb_id).catch(() => { throw err });
-                                // body,payload,bankform,bankto,agent_id,memb_id
+                                note = note.concat([{ username: "system", note: "คืนยอดเสีย", note_date: new Date(moment().format()) }])
                                 await model.InsertDocdeposit(trasaction[i], data.cr_by, getmemb_bank[0], getbankagent[0], data.agent_id, getmemb_id[0].memb_id,note,call.result.refId).catch(() => { throw err });
 
                             } else {
