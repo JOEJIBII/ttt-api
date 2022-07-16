@@ -26,6 +26,7 @@ module.exports.getwithdraw = (agent_id) => {
              $project:{
                         _id:0,
                         withdraw_config:"$withdraw_config.amount_select",
+                        max_withdraw_counter:"$withdraw_config.counter"
                        
                 }
             },
