@@ -44,7 +44,7 @@ module.exports.getdeposit = (agent_id) => {
                                                         agent_id: ObjectId(agent_id)
                                                 }, {
                                                         $or: [
-                                                                { status: "approve" }, { status: "cancel" },{status:"processing"},{status:"success"}
+                                                                { status: "approve" }, { status: "cancel" }, { status: "processing" }, { status: "success" }
                                                         ]
                                                 }
                                                 ]
@@ -73,18 +73,12 @@ module.exports.getdeposit = (agent_id) => {
                                 }, {
                                         $lookup: {
                                                 from: "member_provider_account",
-                                                localField: "memd_id",
-                                                foreignField: "memd_id",
+                                                localField: "memb_id",
+                                                foreignField: "memb_id",
                                                 as: "memb_prov"
                                         }
                                 }, {
-                                        $unwind: { path: "$memb_prov" }
-                                }, {
-                                        $match: {
-                                                $expr: {
-                                                        $eq: ["$memb_prov.memb_id", "$memb_id"]
-                                                }
-                                        }
+                                        $unwind: { path: "$memb_prov", preserveNullAndEmptyArrays: true }
                                 }, {
                                         $project: {
                                                 id: 1,
@@ -96,7 +90,7 @@ module.exports.getdeposit = (agent_id) => {
                                                 description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
-                                                memb_username: "$memb_prov.username",
+                                                memb_username: { $ifNull: ['$memb_prov.username', null] },
                                                 from_bank_id: "$from_bank_id",
                                                 from_account_id: "$from_account_id",
                                                 to_bank_id: "$to_bank_id",
@@ -109,19 +103,14 @@ module.exports.getdeposit = (agent_id) => {
                                 }, {
                                         $lookup: {
                                                 from: "memb_bank_account",
-                                                localField: "memd_id",
-                                                foreignField: "memd_id",
+                                                localField: "memb_id",
+                                                foreignField: "memb_id",
                                                 as: "memb_bank"
                                         }
                                 }, {
-                                        $unwind: { path: "$memb_bank" }
-                                }, {
-                                        $match: {
-                                                $expr: {
-                                                        $eq: ["$memb_bank.memb_id", "$memb_id"]
-                                                }
-                                        }
-                                }, {
+                                        $unwind: { path: "$memb_bank", preserveNullAndEmptyArrays: true }
+                                },
+                                {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
@@ -133,8 +122,8 @@ module.exports.getdeposit = (agent_id) => {
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
-                                                memb_name: "$memb_bank.account_name",
-                                                memb_bank: "$memb_bank.account_number",
+                                                memb_name: { $ifNull: ['$memb_bank.account_name', null] },
+                                                memb_bank: { $ifNull: ['$memb_bank.account_number', null] },
                                                 from_bank_id: "$from_bank_id",
                                                 from_account_id: "$from_account_id",
                                                 to_bank_id: "$to_bank_id",
@@ -151,15 +140,11 @@ module.exports.getdeposit = (agent_id) => {
                                                 foreignField: "_id",
                                                 as: "banking_memb"
                                         }
-                                }, {
-                                        $unwind: { path: "$banking_memb" }
-                                }, {
-                                        $match: {
-                                                $expr: {
-                                                        $eq: ["$banking_memb_id", "$banking_memb_id.from_bank_id"]
-                                                }
-                                        }
-                                }, {
+                                },
+                                {
+                                        $unwind: { path: "$banking_memb", preserveNullAndEmptyArrays: true }
+                                },
+                                {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
@@ -173,9 +158,9 @@ module.exports.getdeposit = (agent_id) => {
                                                 memb_username: "$memb_username",
                                                 memb_name: "$memb_name",
                                                 memb_bank: "$memb_bank",
-                                                memb_banking_th: "$banking_memb.nameth",
-                                                memb_banking_en: "$banking_memb.nameen",
-                                                memb_banking_code: "$banking_memb.code",
+                                                memb_banking_th: { $ifNull: ['$banking_memb.nameth', null] },
+                                                memb_banking_en: { $ifNull: ['$banking_memb.nameen', null] },
+                                                memb_banking_code: { $ifNull: ['$banking_memb.code', null] },
                                                 from_bank_id: "$from_bank_id",
                                                 from_account_id: "$from_account_id",
                                                 to_bank_id: "$to_bank_id",
@@ -185,22 +170,19 @@ module.exports.getdeposit = (agent_id) => {
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
                                         }
-                                }, {
+                                },
+                                {
                                         $lookup: {
                                                 from: "bank",
                                                 localField: "to_bank_id",
                                                 foreignField: "_id",
                                                 as: "banking_agent"
                                         }
-                                }, {
-                                        $unwind: { path: "$banking_agent" }
-                                }, {
-                                        $match: {
-                                                $expr: {
-                                                        $eq: ["$banking_agent_id", "$banking_agent_id.to_bank_id"]
-                                                }
-                                        }
-                                }, {
+                                },
+                                {
+                                        $unwind: { path: "$banking_agent", preserveNullAndEmptyArrays: true }
+                                },
+                                {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
@@ -219,9 +201,9 @@ module.exports.getdeposit = (agent_id) => {
                                                 memb_banking_code: "$memb_banking_code",
                                                 from_bank_id: "$from_bank_id",
                                                 from_account_id: "$from_account_id",
-                                                web_account_nameth: "$banking_agent.nameth",
-                                                web_account_nameen: "$banking_agent.nameen",
-                                                web_account_code: "$banking_agent.code",
+                                                web_account_nameth: { $ifNull: ['$banking_agent.nameth', null] },
+                                                web_account_nameen: { $ifNull: ['$banking_agent.nameen', null] },
+                                                web_account_code: { $ifNull: ['$banking_agent.code', null] },
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 approve_by: "$approve_by",
@@ -239,14 +221,9 @@ module.exports.getdeposit = (agent_id) => {
                                         }
                                 },
                                 {
-                                        $unwind: { path: "$agent_account" }
-                                }, {
-                                        $match: {
-                                                $expr: {
-                                                        $eq: ["$agent_account_id", "$agent_account.to_account_id"]
-                                                }
-                                        }
-                                }, {
+                                        $unwind: { path: "$agent_account", preserveNullAndEmptyArrays: true }
+                                },
+                                {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
@@ -268,8 +245,8 @@ module.exports.getdeposit = (agent_id) => {
                                                 web_account_nameth: "$web_account_nameth",
                                                 web_account_nameen: "$web_account_nameen",
                                                 web_account_code: "$web_account_code",
-                                                web_account_name: "$agent_account.account_name",
-                                                web_account_number: "$agent_account.account_number",
+                                                web_account_name: { $ifNull: ['$agent_account.account_name', null] },
+                                                web_account_number: { $ifNull: ['$agent_account.account_number', null] },
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 approve_by: "$approve_by",
@@ -287,14 +264,9 @@ module.exports.getdeposit = (agent_id) => {
                                         }
                                 },
                                 {
-                                        $unwind: { path: "$webagent" }
-                                }, {
-                                        $match: {
-                                                $expr: {
-                                                        $eq: ["$agent_id", "$webagent._id"]
-                                                }
-                                        }
-                                }, {
+                                        $unwind: { path: "$webagent", preserveNullAndEmptyArrays: true }
+                                },
+                                {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
@@ -304,9 +276,9 @@ module.exports.getdeposit = (agent_id) => {
                                                 status: "$status",
                                                 description: "$description",
                                                 agent_id: "$agent_id",
-                                                web_name: "$webagent.domain_name",
-                                                web_aka: "$webagent.name",
-                                                web_prefix: "$webagent.prefix",
+                                                web_name: { $ifNull: ['$webagent.domain_name', null] },
+                                                web_aka: { $ifNull: ['$webagent.name', null] },
+                                                web_prefix: { $ifNull: ['$webagent.prefix', null] },
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
                                                 memb_name: "$memb_name",
@@ -338,13 +310,7 @@ module.exports.getdeposit = (agent_id) => {
                                         }
                                 },
                                 {
-                                        $unwind: { path: "$memb_acc" }
-                                }, {
-                                        $match: {
-                                                $expr: {
-                                                        $eq: ["$memb_id", "$memb_acc._id"]
-                                                }
-                                        }
+                                        $unwind: { path: "$memb_acc", preserveNullAndEmptyArrays: true }
                                 },
                                 {
                                         $project: {
@@ -361,7 +327,7 @@ module.exports.getdeposit = (agent_id) => {
                                                 web_prefix: "$web_prefix",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
-                                                memb_status: "$memb_status",
+                                                memb_status: { $ifNull: ['$memb_acc.status', null] },
                                                 memb_name: "$memb_name",
                                                 memb_bank: "$memb_bank",
                                                 memb_banking_th: "$memb_banking_th",
@@ -380,15 +346,6 @@ module.exports.getdeposit = (agent_id) => {
                                                 approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
-                                                // Checked:{
-                                                //         check_by:"$check_by",
-                                                //         checked_date:"$checked_date",
-                                                //         checker_username : "$emp.username",
-                                                //         checker_name : "$emp.name",
-                                                //         checker_tel : "$emp.tel",
-                                                //         checker_role : "$emp.role",
-                                                //         checker_avatar : "$emp.avatar",
-                                                // }
                                         }
                                 },
                                 {
@@ -640,7 +597,7 @@ module.exports.getwithdraw = (agent_id) => {
                                                         agent_id: ObjectId(agent_id)
                                                 }, {
                                                         $or: [
-                                                                { status: "approve" }, { status: "cancel" },{status:"processing"},{status:"success"}
+                                                                { status: "approve" }, { status: "cancel" }, { status: "processing" }, { status: "success" }
                                                         ]
                                                 }
                                                 ]
@@ -669,19 +626,12 @@ module.exports.getwithdraw = (agent_id) => {
                                 }, {
                                         $lookup: {
                                                 from: "member_provider_account",
-                                                localField: "memd_id",
-                                                foreignField: "memd_id",
+                                                localField: "memb_id",
+                                                foreignField: "memb_id",
                                                 as: "memb_prov"
                                         }
                                 }, {
-                                        $unwind: { path: "$memb_prov" }
-                                },
-                                {
-                                        $match: {
-                                                $expr: {
-                                                        $eq: ["$memb_prov.memb_id", "$memb_id"]
-                                                }
-                                        }
+                                        $unwind: { path: "$memb_prov", preserveNullAndEmptyArrays: true }
                                 },
                                 {
                                         $project: {
@@ -694,7 +644,7 @@ module.exports.getwithdraw = (agent_id) => {
                                                 description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
-                                                memb_username: "$memb_prov.username",
+                                                memb_username: { $ifNull: ['$memb_prov.username', null] },
                                                 from_bank_id: "$from_bank_id",
                                                 from_account_id: "$from_account_id",
                                                 to_bank_id: "$to_bank_id",
@@ -712,14 +662,9 @@ module.exports.getwithdraw = (agent_id) => {
                                                 as: "memb_bank"
                                         }
                                 }, {
-                                        $unwind: { path: "$memb_bank" }
-                                }, {
-                                        $match: {
-                                                $expr: {
-                                                        $eq: ["$memb_bank.memb_id", "$memb_id"]
-                                                }
-                                        }
-                                }, {
+                                        $unwind: { path: "$memb_bank", preserveNullAndEmptyArrays: true }
+                                },
+                                {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
@@ -731,8 +676,8 @@ module.exports.getwithdraw = (agent_id) => {
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
-                                                memb_name: "$memb_bank.account_name",
-                                                memb_bank: "$memb_bank.account_number",
+                                                memb_name: { $ifNull: ['$memb_bank.account_name', null] },
+                                                memb_bank: { $ifNull: ['$memb_bank.account_number', null] },
                                                 from_bank_id: "$from_bank_id",
                                                 from_account_id: "$from_account_id",
                                                 to_bank_id: "$to_bank_id",
@@ -749,15 +694,11 @@ module.exports.getwithdraw = (agent_id) => {
                                                 foreignField: "_id",
                                                 as: "banking_memb"
                                         }
-                                }, {
-                                        $unwind: { path: "$banking_memb" }
-                                }, {
-                                        $match: {
-                                                $expr: {
-                                                        $eq: ["$banking_memb_id", "$banking_memb_id.to_bank_id"]
-                                                }
-                                        }
-                                }, {
+                                },
+                                {
+                                        $unwind: { path: "$banking_memb", preserveNullAndEmptyArrays: true }
+                                },
+                                {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
@@ -771,9 +712,9 @@ module.exports.getwithdraw = (agent_id) => {
                                                 memb_username: "$memb_username",
                                                 memb_name: "$memb_name",
                                                 memb_bank: "$memb_bank",
-                                                memb_banking_th: "$banking_memb.nameth",
-                                                memb_banking_en: "$banking_memb.nameen",
-                                                memb_banking_code: "$banking_memb.code",
+                                                memb_banking_th: { $ifNull: ['$banking_memb.nameth', null] },
+                                                memb_banking_en: { $ifNull: ['$banking_memb.nameen', null] },
+                                                memb_banking_code: { $ifNull: ['$banking_memb.code', null] },
                                                 from_bank_id: "$from_bank_id",
                                                 from_account_id: "$from_account_id",
                                                 to_bank_id: "$to_bank_id",
@@ -790,15 +731,11 @@ module.exports.getwithdraw = (agent_id) => {
                                                 foreignField: "_id",
                                                 as: "banking_agent"
                                         }
-                                }, {
-                                        $unwind: { path: "$banking_agent" }
-                                }, {
-                                        $match: {
-                                                $expr: {
-                                                        $eq: ["$banking_agent_id", "$banking_agent_id.from_bank_id"]
-                                                }
-                                        }
-                                }, {
+                                },
+                                {
+                                        $unwind: { path: "$banking_agent", preserveNullAndEmptyArrays: true }
+                                },
+                                {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
@@ -817,9 +754,9 @@ module.exports.getwithdraw = (agent_id) => {
                                                 memb_banking_code: "$memb_banking_code",
                                                 from_bank_id: "$from_bank_id",
                                                 from_account_id: "$from_account_id",
-                                                web_account_nameth: "$banking_agent.nameth",
-                                                web_account_nameen: "$banking_agent.nameen",
-                                                web_account_code: "$banking_agent.code",
+                                                web_account_nameth: { $ifNull: ['$banking_agent.nameth', null] },
+                                                web_account_nameen: { $ifNull: ['$banking_agent.nameen', null] },
+                                                web_account_code: { $ifNull: ['$banking_agent.code', null] },
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 approve_by: "$approve_by",
@@ -837,14 +774,9 @@ module.exports.getwithdraw = (agent_id) => {
                                         }
                                 },
                                 {
-                                        $unwind: { path: "$agent_account" }
-                                }, {
-                                        $match: {
-                                                $expr: {
-                                                        $eq: ["$from_account_id", "$agent_account._id"]
-                                                }
-                                        }
-                                }, {
+                                        $unwind: { path: "$agent_account", preserveNullAndEmptyArrays: true }
+                                },
+                                {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
@@ -866,8 +798,8 @@ module.exports.getwithdraw = (agent_id) => {
                                                 web_account_nameth: "$web_account_nameth",
                                                 web_account_nameen: "$web_account_nameen",
                                                 web_account_code: "$web_account_code",
-                                                web_account_name: "$agent_account.account_name",
-                                                web_account_number: "$agent_account.account_number",
+                                                web_account_name: { $ifNull: ['$agent_account.account_name', null] },
+                                                web_account_number: { $ifNull: ['$agent_account.account_number', null] },
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 approve_by: "$approve_by",
@@ -885,14 +817,9 @@ module.exports.getwithdraw = (agent_id) => {
                                         }
                                 },
                                 {
-                                        $unwind: { path: "$webagent" }
-                                }, {
-                                        $match: {
-                                                $expr: {
-                                                        $eq: ["$agent_id", "$webagent._id"]
-                                                }
-                                        }
-                                }, {
+                                        $unwind: { path: "$webagent", preserveNullAndEmptyArrays: true }
+                                },
+                                {
                                         $project: {
                                                 id: 1,
                                                 type: "$type",
@@ -902,9 +829,9 @@ module.exports.getwithdraw = (agent_id) => {
                                                 status: "$status",
                                                 description: "$description",
                                                 agent_id: "$agent_id",
-                                                web_name: "$webagent.domain_name",
-                                                web_aka: "$webagent.name",
-                                                web_prefix: "$webagent.prefix",
+                                                web_name: { $ifNull: ['$webagent.domain_name', null] },
+                                                web_aka: { $ifNull: ['$webagent.name', null] },
+                                                web_prefix: { $ifNull: ['$webagent.prefix', null] },
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
                                                 memb_name: "$memb_name",
@@ -936,13 +863,7 @@ module.exports.getwithdraw = (agent_id) => {
                                         }
                                 },
                                 {
-                                        $unwind: { path: "$memb_acc" }
-                                }, {
-                                        $match: {
-                                                $expr: {
-                                                        $eq: ["$memb_id", "$memb_acc._id"]
-                                                }
-                                        }
+                                        $unwind: { path: "$memb_acc", preserveNullAndEmptyArrays: true }
                                 },
                                 {
                                         $project: {
@@ -959,7 +880,7 @@ module.exports.getwithdraw = (agent_id) => {
                                                 web_prefix: "$web_prefix",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
-                                                memb_status: "$memb_acc.status",
+                                                memb_status: { $ifNull: ['$memb_acc.status', null] },
                                                 memb_name: "$memb_name",
                                                 memb_bank: "$memb_bank",
                                                 memb_banking_th: "$memb_banking_th",
@@ -978,7 +899,6 @@ module.exports.getwithdraw = (agent_id) => {
                                                 approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date"
-
                                         }
                                 },
                                 {
