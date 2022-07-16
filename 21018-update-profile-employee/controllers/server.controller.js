@@ -10,22 +10,25 @@ module.exports.updateemp = async function (req, res) {
     const body = req.body
     const payload = JSON.parse(req.headers.payload)
     try {
-            console.log("body.agent_id",body.agent_id)
-        let Result = await model.updateemp(body,payload).catch(() => { throw err });
+        console.log("body.agent_id", body.agent_id)
+        let Result = await model.updateemp(body, payload).catch(() => { throw err });
         console.log(Result)
-        if (Result.modifiedCount === 1) {
-            const log = await functions.logs(req.body,req.headers.host).catch(() => {throw err});
+        if (Result.modifiedCount === 1 && Result.matchedCount === 1) {
+            const log = await functions.logs(req.body, req.headers.host).catch(() => { throw err });
             res.send({
                 status: "200",
                 message: "success",
                 //result_config:Result
             }).end();
-        } else {
+        } else if(Result.modifiedCount === 0 && Result.matchedCount === 1){
+            res.send({ status: "202", message: 'ไม่มีการอัพเดทข้อมูล' }).end();
+        }
+        else {
             res.send({ status: "201", message: 'update unsuccessful' }).end();
         }
-                
-                
-          
+
+
+
     } catch (error) {
         console.error(error);
         res.send({ status: "300", message: 'internal error' }).end();

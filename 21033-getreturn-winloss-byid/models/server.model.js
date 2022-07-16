@@ -161,6 +161,40 @@ module.exports.getreturnwinloss_transaction = (file_id) => {
                         status: "$status"
                     }
                 },
+                 {
+                                        $unwind: { path: "$transaction_file" }
+                                },
+                {
+                    $lookup: {
+                            from: "agent",
+                            localField: "agent_id",
+                            foreignField: "_id",
+                            as: "agent"
+                    }
+            },
+             {
+                                        $unwind: { path: "$agent" }
+                                },
+              {
+                    $project: {
+                       // _id: "$_id",
+                        //agent_id: "$agent_id",
+                       // file_name: "$file_name",
+                        transaction_file: {
+                            no:"$transaction_file.no",
+                            username:"$transaction_file.username",
+                            amount:"$transaction_file.amount",
+                            type:"$transaction_file.type",
+                            description:"$transaction_file.description",
+                            status:"$transaction_file.status",
+                            member_id:{ $ifNull: ['$transaction_file.memb_id', null] },
+                            prefix:"$agent.name",
+                            upd_by:"$transaction_file.upd_by",
+                            upd_date:"$transaction_file.upd_date",
+                        },
+                        //status: "$status"
+                    }
+                },
 
             ]).toArray()
             .then(result => resolve(result))

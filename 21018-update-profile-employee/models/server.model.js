@@ -7,7 +7,7 @@ module.exports.updateemp = (body, payload) => {
     console.log(body);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('employee')
-            .updateOne({ _id: ObjectId(body.user_id), },
+            .updateOne({ _id: ObjectId(body.user_id)},
                 {
                     $set: {
                         //"pool": body.web_access,
