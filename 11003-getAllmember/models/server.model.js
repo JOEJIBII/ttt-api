@@ -91,6 +91,7 @@ module.exports.getallmember = (body) => {
                         _id: 1,
                         prefix: "$Tbagent.name",
                         username: "$username",
+                        prefix: "$Tbagent.name",
                         line_id: "$line_id",
                         username_provider: "$username_provider",
                         profile: "$profile",
@@ -116,6 +117,7 @@ module.exports.getallmember = (body) => {
                         _id: 1,
                         prefix: "$Tbagent.name",
                         username: "$username",
+                        prefix: "$Tbagent.name",
                         line_id: "$line_id",
                         username_provider: "$username_provider",
                         profile: "$profile",
@@ -132,8 +134,8 @@ module.exports.getallmember = (body) => {
                 {
                     $lookup: {
                         from: "bank",
-                        localField: "bank_id",
-                        foreignField: "_id",
+                        localField: "_id",
+                        foreignField: "bank_id",
                         as: "banking"
                     }
                 }, {
@@ -141,8 +143,9 @@ module.exports.getallmember = (body) => {
                 }, {
                     $project: {
                         _id: 1,
-                        prefix: "$prefix",
+                        prefix: "$Tbagent.name",
                         username: "$username",
+                        prefix: "$Tbagent.name",
                         line_id: "$line_id",
                         username_provider: "$username_provider",
                         profile: "$profile",
