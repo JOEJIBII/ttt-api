@@ -143,9 +143,9 @@ module.exports.getallmember = (body) => {
                 }, {
                     $project: {
                         _id: 1,
-                        prefix: "$Tbagent.name",
+                        prefix: "$prefix",
                         username: "$username",
-                        prefix: "$Tbagent.name",
+                        prefix: "$prefix",
                         line_id: "$line_id",
                         username_provider: "$username_provider",
                         profile: "$profile",
