@@ -55,7 +55,7 @@ function split_Kbank(word){
       //console.log(var_array1);
       balance = var_array1[3];
       amount = var_array1[2];
-      to_bank_id = ObjectId("62817573136bc3d37930e435");
+      to_bank_id = new ObjectId("62817573136bc3d37930e435");
       to_acc = null;
       to_acc_name = null;
       from_acc = null;
@@ -70,7 +70,7 @@ function split_Kbank(word){
       //console.log(var_array1);
       balance = var_array1[4];
       amount = var_array1[3];
-      to_bank_id = ObjectId("62817573136bc3d37930e435");
+      to_bank_id = new ObjectId("62817573136bc3d37930e435");
       from_acc = var_array1[2];
       to_acc = null;
       to_acc_name = null;
