@@ -50,12 +50,12 @@ function split_Kbank(word){
      
     if( word.includes("เงินเข้า") == true ){
       slip_type = "deposit";
-      channel = 'Bank Transfer';
+      channel = 'SMS';
       let var_array1 = word.match(/(\d+)(((.|,)\d+)+)?/g);
       //console.log(var_array1);
       balance = var_array1[3];
       amount = var_array1[2];
-      to_bank_id = var_array1[1];
+      to_bank_id = ObjectId("62817573136bc3d37930e435");
       to_acc = null;
       to_acc_name = null;
       from_acc = null;
@@ -65,12 +65,12 @@ function split_Kbank(word){
   
     }else if(word.includes("รับโอนจาก") == true){
       slip_type = "deposit";
-      channel = 'Bank Transfer';
+      channel = 'SMS';
       let var_array1 = word.match(/(\d+)(((.|,)\d+)+)?/g);
       //console.log(var_array1);
       balance = var_array1[4];
       amount = var_array1[3];
-      to_bank_id = var_array1[1];
+      to_bank_id = ObjectId("62817573136bc3d37930e435");
       from_acc = var_array1[2];
       to_acc = null;
       to_acc_name = null;
@@ -80,7 +80,7 @@ function split_Kbank(word){
   
     }else if(word.includes("เงินออก") == true){
       slip_type = "withdraw";
-      channel = 'Bank Transfer';
+      channel = 'SMS';
       let var_array1 = word.match(/(\d+)(((.|,)\d+)+)?/g);
       //console.log(var_array1);
       balance = var_array1[3];
@@ -94,7 +94,7 @@ function split_Kbank(word){
   
     }else if(word.includes("หักบช") == true){
       slip_type = "withdraw";
-      channel = 'Bank Transfer';
+      channel = 'SMS';
       let var_array1 = word.match(/(\d+)(((.|,)\d+)+)?/g);
       //console.log(var_array1);
       balance = var_array1[4];
