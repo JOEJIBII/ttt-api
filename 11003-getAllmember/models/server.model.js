@@ -134,8 +134,8 @@ module.exports.getallmember = (body) => {
                 {
                     $lookup: {
                         from: "bank",
-                        localField: "_id",
-                        foreignField: "bank_id",
+                        localField: "bank_id",
+                        foreignField: "_id",
                         as: "banking"
                     }
                 }, {
