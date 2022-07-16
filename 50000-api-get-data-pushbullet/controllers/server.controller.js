@@ -26,6 +26,7 @@ module.exports = async () => {
         working = false;
     }
     // }, null, true);
+    
 }
 function split_Kbank(word){
     let var_array
