@@ -43,8 +43,6 @@ module.exports.getconfig_pd = (agent_id) => {
     });
 }
 
-
-
 module.exports.updatetransaction = (ID, row_no, status, description, memb_id) => {
     var _memb_id = null
     if (memb_id !== null && memb_id !== "") {

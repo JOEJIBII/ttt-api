@@ -1,6 +1,6 @@
 const { CronJob } = require('cron')
 const _ = require('lodash')
-
+const moment = require('moment');
 const model = require('../models/server.model')
 const fx = require("../functions/server.function");
 var working = false
@@ -55,9 +55,14 @@ const mainProcess = async () => {
             let dBankCode = (tx['d_code']).toUpperCase()
             if (dBankCode === 'SCB') {
                 let mBankCode = (tx['m_code']).toUpperCase()
+                console.log("-------------------", mBankCode)
                 if (mBankCode === 'SCB') {
+                    console.log("agent_id", tx['agent_id'], "m_bank", tx['m_bank'], "m_no", tx['m_no'], "m_name", tx['m_name'])
                     let a = await model.SCB2SCB(tx['agent_id'], tx['m_bank'], tx['m_no'], tx['m_name'])
+                    console.log("-------------------", a)
+                    console.log("-------------------", !_.isEmpty(a))
                     if (!_.isEmpty(a)) {
+                        console.log("-------------------", a.length)
                         if (a.length === 1) {
                             a = a[0];
                             let sDate = tx['date'].split('/');
@@ -72,19 +77,22 @@ const mainProcess = async () => {
                             deposit['to_account_id'] = tx['d_account']
                             deposit['amount'] = Number(tx['amount'])
                             deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
-                            deposit['request_date'] = new Date()
+                            deposit['request_date'] = new Date(moment().format())
                             deposit['approve_by'] = 'auto deposit api'
-                            deposit['approve_date'] = new Date()
+                            deposit['approve_date'] = new Date(moment().format())
                             deposit['status'] = 'approve'
                             deposit['description'] = [{ username: 'System', note: 'ระบบสามารถทำการ matching บัญชีลูกค้าได้', note_date: new Date() }]
-                            deposit['cr_date'] = new Date()
+                            deposit['cr_date'] = new Date(moment().format())
                             deposit['upd_by'] = 'auto deposit api'
-                            deposit['upd_date'] = new Date()
-                            await model.insertDeposit(deposit)
+                            deposit['upd_date'] = new Date(moment().format())
+                            let insert = await model.insertDeposit(deposit)
                             await model.updateTxS(tx['_id'], 'success')
                             let user = (await model.findmember_username(a['memb_id']))[0]
-                           let call = await fx.depositPD(cof, user.username, Number(tx['amount']))
-                            console.log('Response',call)
+                            let call = await fx.depositPD(cof, user.username, Number(tx['amount']))
+                            if (call.result.code === 0) {
+                                await model.updaterefid(insert.insertedId, call.result.data.refId)[0]
+                            }
+                            console.log('Response', call)
                             console.log('main process success (success matching), process will restart now')
                             mainProcess();
                         } else {
@@ -94,11 +102,13 @@ const mainProcess = async () => {
                             deposit['bank_transaction_id'] = tx['_id']
                             deposit['date'] = datetime
                             deposit['amount'] = Number(tx['amount'])
+                            deposit['to_bank_id'] = tx['d_bank']
+                            deposit['to_account_id'] = tx['d_account']
                             deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
-                            deposit['request_date'] = new Date()
+                            deposit['request_date'] = new Date(moment().format())
                             deposit['status'] = 'pending'
                             deposit['description'] = [{ username: 'System', note: 'ระบบไม่สามารถทำการ matching บัญชีลูกค้าได้ (duplicate bank account)', note_date: new Date() }]
-                            deposit['cr_date'] = new Date()
+                            deposit['cr_date'] = new Date(moment().format())
                             await model.insertDeposit(deposit)
                             await model.updateTxS(tx['_id'], 'success')
                             console.log('main process success (duplicate matching), process will restart now')
@@ -111,11 +121,13 @@ const mainProcess = async () => {
                         deposit['bank_transaction_id'] = tx['_id']
                         deposit['date'] = datetime
                         deposit['amount'] = Number(tx['amount'])
+                        deposit['to_bank_id'] = tx['d_bank']
+                        deposit['to_account_id'] = tx['d_account']
                         deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
-                        deposit['request_date'] = new Date()
+                        deposit['request_date'] = new Date(moment().format())
                         deposit['status'] = 'pending'
                         deposit['description'] = [{ username: 'System', note: 'ระบบไม่สามารถทำการ matching บัญชีลูกค้าได้ (not found bank account)', note_date: new Date() }]
-                        deposit['cr_date'] = new Date()
+                        deposit['cr_date'] = new Date(moment().format())
                         await model.insertDeposit(deposit)
                         await model.updateTxS(tx['_id'], 'success')
                         console.log('main process success (not found matching), process will restart now')
@@ -138,19 +150,23 @@ const mainProcess = async () => {
                             deposit['to_account_id'] = tx['d_account']
                             deposit['amount'] = Number(tx['amount'])
                             deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
-                            deposit['request_date'] = new Date()
+                            deposit['request_date'] = new Date(moment().format())
                             deposit['approve_by'] = 'auto deposit api'
-                            deposit['approve_date'] = new Date()
+                            deposit['approve_date'] = new Date(moment().format())
                             deposit['status'] = 'approve'
                             deposit['description'] = [{ username: 'System', note: 'ระบบสามารถทำการ matching บัญชีลูกค้าได้', note_date: new Date() }]
-                            deposit['cr_date'] = new Date()
+                            deposit['cr_date'] = new Date(moment().format())
                             deposit['upd_by'] = 'auto deposit api'
-                            deposit['upd_date'] = new Date()
-                            await model.insertDeposit(deposit)
+                            deposit['upd_date'] = new Date(moment().format())
+                            let insert = await model.insertDeposit(deposit)
+                            //console.log("insert", insert)
                             await model.updateTxS(tx['_id'], 'success')
                             let user = (await model.findmember_username(a['memb_id']))[0]
                             let call = await fx.depositPD(cof, user.username, Number(tx['amount']))
-                            console.log('Response',call)
+                            if (call.result.code === 0) {
+                                await model.updaterefid(insert.insertedId, call.result.data.refId)[0]
+                            }
+                            console.log('Response', call)
                             console.log('main process success (success matching), process will restart now')
                             mainProcess();
                         } else {
@@ -163,10 +179,10 @@ const mainProcess = async () => {
                             deposit['to_account_id'] = tx['d_account']
                             deposit['amount'] = Number(tx['amount'])
                             deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
-                            deposit['request_date'] = new Date()
+                            deposit['request_date'] = new Date(moment().format())
                             deposit['status'] = 'pending'
-                            deposit['description'] = [{ username: 'System', note: 'ระบบไม่สามารถทำการ matching บัญชีลูกค้าได้ (duplicate bank account)', note_date: new Date() }]
-                            deposit['cr_date'] = new Date()
+                            deposit['description'] = [{ username: 'System', note: 'ระบบไม่สามารถทำการ matching บัญชีลูกค้าได้ (duplicate bank account)', note_date: new Date(moment().format()) }]
+                            deposit['cr_date'] = new Date(moment().format())
                             await model.insertDeposit(deposit)
                             await model.updateTxS(tx['_id'], 'success')
                             console.log('main process success (duplicate matching), process will restart now')
@@ -182,10 +198,10 @@ const mainProcess = async () => {
                         deposit['to_account_id'] = tx['d_account']
                         deposit['amount'] = Number(tx['amount'])
                         deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
-                        deposit['request_date'] = new Date()
+                        deposit['request_date'] = new Date(moment().format())
                         deposit['status'] = 'pending'
-                        deposit['description'] = [{ username: 'System', note: 'ระบบไม่สามารถทำการ matching บัญชีลูกค้าได้ (not found bank account)', note_date: new Date() }]
-                        deposit['cr_date'] = new Date()
+                        deposit['description'] = [{ username: 'System', note: 'ระบบไม่สามารถทำการ matching บัญชีลูกค้าได้ (not found bank account)', note_date: new Date(moment().format()) }]
+                        deposit['cr_date'] = new Date(moment().format())
                         await model.insertDeposit(deposit)
                         await model.updateTxS(tx['_id'], 'success')
                         console.log('main process success (not found matching), process will restart now')
@@ -204,10 +220,10 @@ const mainProcess = async () => {
                 deposit['date'] = datetime
                 deposit['amount'] = Number(tx['amount'])
                 deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
-                deposit['request_date'] = new Date()
+                deposit['request_date'] = new Date(moment().format())
                 deposit['status'] = 'pending'
-                deposit['description'] = [{ username: 'System', note: 'ระบบไม่สามารถทำการ matching บัญชีลูกค้าได้ (notification data)', note_date: new Date() }]
-                deposit['cr_date'] = new Date()
+                deposit['description'] = [{ username: 'System', note: 'ระบบไม่สามารถทำการ matching บัญชีลูกค้าได้ (notification data)', note_date: new Date(moment().format()) }]
+                deposit['cr_date'] = new Date(moment().format())
                 await model.insertDeposit(deposit)
                 await model.updateTxS(tx['_id'], 'success')
                 console.log('main process success (notification), process will restart now')
@@ -218,7 +234,7 @@ const mainProcess = async () => {
             setTimeout(() => working = false, 5000)
         }
     } catch (error) {
-        console.error('main process error, process will restart in 10 sec.',error)
+        console.error('main process error, process will restart in 10 sec.', error)
         setTimeout(() => working = false, 10000)
     }
 }

@@ -1,6 +1,6 @@
 const { MongoDB } = require('../build/mongodb')
 const { ObjectId } = require('mongodb')
-
+const moment = require('moment');
 
 module.exports.getBankTransaction = () => {
     return new Promise(async (resolve, reject) => {
@@ -57,7 +57,8 @@ module.exports.getBankTransaction = () => {
 module.exports.SCB2SCB = (agentId, bankId, no, name) => {
     return new Promise(async (resolve, reject) => {
         const rNo = new RegExp((no).replace('x', '') + '$');
-        const rName = new RegExp('^' + name);
+        //const rName = new RegExp('^' + name);
+        const rName = new RegExp(name);
         await MongoDB
             .collection('memb_bank_account')
             .aggregate([{
@@ -207,5 +208,27 @@ module.exports.findmember_username = (memb_id) => {
             ]).toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));
+    });
+}
+
+module.exports.updaterefid = (doc_id, ref_id) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('deposit')
+            .updateOne({
+                _id: ObjectId(doc_id)
+            }, {
+                $set: {
+                    "ref_id": ObjectId(ref_id),
+                    "upd_by": "auto-deposit",
+                    "upd_date": new Date(moment().format()),
+                    "upd_prog": "auto-deposit"
+                }
+            }, { upsert: true }
+            )
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+
+
     });
 }
