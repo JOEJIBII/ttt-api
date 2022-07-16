@@ -16,7 +16,41 @@ const mainProcess = async () => {
         working = true
         let tx = (await model.getBankTransaction())[0]
         if (!_.isEmpty(tx)) {
-            let deposit = require('../build/deposit.column')
+            //let deposit = require('../build/deposit.column')
+            let deposit = {
+                agent_id: null,
+                type: 'deposit',
+                sub_type: 'auto deposit',
+                bank_transaction_id: null,
+                date: null,
+                memb_id: null,
+                from_bank_id: null,
+                from_account_id: null,
+                to_bank_id: null,
+                to_account_id: null,
+                amount: null,
+                silp_date: null,
+                silp_image: null,
+                request_by: 'auto deposit api',
+                request_date: null,
+                approve_by: null,
+                approve_date: null,
+                status: null,
+                description: null,
+                turnover_status: null,
+                turnover_date: null,
+                turnover_value: null,
+                ref_id: null,
+                lock_status: '',
+                lock_by: '',
+                lock_date: null,
+                cr_by: 'auto deposit api',
+                cr_date: null,
+                cr_prog: null,
+                upd_by: null,
+                upd_date: null,
+                upd_prog: null
+            }
             let cof = (await model.getconfig_pd(tx['agent_id']))[0]
             let dBankCode = (tx['d_code']).toUpperCase()
             if (dBankCode === 'SCB') {
@@ -184,7 +218,7 @@ const mainProcess = async () => {
             setTimeout(() => working = false, 5000)
         }
     } catch (error) {
-        console.error('main process error, process will restart in 10 sec.')
+        console.error('main process error, process will restart in 10 sec.',error)
         setTimeout(() => working = false, 10000)
     }
 }
