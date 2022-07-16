@@ -20,7 +20,7 @@ module.exports.getwithdrawamount = async function (req, res) {
                 status: "200",
                 message: "success",
                 //result:responses.bank_account
-                result:getwithdrawamount[0].withdraw_config
+                result:getwithdrawamount[0]
             }).end();
         } else {
             res.send({ status: "201", message: 'not found data' }).end();
