@@ -49,7 +49,8 @@ const mainProcess = async () => {
                             await model.insertDeposit(deposit)
                             await model.updateTxS(tx['_id'], 'success')
                             let user = (await model.findmember_username(a['memb_id']))[0]
-                            await fx.depositPD(cof, user.username, Number(tx['amount']))
+                           let call = await fx.depositPD(cof, user.username, Number(tx['amount']))
+                            console.log('Response',call)
                             console.log('main process success (success matching), process will restart now')
                             mainProcess();
                         } else {
@@ -114,7 +115,8 @@ const mainProcess = async () => {
                             await model.insertDeposit(deposit)
                             await model.updateTxS(tx['_id'], 'success')
                             let user = (await model.findmember_username(a['memb_id']))[0]
-                            await fx.depositPD(cof, user.username, Number(tx['amount']))
+                            let call = await fx.depositPD(cof, user.username, Number(tx['amount']))
+                            console.log('Response',call)
                             console.log('main process success (success matching), process will restart now')
                             mainProcess();
                         } else {
