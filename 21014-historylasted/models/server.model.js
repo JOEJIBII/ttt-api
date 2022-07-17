@@ -50,7 +50,7 @@ module.exports.getdeposit = (agent_id) => {
                                                 ]
 
                                         }
-                                }, {
+                                },{
                                         $project: {
                                                 id: 1,
                                                 channel: { $ifNull: ['$channel', null] },
@@ -532,9 +532,11 @@ module.exports.getdeposit = (agent_id) => {
                                                                 approve_role: "$emp.role",
                                                                 approve_avatar: "$emp.avatar",
                                                         }]
-                                                }
+                                                },
+                                                 approve_date: "$approve_date",
                                         }
-                                }, {
+                                 }, 
+                                {
                                         $lookup: {
                                                 from: "emp_role",
                                                 localField: "approve_by.approve_role",
@@ -579,13 +581,13 @@ module.exports.getdeposit = (agent_id) => {
                                                 checked: "$checked",
                                                 approve_by:
                                                 {
-                                                        approve_by: "$approve_by.approve_by",
-                                                        approve_date: "$approve_by.approve_date",
-                                                        approve_username: "$approve_by.approve_username",
-                                                        approve_name: "$approve_by.approve_name",
-                                                        approve_tel: "$approve_by.approve_tel",
-                                                        approve_role: "$role.name",
-                                                        approve_avatar: "$approve_by.approve_avatar",
+                                                        approve_by: { $ifNull: ['$approve_by.approve_by', null] },
+                                                        approve_date: { $ifNull: ['$approve_date', null] },
+                                                        approve_username: { $ifNull: ['$approve_by.approve_username', null] },
+                                                        approve_name: { $ifNull: ['$approve_by.approve_name', null] },
+                                                        approve_tel: { $ifNull: ['$approve_by.approve_tel', null] },
+                                                        approve_role:{ $ifNull: ['$role.name', null] },
+                                                        approve_avatar: { $ifNull: ['$approve_by.approve_avatar', null] },
                                                 }
                                         }
                                 },
