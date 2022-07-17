@@ -148,7 +148,7 @@ module.exports.updatetransaction = async function (req, res) {
                                 let getdocument = await model.getdocument(body).catch(() => { throw err });
                                 let getconfig_pd = await model.getconfig_pd(getdocument[0].agent_id).catch(() => { throw err });
                                 let getmembpd = await model.getmembpd(body.memb_id).catch(() => { throw err });
-                                let updateturnover = await model.updateturnover(getdocument[0].memb_id, getdocument[0].agent_id, getdocument[0].amount, getdocument[0].description).catch(() => { throw err });
+                                let updateturnover = await model.updateturnover(body.memb_id, getdocument[0].agent_id, getdocument[0].amount, getdocument[0].description).catch(() => { throw err });
                                 let depositPD = await functions.depositPD(getconfig_pd[0], getmembpd[0].username, getdocument[0].amount).catch(() => { throw err });
                                 //console.log(depositPD)
                                 if (depositPD.result.code === 0) {
@@ -156,12 +156,12 @@ module.exports.updatetransaction = async function (req, res) {
                                     await model.updaterefid(body.doc_id, depositPD.result.refId, payload, body.type).catch(() => { throw err });
 
                                     if (updateturnover.modifiedCount === 0) {
-                                        await model.upsertturnover(getdocument[0].memb_id, getdocument[0].agent_id, getdocument[0].amount, getdocument[0].description).catch(() => { throw err });
+                                        await model.upsertturnover(body.memb_id, getdocument[0].agent_id, getdocument[0].amount, getdocument[0].description).catch(() => { throw err });
                                     }
-                                    let getmemb = await model.getmemb(getdocument[0].memb_id).catch(() => { throw err });
+                                    let getmemb = await model.getmemb(body.memb_id).catch(() => { throw err });
                                     if (getmemb[0].financial.deposit_first_time === null || getmemb[0].financial.deposit_first_time === "0") {
                                         await model.updateapprove(body, payload, note).catch(() => { throw err });
-                                        await model.update_financial_first(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
+                                        await model.update_financial_first(body.memb_id, getdocument[0].amount, payload).catch(() => { throw err });
                                         let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
                                         let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
                                         res.send({
@@ -186,7 +186,7 @@ module.exports.updatetransaction = async function (req, res) {
                                 if (body.status === "cancel") {
                                     let getdocument = await model.getdocument(body).catch(() => { throw err });
                                     let getconfig_pd = await model.getconfig_pd(getdocument[0].agent_id).catch(() => { throw err });
-                                    let getmembpd = await model.getmembpd(getdocument[0].memb_id).catch(() => { throw err });
+                                    let getmembpd = await model.getmembpd(body.memb_id).catch(() => { throw err });
                                     let updatereject = await model.updatereject(body, payload, note).catch(() => { throw err });
                                     let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
                                     if(getdocument[0].memb_id !== null){
