@@ -534,6 +534,7 @@ module.exports.getdeposit = (agent_id) => {
                                                         }]
                                                 },
                                                  approve_date: "$approve_date",
+                                                 approve_by: "$approve_by",
                                         }
                                  }, 
                                 {
