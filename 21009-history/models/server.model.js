@@ -50,6 +50,7 @@ module.exports.getdeposit = (agent_id) => {
                                 },{
                                         $project: {
                                             id: 1,
+                                            channel:{ $ifNull: ['$channel', null] },
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -83,6 +84,7 @@ module.exports.getdeposit = (agent_id) => {
                                     {
                                         $project: {
                                             id: 1,
+                                            channel:"$channel",
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -117,6 +119,7 @@ module.exports.getdeposit = (agent_id) => {
                                     {
                                         $project: {
                                             id: 1,
+                                            channel:"$channel",
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -153,6 +156,7 @@ module.exports.getdeposit = (agent_id) => {
                                     {
                                         $project: {
                                             id: 1,
+                                            channel:"$channel",
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -192,6 +196,7 @@ module.exports.getdeposit = (agent_id) => {
                                     {
                                         $project: {
                                             id: 1,
+                                            channel:"$channel",
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -235,6 +240,7 @@ module.exports.getdeposit = (agent_id) => {
                                     {
                                         $project: {
                                             id: 1,
+                                            channel:"$channel",
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -279,6 +285,7 @@ module.exports.getdeposit = (agent_id) => {
                                     {
                                         $project: {
                                             id: 1,
+                                            channel:"$channel",
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -326,6 +333,7 @@ module.exports.getdeposit = (agent_id) => {
                                       {
                                             $project: {
                                                     id: 1,
+                                                    channel:"$channel",
                                                     type: "$type",
                                                     sub_type: "$sub_type",
                                                     amount: "$amount",
@@ -375,6 +383,7 @@ module.exports.getdeposit = (agent_id) => {
                                     {
                                             $project: {
                                                     id: 1,
+                                                    channel:"$channel",
                                                     type: "$type",
                                                     sub_type: "$sub_type",
                                                     amount: "$amount",
@@ -437,6 +446,7 @@ module.exports.getdeposit = (agent_id) => {
                                     {
                                             $project: {
                                                     id: 1,
+                                                    channel:"$channel",
                                                     type: "$type",
                                                     sub_type: "$sub_type",
                                                     amount: "$amount",
@@ -499,6 +509,7 @@ module.exports.getdeposit = (agent_id) => {
                                     {
                                             $project: {
                                                     id: 1,
+                                                    channel:"$channel",
                                                     type: "$type",
                                                     sub_type: "$sub_type",
                                                     amount: "$amount",
@@ -556,6 +567,7 @@ module.exports.getdeposit = (agent_id) => {
                                     }, {
                                             $project: {
                                                     id: 1,
+                                                    channel:"$channel",
                                                     type: "$type",
                                                     sub_type: "$sub_type",
                                                     amount: "$amount",
@@ -627,6 +639,7 @@ module.exports.getwithdraw = (agent_id) => {
                                 },{
                                         $project: {
                                             id: 1,
+                                            channel:{ $ifNull: ['$channel', null] },
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -660,6 +673,7 @@ module.exports.getwithdraw = (agent_id) => {
                                     {
                                         $project: {
                                             id: 1,
+                                            channel:"$channel",
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -694,6 +708,7 @@ module.exports.getwithdraw = (agent_id) => {
                                     {
                                         $project: {
                                             id: 1,
+                                            channel:"$channel",
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -730,6 +745,7 @@ module.exports.getwithdraw = (agent_id) => {
                                     {
                                         $project: {
                                             id: 1,
+                                            channel:"$channel",
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -769,6 +785,7 @@ module.exports.getwithdraw = (agent_id) => {
                                     {
                                         $project: {
                                             id: 1,
+                                            channel:"$channel",
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -811,6 +828,7 @@ module.exports.getwithdraw = (agent_id) => {
                                     {
                                         $project: {
                                             id: 1,
+                                            channel:"$channel",
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -855,6 +873,7 @@ module.exports.getwithdraw = (agent_id) => {
                                     {
                                         $project: {
                                             id: 1,
+                                            channel:"$channel",
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -902,6 +921,7 @@ module.exports.getwithdraw = (agent_id) => {
                                     {
                                         $project: {
                                             id: 1,
+                                            channel:"$channel",
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -951,6 +971,7 @@ module.exports.getwithdraw = (agent_id) => {
                                     {
                                         $project: {
                                             id: 1,
+                                            channel:"$channel",
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -1012,6 +1033,7 @@ module.exports.getwithdraw = (agent_id) => {
                                     {
                                         $project: {
                                             id: 1,
+                                            channel:"$channel",
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",
@@ -1070,6 +1092,7 @@ module.exports.getwithdraw = (agent_id) => {
                                     {
                                         $project: {
                                             id: 1,
+                                            channel:"$channel",
                                             type: "$type",
                                             sub_type: "$sub_type",
                                             amount: "$amount",

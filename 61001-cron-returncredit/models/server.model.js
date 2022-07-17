@@ -129,7 +129,6 @@ module.exports.findalltransaction = () => {
     });
 }
 
-
 module.exports.findmemberId = (username, agent_id) => {
     // console.log(agent_id);
     return new Promise(async (resolve, reject) => {
