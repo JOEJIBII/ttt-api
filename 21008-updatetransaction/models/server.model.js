@@ -2,7 +2,23 @@ const { MongoDB } = require('../configs/connection_mongodb');
 const moment = require('moment');
 const { ObjectId, Double } = require('mongodb');
 
-module.exports.updateapprove = (body, payload,notes) => {
+module.exports.updateapprove = (body, payload, notes) => {
+    let silpimage = null
+    if (body.silp_image !== null && body.silp_image !== "") {
+        let silpimage = body.silp_image
+    }
+    let memb_id = null
+    if (body.memb_id !== null && body.memb_id !== "") {
+        let memb_id = body.memb_id
+    }
+    let bank_id = null
+    if (body.bank_id !== null && body.bank_id !== "") {
+        let bank_id = body.bank_id
+    }
+    let account_id = null
+    if (body.bank_account_id !== null && body.bank_account_id !== "") {
+        let account_id = body.bank_account_id
+    }
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(body.type)
             .updateOne({
@@ -10,8 +26,12 @@ module.exports.updateapprove = (body, payload,notes) => {
 
             }, {
                 $set: {
+                    "memb_id":memb_id,
+                    "from_bank_id":bank_id,
+                    "from_account_id":account_id,
+                    "silp_image": silpimage,
                     "status": body.status,
-                    "description":notes,
+                    "description": notes,
                     "approve_by": ObjectId(payload.user_id),
                     "approve_date": new Date(moment().format()),
                     "upd_by": ObjectId(payload.user_id),
@@ -164,36 +184,56 @@ module.exports.updaterefid = (doc_id, ref_id, payload, type) => {
 
 
 
-module.exports.updatelock = (body,payload) => {
+module.exports.updatelock = (body, payload) => {
     console.log(payload);
     return new Promise(async (resolve, reject) => {
-            await MongoDB.collection(body.type)
-                    .updateOne({
-                            _id: ObjectId(body.doc_id)
+        await MongoDB.collection(body.type)
+            .updateOne({
+                _id: ObjectId(body.doc_id)
 
-                    }, {
-                            $set: {
-                                    "lock_status": "",
-                                    "lock_by": ObjectId(payload.user_id),
-                                    "lock_date": new Date(moment().format()),
-                            }
-                    }, { upsert: true }
-                    )
-                    .then(result => resolve(result))
-                    .catch(error => reject(error));
+            }, {
+                $set: {
+                    "lock_status": "",
+                    "lock_by": ObjectId(payload.user_id),
+                    "lock_date": new Date(moment().format()),
+                }
+            }, { upsert: true }
+            )
+            .then(result => resolve(result))
+            .catch(error => reject(error));
 
 
     });
 }
 
-module.exports.updatechecked = (body, payload,notes) => {
+module.exports.updatechecked = (body, payload, notes) => {
     //console.log(body);
+    let silpimage = null
+    if (body.silp_image !== null && body.silp_image !== "") {
+        let silpimage = body.silp_image
+    }
+    let memb_id = null
+    if (body.memb_id !== null && body.memb_id !== "") {
+        let memb_id = body.memb_id
+    }
+    let bank_id = null
+    if (body.bank_id !== null && body.bank_id !== "") {
+        let bank_id = body.bank_id
+    }
+    let account_id = null
+    if (body.bank_account_id !== null && body.bank_account_id !== "") {
+        let account_id = body.bank_account_id
+    }
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(body.type)
             .updateOne({
                 _id: ObjectId(body.doc_id)
             }, {
                 $set: {
+                    "memb_id":memb_id,
+                    "from_bank_id":bank_id,
+                    "from_account_id":account_id,
+                    "silp_image": silpimage,
                     "status": body.status,
                     "description": notes,
                     "check_by": ObjectId(payload.user_id),
@@ -208,8 +248,24 @@ module.exports.updatechecked = (body, payload,notes) => {
     });
 }
 
-module.exports.updatereject = (body, payload,notes) => {
+module.exports.updatereject = (body, payload, notes) => {
     //console.log(body);
+    let silpimage = null
+    if (body.silp_image !== null && body.silp_image !== "") {
+        let silpimage = body.silp_image
+    }
+    let memb_id = null
+    if (body.memb_id !== null && body.memb_id !== "") {
+        let memb_id = body.memb_id
+    }
+    let bank_id = null
+    if (body.bank_id !== null && body.bank_id !== "") {
+        let bank_id = body.bank_id
+    }
+    let account_id = null
+    if (body.bank_account_id !== null && body.bank_account_id !== "") {
+        let account_id = body.bank_account_id
+    }
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(body.type)
             .updateOne({
@@ -217,8 +273,12 @@ module.exports.updatereject = (body, payload,notes) => {
 
             }, {
                 $set: {
+                    "memb_id":memb_id,
+                    "from_bank_id":bank_id,
+                    "from_account_id":account_id,
+                    "silp_image": silpimage,
                     "status": body.status,
-                    "description":notes,
+                    "description": notes,
                     "approve_by": ObjectId(payload.user_id),
                     "approve_date": new Date(moment().format()),
                     "upd_by": ObjectId(payload.user_id),
@@ -233,7 +293,7 @@ module.exports.updatereject = (body, payload,notes) => {
     });
 }
 
-module.exports.updatemember = (memb_id,payload) => {
+module.exports.updatemember = (memb_id, payload) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('member')
