@@ -581,7 +581,7 @@ module.exports.getdeposit = (agent_id) => {
                                                 checked: "$checked",
                                                 approve_by:
                                                 {
-                                                        approve_by: { $ifNull: ['$approve_by.approve_by', null] },
+                                                        approve_by: { $ifNull: ['$approve_by.approve_by', "$approve_by"] },
                                                         approve_date: { $ifNull: ['$approve_date', null] },
                                                         approve_username: { $ifNull: ['$approve_by.approve_username', null] },
                                                         approve_name: { $ifNull: ['$approve_by.approve_name', null] },
