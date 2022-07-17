@@ -39,7 +39,7 @@ module.exports.updatetransaction = async function (req, res) {
                             let getdocument = await model.getdocument(body).catch(() => { throw err });
                             //console.log(getdocument[0])
                             let getconfig_pd = await model.getconfig_pd(getdocument[0].agent_id).catch(() => { throw err });
-                            let getmembpd = await model.getmembpd(getdocument[0].memb_id).catch(() => { throw err });
+                            let getmembpd = await model.getmembpd(body.memb_id).catch(() => { throw err });
                             //let updateturnover = await model.updateturnover(getdocument[0].memb_id,getdocument[0].agent_id,getdocument[0].amount,getdocument[0].description).catch(() => { throw err });
                             let withdrawPD = await functions.withdraw(getconfig_pd[0], getmembpd[0].username, getdocument[0].amount).catch(() => { throw err });
                             if (withdrawPD.result.code === 0) {
@@ -147,7 +147,7 @@ module.exports.updatetransaction = async function (req, res) {
                             if (body.status === "approve") {
                                 let getdocument = await model.getdocument(body).catch(() => { throw err });
                                 let getconfig_pd = await model.getconfig_pd(getdocument[0].agent_id).catch(() => { throw err });
-                                let getmembpd = await model.getmembpd(getdocument[0].memb_id).catch(() => { throw err });
+                                let getmembpd = await model.getmembpd(body.memb_id).catch(() => { throw err });
                                 let updateturnover = await model.updateturnover(getdocument[0].memb_id, getdocument[0].agent_id, getdocument[0].amount, getdocument[0].description).catch(() => { throw err });
                                 let depositPD = await functions.depositPD(getconfig_pd[0], getmembpd[0].username, getdocument[0].amount).catch(() => { throw err });
                                 //console.log(depositPD)
