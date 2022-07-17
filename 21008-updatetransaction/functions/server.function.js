@@ -71,6 +71,8 @@ module.exports.withdraw = async (config, username, amount) => {
 
 
 module.exports.changestatus = async (username,conf) => {
+    console.log("username",username)
+    console.log("conf",conf)
     return new Promise(async (resolve, reject) => {
         let option ={
             method :"POST",

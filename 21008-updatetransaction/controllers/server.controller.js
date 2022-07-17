@@ -189,7 +189,9 @@ module.exports.updatetransaction = async function (req, res) {
                                     let getmembpd = await model.getmembpd(getdocument[0].memb_id).catch(() => { throw err });
                                     let updatereject = await model.updatereject(body, payload, note).catch(() => { throw err });
                                     let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
-                                    let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
+                                    if(getdocument[0].memb_id !== null){
+                                        let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
+                                    }
                                     res.send({
                                         status: "200",
                                         message: "success",
