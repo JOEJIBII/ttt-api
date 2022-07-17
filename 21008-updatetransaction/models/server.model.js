@@ -5,20 +5,21 @@ const { ObjectId, Double } = require('mongodb');
 module.exports.updateapprove = (body, payload, notes) => {
     let silpimage = null
     if (body.silp_image !== null && body.silp_image !== "") {
-        let silpimage = body.silp_image
+       silpimage = body.silp_image
     }
     let memb_id = null
     if (body.memb_id !== null && body.memb_id !== "") {
-        let memb_id = body.memb_id
+        memb_id = new ObjectId(body.memb_id)
     }
     let bank_id = null
     if (body.bank_id !== null && body.bank_id !== "") {
-        let bank_id = body.bank_id
+        bank_id = new ObjectId(body.bank_id)
     }
     let account_id = null
     if (body.bank_account_id !== null && body.bank_account_id !== "") {
-        let account_id = body.bank_account_id
+         account_id = new ObjectId(body.bank_account_id)
     }
+
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(body.type)
             .updateOne({
@@ -207,23 +208,24 @@ module.exports.updatelock = (body, payload) => {
 }
 
 module.exports.updatechecked = (body, payload, notes) => {
-    //console.log(body);
+    //console.log("body",body);
     let silpimage = null
     if (body.silp_image !== null && body.silp_image !== "") {
-        let silpimage = body.silp_image
+        silpimage = body.silp_image
     }
     let memb_id = null
     if (body.memb_id !== null && body.memb_id !== "") {
-        let memb_id = body.memb_id
+         memb_id = new ObjectId(body.memb_id)
     }
     let bank_id = null
     if (body.bank_id !== null && body.bank_id !== "") {
-        let bank_id = body.bank_id
+         bank_id = new ObjectId(body.bank_id)
     }
     let account_id = null
     if (body.bank_account_id !== null && body.bank_account_id !== "") {
-        let account_id = body.bank_account_id
+         account_id = new ObjectId(body.bank_account_id)
     }
+
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(body.type)
             .updateOne({
@@ -252,20 +254,21 @@ module.exports.updatereject = (body, payload, notes) => {
     //console.log(body);
     let silpimage = null
     if (body.silp_image !== null && body.silp_image !== "") {
-        let silpimage = body.silp_image
+       silpimage = body.silp_image
     }
     let memb_id = null
     if (body.memb_id !== null && body.memb_id !== "") {
-        let memb_id = body.memb_id
+        memb_id = new ObjectId(body.memb_id)
     }
     let bank_id = null
     if (body.bank_id !== null && body.bank_id !== "") {
-        let bank_id = body.bank_id
+         bank_id = new ObjectId(body.bank_id)
     }
     let account_id = null
     if (body.bank_account_id !== null && body.bank_account_id !== "") {
-        let account_id = body.bank_account_id
+         account_id = new ObjectId(body.bank_account_id)
     }
+   
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(body.type)
             .updateOne({
