@@ -18,6 +18,7 @@ const mainProcess = async () => {
         if (!_.isEmpty(tx)) {
             //let deposit = require('../build/deposit.column')
             let deposit = {
+                channel:"auto",
                 agent_id: null,
                 type: 'deposit',
                 sub_type: 'auto deposit',
@@ -59,8 +60,6 @@ const mainProcess = async () => {
                 if (mBankCode === 'SCB') {
                     console.log("agent_id", tx['agent_id'], "m_bank", tx['m_bank'], "m_no", tx['m_no'], "m_name", tx['m_name'])
                     let a = await model.SCB2SCB(tx['agent_id'], tx['m_bank'], tx['m_no'], tx['m_name'])
-                    console.log("-------------------", a)
-                    console.log("-------------------", !_.isEmpty(a))
                     if (!_.isEmpty(a)) {
                         console.log("-------------------", a.length)
                         if (a.length === 1) {
@@ -209,6 +208,102 @@ const mainProcess = async () => {
                     }
                 }
             } else if (dBankCode === 'KBANK') {
+                let mBankCode = (tx['m_code']).toUpperCase()
+                let findaccount_agent = (await model.findaccount_agent(tx['agent_id'], tx['d_bank'], tx['d_oth_account']))[0]
+                console.log('findaccount_agent', findaccount_agent)
+                if (mBankCode === 'KBANK') {
+                    let a = await model.KBANK2KBANK(tx['agent_id'], tx['m_bank'], tx['m_no']) //findaccount_agent
+                    if (!_.isEmpty(a)) {
+                        console.log("-------------------", a.length)
+                        if (a.length === 1) {
+                            a = a[0];
+                            let sDate = tx['date'].split('/');
+                            let datetime = new Date(`${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`)
+                            deposit['agent_id'] = tx['agent_id']
+                            deposit['bank_transaction_id'] = tx['_id']
+                            deposit['date'] = datetime
+                            deposit['memb_id'] = a['memb_id']
+                            deposit['from_bank_id'] = a['from_bank_id']
+                            deposit['from_account_id'] = a['from_account_id']
+                            deposit['to_bank_id'] = findaccount_agent.to_bank_id
+                            deposit['to_account_id'] = findaccount_agent.to_account_id
+                            deposit['amount'] = Number(tx['amount'])
+                            deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
+                            deposit['request_date'] = new Date(moment().format())
+                            deposit['approve_by'] = 'auto deposit api'
+                            deposit['approve_date'] = new Date(moment().format())
+                            deposit['status'] = 'approve'
+                            deposit['description'] = [{ username: 'System', note: 'ระบบสามารถทำการ matching บัญชีลูกค้าได้', note_date: new Date() }]
+                            deposit['cr_date'] = new Date(moment().format())
+                            deposit['upd_by'] = 'auto deposit api'
+                            deposit['upd_date'] = new Date(moment().format())
+                            let insert = await model.insertDeposit(deposit)
+                            await model.updateTxS(tx['_id'], 'success')
+                            let user = (await model.findmember_username(a['memb_id']))[0]
+                            let call = await fx.depositPD(cof, user.username, Number(tx['amount']))
+                            if (call.result.code === 0) {
+                                await model.updaterefid(insert.insertedId, call.result.data.refId)[0]
+                            }
+                            console.log('Response', call)
+                            console.log('main process success (success matching), process will restart now')
+                            mainProcess();
+                        } else {
+                            let sDate = tx['date'].split('/');
+                            let datetime = new Date(`${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`)
+                            deposit['agent_id'] = tx['agent_id']
+                            deposit['bank_transaction_id'] = tx['_id']
+                            deposit['date'] = datetime
+                            deposit['amount'] = Number(tx['amount'])
+                            deposit['to_bank_id'] = findaccount_agent.to_bank_id
+                            deposit['to_account_id'] = findaccount_agent.to_account_id
+                            deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
+                            deposit['request_date'] = new Date(moment().format())
+                            deposit['status'] = 'pending'
+                            deposit['description'] = [{ username: 'System', note: 'ระบบไม่สามารถทำการ matching บัญชีลูกค้าได้ (duplicate bank account)', note_date: new Date() }]
+                            deposit['cr_date'] = new Date(moment().format())
+                            await model.insertDeposit(deposit)
+                            await model.updateTxS(tx['_id'], 'success')
+                            console.log('main process success (duplicate matching), process will restart now')
+                            mainProcess();
+                        }
+                    } else {
+                        let sDate = tx['date'].split('/');
+                        let datetime = new Date(`${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`)
+                        deposit['agent_id'] = tx['agent_id']
+                        deposit['bank_transaction_id'] = tx['_id']
+                        deposit['date'] = datetime
+                        deposit['amount'] = Number(tx['amount'])
+                        deposit['to_bank_id'] = findaccount_agent.to_bank_id
+                        deposit['to_account_id'] = findaccount_agent.to_account_id
+                        deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
+                        deposit['request_date'] = new Date(moment().format())
+                        deposit['status'] = 'pending'
+                        deposit['description'] = [{ username: 'System', note: 'ระบบไม่สามารถทำการ matching บัญชีลูกค้าได้ (not found bank account)', note_date: new Date() }]
+                        deposit['cr_date'] = new Date(moment().format())
+                        await model.insertDeposit(deposit)
+                        await model.updateTxS(tx['_id'], 'success')
+                        console.log('main process success (not found matching), process will restart now')
+                        mainProcess();
+                    }
+                } else {
+                    let sDate = tx['date'].split('/');
+                    let datetime = new Date(`${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`)
+                    deposit['agent_id'] = tx['agent_id']
+                    deposit['bank_transaction_id'] = tx['_id']
+                    deposit['date'] = datetime
+                    deposit['amount'] = Number(tx['amount'])
+                    deposit['to_bank_id'] = findaccount_agent.to_bank_id
+                    deposit['to_account_id'] = findaccount_agent.to_account_id
+                    deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
+                    deposit['request_date'] = new Date(moment().format())
+                    deposit['status'] = 'pending'
+                    deposit['description'] = [{ username: 'System', note: 'ระบบไม่สามารถทำการ matching บัญชีลูกค้าได้ (not found bank account)', note_date: new Date() }]
+                    deposit['cr_date'] = new Date(moment().format())
+                    await model.insertDeposit(deposit)
+                    await model.updateTxS(tx['_id'], 'success')
+                    console.log('main process success (not found matching), process will restart now')
+                    mainProcess();
+                }
 
             } else if (dBankCode === 'KTB') {
 

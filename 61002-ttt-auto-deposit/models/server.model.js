@@ -35,10 +35,12 @@ module.exports.getBankTransaction = () => {
                     d_code: { $ifNull: ['$db.code', 'noti'] },
                     d_bank: { $ifNull: ['$bank_id', null] },
                     d_account: { $ifNull: ['$account_id', null] },
+                    d_oth_account: { $ifNull: ['$to_account_number', null] },
                     date: '$date',
                     time: '$time',
                     amount: '$amount',
-                    m_code: '$mb.code',
+                    // m_code: '$mb.code', { $ifNull: ['$mb.code', 'noti'] },
+                    m_code: { $ifNull: ['$mb.code', 'noti'] },
                     m_bank: '$mb._id',
                     m_no: '$from_account_number',
                     m_name: '$from_account_name'
@@ -87,6 +89,38 @@ module.exports.SCB2SCB = (agentId, bankId, no, name) => {
     })
 }
 
+module.exports.KBANK2KBANK = (agentId, bankId, no) => {
+    return new Promise(async (resolve, reject) => {
+        //const rNo = new RegExp((no).replace('x', '') + '$');
+        const rNo = new RegExp((no).replace('x', ''));
+        await MongoDB
+            .collection('memb_bank_account')
+            .aggregate([{
+                $match: {
+                    $and: [{ agent_id: ObjectId(agentId) }, { bank_id: ObjectId(bankId) }, { account_number: { $regex: rNo } }]
+                }
+            }, {
+                $lookup: {
+                    from: 'member',
+                    localField: 'memb_id',
+                    foreignField: '_id',
+                    as: 'm'
+                }
+            }, {
+                $unwind: { path: '$m' }
+            }, {
+                $project: {
+                    memb_id: '$m._id',
+                    from_bank_id: '$bank_id',
+                    from_account_id: '$_id'
+                }
+            }])
+            .toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error))
+    })
+}
+
 module.exports.SCB2OTH = (agentId, bankId, no) => {
     return new Promise(async (resolve, reject) => {
         const rNo = new RegExp((no).replace('/x', '') + '$');
@@ -112,6 +146,30 @@ module.exports.SCB2OTH = (agentId, bankId, no) => {
                     from_account_id: '$_id'
                 }
             }])
+            .toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error))
+    })
+}
+
+module.exports.findaccount_agent = (agentId, bankId, no) => {
+    return new Promise(async (resolve, reject) => {
+        //const rNo = new RegExp((no).replace('/x', '') + '$');
+        const rNo = new RegExp((no).replace('/x', ''));
+        await MongoDB
+            .collection('agent_bank_account')
+            .aggregate([{
+                $match: {
+                    $and: [{ agent_id: ObjectId(agentId) }, { bank_id: ObjectId(bankId) }, { account_number: { $regex: rNo } }]
+                }
+            },
+            {
+                $project: {
+                    to_bank_id: '$bank_id',
+                    to_account_id: '$_id'
+                }
+            }
+            ])
             .toArray()
             .then(result => resolve(result))
             .catch(error => reject(error))
@@ -193,7 +251,7 @@ module.exports.findmember_username = (memb_id) => {
                     $match: {
                         $and: [
                             {
-                                memb_id:ObjectId(memb_id)
+                                memb_id: ObjectId(memb_id)
                             },
 
                         ]
