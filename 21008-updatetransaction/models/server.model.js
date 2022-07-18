@@ -19,6 +19,12 @@ module.exports.updateapprove = (body, payload, notes) => {
     if (body.bank_account_id !== null && body.bank_account_id !== "") {
          account_id = new ObjectId(body.bank_account_id)
     }
+    let status = null
+    if(body.type === "deposit"){
+        status = "success"
+    }else if (body.type === "withdraw"){
+        status = "approve"
+    }
 
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(body.type)

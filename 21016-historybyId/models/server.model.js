@@ -24,6 +24,7 @@ module.exports.getdeposit = (doc_id) => {
                                                 sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 request_date: "$request_date",
                                                 status: "$status",
                                                 description: "$description",
@@ -34,7 +35,9 @@ module.exports.getdeposit = (doc_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                         }
                                 }, {
                                         $lookup: {
@@ -53,6 +56,7 @@ module.exports.getdeposit = (doc_id) => {
                                                 sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 request_date: "$request_date",
                                                 status: "$status",
                                                 description: "$description",
@@ -64,7 +68,9 @@ module.exports.getdeposit = (doc_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                         }
                                 }, {
                                         $lookup: {
@@ -85,6 +91,7 @@ module.exports.getdeposit = (doc_id) => {
                                                 request_date: "$request_date",
                                                 status: "$status",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
@@ -96,7 +103,9 @@ module.exports.getdeposit = (doc_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                         }
                                 }, {
                                         $lookup: {
@@ -115,6 +124,7 @@ module.exports.getdeposit = (doc_id) => {
                                                 sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 request_date: "$request_date",
                                                 status: "$status",
                                                 description: "$description",
@@ -131,7 +141,9 @@ module.exports.getdeposit = (doc_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                         }
                                 }, {
                                         $lookup: {
@@ -152,6 +164,7 @@ module.exports.getdeposit = (doc_id) => {
                                                 request_date: "$request_date",
                                                 status: "$status",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
@@ -169,7 +182,9 @@ module.exports.getdeposit = (doc_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                         }
                                 },
                                 {
@@ -192,6 +207,7 @@ module.exports.getdeposit = (doc_id) => {
                                                 request_date: "$request_date",
                                                 status: "$status",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
@@ -211,7 +227,9 @@ module.exports.getdeposit = (doc_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                         }
                                 },
                                 {
@@ -234,6 +252,7 @@ module.exports.getdeposit = (doc_id) => {
                                                 request_date: "$request_date",
                                                 status: "$status",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: { $ifNull: ['$webagent.domain_name', null] },
@@ -256,7 +275,9 @@ module.exports.getdeposit = (doc_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                         }
                                 },
                                 {
@@ -283,6 +304,7 @@ module.exports.getdeposit = (doc_id) => {
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 web_aka: "$web_aka",
                                                 web_prefix: "$web_prefix",
                                                 memb_id: "$memb_id",
@@ -303,7 +325,9 @@ module.exports.getdeposit = (doc_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                                 // Checked:{
                                                 //         check_by:"$check_by",
                                                 //         checked_date:"$checked_date",
@@ -336,6 +360,7 @@ module.exports.getdeposit = (doc_id) => {
                                                 request_date: "$request_date",
                                                 status: "$status",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 description: "$description",
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
@@ -372,7 +397,9 @@ module.exports.getdeposit = (doc_id) => {
                                                                 checker_role: "$emp.role",
                                                                 checker_avatar: "$emp.avatar",
                                                         }]
-                                                }
+                                                },
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                         }
                                 }
 
@@ -407,6 +434,7 @@ module.exports.getwithdraw = (doc_id) => {
                                                 request_date: "$request_date",
                                                 status: "$status",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
@@ -415,7 +443,9 @@ module.exports.getwithdraw = (doc_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                         }
                                 }, {
                                         $lookup: {
@@ -444,6 +474,7 @@ module.exports.getwithdraw = (doc_id) => {
                                                 request_date: "$request_date",
                                                 status: "$status",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
@@ -453,7 +484,9 @@ module.exports.getwithdraw = (doc_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                         }
                                 }, {
                                         $lookup: {
@@ -480,6 +513,7 @@ module.exports.getwithdraw = (doc_id) => {
                                                 request_date: "$request_date",
                                                 status: "$status",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 description: "$description",
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
@@ -491,7 +525,9 @@ module.exports.getwithdraw = (doc_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                         }
                                 }, {
                                         $lookup: {
@@ -516,6 +552,7 @@ module.exports.getwithdraw = (doc_id) => {
                                                 sub_type: "$sub_type",
                                                 amount: "$amount",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 request_date: "$request_date",
                                                 status: "$status",
                                                 description: "$description",
@@ -532,7 +569,9 @@ module.exports.getwithdraw = (doc_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                         }
                                 }, {
                                         $lookup: {
@@ -562,6 +601,7 @@ module.exports.getwithdraw = (doc_id) => {
                                                 agent_id: "$agent_id",
                                                 memb_id: "$memb_id",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 memb_username: "$memb_username",
                                                 memb_name: "$memb_name",
                                                 memb_bank: "$memb_bank",
@@ -576,7 +616,9 @@ module.exports.getwithdraw = (doc_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                         }
                                 },
                                 {
@@ -607,6 +649,7 @@ module.exports.getwithdraw = (doc_id) => {
                                                 description: "$description",
                                                 agent_id: "$agent_id",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
                                                 memb_name: "$memb_name",
@@ -624,7 +667,9 @@ module.exports.getwithdraw = (doc_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                         }
                                 },
                                 {
@@ -657,6 +702,7 @@ module.exports.getwithdraw = (doc_id) => {
                                                 web_name: "$webagent.domain_name",
                                                 web_aka: "$webagent.name",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 web_prefix: "$webagent.prefix",
                                                 memb_id: "$memb_id",
                                                 memb_username: "$memb_username",
@@ -675,7 +721,9 @@ module.exports.getwithdraw = (doc_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                         }
                                 },
                                 {
@@ -708,6 +756,7 @@ module.exports.getwithdraw = (doc_id) => {
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 web_aka: "$web_aka",
                                                 web_prefix: "$web_prefix",
                                                 memb_id: "$memb_id",
@@ -728,7 +777,9 @@ module.exports.getwithdraw = (doc_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 check_by: "$check_by",
-                                                checked_date: "$checked_date"
+                                                checked_date: "$checked_date",
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
 
                                         }
                                 },
@@ -756,6 +807,7 @@ module.exports.getwithdraw = (doc_id) => {
                                                 agent_id: "$agent_id",
                                                 web_name: "$web_name",
                                                 silp_image: "$silp_image",
+                                                silp_date: "$silp_date",
                                                 web_aka: "$web_aka",
                                                 web_prefix: "$web_prefix",
                                                 memb_id: "$memb_id",
@@ -789,7 +841,9 @@ module.exports.getwithdraw = (doc_id) => {
                                                                 checker_role: "$emp.role",
                                                                 checker_avatar: "$emp.avatar",
                                                         }]
-                                                }
+                                                },
+                                                upd_by:"$upd_by",
+                                                upd_date:"$upd_date",
                                         }
                                 },
                                 // {  $lookup: {

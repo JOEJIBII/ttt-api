@@ -327,6 +327,14 @@ module.exports.Withrawcount = (_id, counter) => {
 
 module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, turnover, body, agent_id) => {
     console.log(payload)
+    let siplimage = null
+   let silpdate = null
+   if(siplimage !== null && siplimage !== ""){
+    siplimage = body.silp_image
+   }
+   if(silpdate !== null && silpdate !== ""){
+    silpdate = new Date(moment(body.silp_date).format())
+   }
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('withdraw')
             .insertOne({
@@ -342,8 +350,8 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
                 to_bank_id: ObjectId(member.bank_id),
                 to_account_id: ObjectId(member._id),
                 amount: Double(balance),
-                silp_date: null,
-                silp_image: null,
+                silp_date: silpdate,
+                silp_image: siplimage,
                 request_by: payload.username,
                 request_date: new Date(moment().format()),
                 approve_by: null,
