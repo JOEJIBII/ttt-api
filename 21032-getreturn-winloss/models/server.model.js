@@ -118,7 +118,7 @@ module.exports.getreturnwinloss = (agent_id) => {
                 {
                     $project: {
                         _id: "$_id",
-                        agent_id: "$web.name",
+                        agent_id: "$agent_id",
                         file_name: "$file_name",
                         status: "$status",
                         all: "$all",
