@@ -22,7 +22,7 @@ module.exports.updatemember = (body, payload) => {
                         "tag": body.tag,
                         "channel": ObjectId(body.channel),
                         "remark": body.remark,
-                        "ipinfo": body.ipinfo,
+                        //"ipinfo": body.ipinfo,
                         "register_date": new Date(moment(body.register_date).format()),
                         "user_reference": body.user_reference,
                         "promotion_status": body.promotion_status,
@@ -91,7 +91,7 @@ module.exports.getbankmemb = (body) => {
                     $match: {
                         $and: [
                             { agent_id: ObjectId(body.agent_id) },
-                            { member_id: ObjectId(body.memb_id) },
+                            { memb_id: ObjectId(body.memb_id) },
                         ]
                     }
                 },

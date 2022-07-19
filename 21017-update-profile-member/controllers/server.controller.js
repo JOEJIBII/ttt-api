@@ -12,11 +12,16 @@ module.exports.updateprofile = async function (req, res) {
     try {
         console.log("body.agent_id", body.agent_id)
         let Result = await model.updatemember(body, payload).catch(() => { throw err });
+        console.log("Result",Result)
         if (Result.modifiedCount === 1 || Result.modifiedCount === 0 && Result.matchedCount === 1) {
+            
             let getbankmemb = await model.getbankmemb(body).catch(() => { throw err });
+            console.log("getbankmemb",getbankmemb)
+            
             if (getbankmemb.length > 0) {
                 if (getbankmemb[0].account_number !== body.bank_account || getbankmemb[0].bank_id.toString() !== body.bank_id.toString()) {
                     let updatebankmemb = await model.updatebankmemb(body).catch(() => { throw err });
+                    console.log("updatebankmemb",updatebankmemb)
                     // if (updatebankmemb.modifiedCount > 0) {
                     //     let insertbankmemb = await model.insertbankmemb(body).catch(() => { throw err });
                         if (updatebankmemb.modifiedCount === 1 ||updatebankmemb.modifiedCount === 0 && updatebankmemb.matchedCount === 1) {
