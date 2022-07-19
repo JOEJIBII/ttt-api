@@ -332,8 +332,8 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
    if(siplimage !== null && siplimage !== ""){
     siplimage = body.silp_image
    }
-   if(silpdate !== null && silpdate !== ""){
-    silpdate = new Date(moment(body.silp_date).format())
+   if(transaction_date !== null && transaction_date !== ""){
+    silpdate = new Date(moment(body.transaction_date).format())
    }
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('withdraw')
@@ -380,7 +380,6 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
             .catch(error => reject(error));
     });
 }
-
 
 module.exports.updatestatusmember = (payload, member_id) => {
     //console.log(body);

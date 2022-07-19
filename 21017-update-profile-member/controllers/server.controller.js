@@ -17,17 +17,17 @@ module.exports.updateprofile = async function (req, res) {
             if (getbankmemb.length > 0) {
                 if (getbankmemb[0].account_number !== body.bank_account || getbankmemb[0].bank_id.toString() !== body.bank_id.toString()) {
                     let updatebankmemb = await model.updatebankmemb(body).catch(() => { throw err });
-                    if (updatebankmemb.modifiedCount > 0) {
-                        let insertbankmemb = await model.insertbankmemb(body).catch(() => { throw err });
-                        if (insertbankmemb.insertedId !== null && insertbankmemb.insertedId !== "") {
+                    // if (updatebankmemb.modifiedCount > 0) {
+                    //     let insertbankmemb = await model.insertbankmemb(body).catch(() => { throw err });
+                        if (updatebankmemb.modifiedCount === 1 ||updatebankmemb.modifiedCount === 0 && updatebankmemb.matchedCount === 1) {
                             const log = await functions.logs(req.body, req.headers.host).catch(() => { throw err });
                             res.send({
                                 status: "200",
                                 message: "success",
                             }).end();
-                        } else {
-                            res.send({ status: "203", message: 'update ข้อมูลไม่สำเร็จ' }).end();
-                        }
+                        // } else {
+                        //     res.send({ status: "203", message: 'update ข้อมูลไม่สำเร็จ' }).end();
+                        // }
                     } else {
                         res.send({ status: "203", message: 'update ข้อมูลไม่สำเร็จ' }).end();
                     }

@@ -53,6 +53,7 @@ module.exports = {
         "getreturnwinloss":"21032",
         "getreturnwinlossbyid":"21033",
         "historyprocessing":"21034",
+        "historymember":"21035",
 
     },
     search:{

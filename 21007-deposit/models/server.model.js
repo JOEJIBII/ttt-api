@@ -127,9 +127,6 @@ module.exports.getagentid = (body) => {
     });
 }
 
-
-
-
 module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agentid,notes) => {
    // console.log(payload)
    let siplimage = null
@@ -137,8 +134,8 @@ module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agentid,notes) =
    if(siplimage !== null && siplimage !== ""){
     siplimage = body.silp_image
    }
-   if(silpdate !== null && silpdate !== ""){
-    silpdate = new Date(moment(body.silp_date).format())
+   if(transaction_date !== null && transaction_date !== ""){
+    silpdate = new Date(moment(body.transaction_date).format())
    }
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('deposit')
