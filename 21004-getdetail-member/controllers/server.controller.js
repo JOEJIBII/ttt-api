@@ -29,7 +29,7 @@ module.exports.getdetailmember = async function (req, res) {
                         //console.log('Result',ResultMEMBER)
                         console.log(ResultMEMBER[0].username)
                         //const log = await functions.logs(ResultMEMBER[0]._id).catch(() => {throw err});
-                        const conf = await model.getconfig_pd(body.agent_id).catch(() => {throw err});
+                        const conf = await model.getconfig_pd(req.body.agent_id).catch(() => {throw err});
                         const ProfilePD = await functions.ProfilePD(ResultMEMBER[0].usernamepd,conf[0]).catch(() => {throw err});
                         console.log("PD",ProfilePD)
                         if(ProfilePD.result.result.code === 0){
