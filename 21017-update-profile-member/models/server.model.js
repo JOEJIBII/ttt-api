@@ -17,7 +17,7 @@ module.exports.updatemember = (body, payload) => {
                         "pin": body.pin,
                         "line_id": body.line_id,
                         "name": body.name,
-                        "surname": body.surename,
+                        "surname": body.surname,
                         "birthday_date": body.birthday,
                         "tag": body.tag,
                         "channel": ObjectId(body.channel),
