@@ -16,10 +16,10 @@ module.exports.historyprocessing = async function (req, res) {
         let withdraw = null
         let pool = await model.getagent_id(payload.user_id).catch(() => { throw err });
         let result = []
-        console.log(pool)
+        console.log("pool",pool)
         var agent_id = pool[0].agent_id
         for (var i=0; i < agent_id.length; i++) {
-            console.log(agent_id[i])
+            console.log("agent_id",agent_id[i])
             deposit = await model.getdeposit(agent_id[i]).catch(() => { throw err });
             withdraw = await model.getwithdraw(agent_id[i]).catch(() => { throw err });
            
