@@ -18,18 +18,20 @@ module.exports.getdetailmember = async function (req, res) {
                  console.log("start")
                 
                  let ResultMEMBER = []
-                
+                let agent_id = null
                 if (payload.request === "member"){
                   ResultMEMBER = await model.getdetailmember(payload.user_id,payload.agent_id).catch(() => { throw err });
+                  agent_id = payload.agent_id
                    }else{
                   ResultMEMBER = await model.getdetailmember(req.body.user_id,req.body.agent_id).catch(() => { throw err });
+                  agent_id = req.body.agent_id
                    }
                 console.log("All",ResultMEMBER)
                     if (ResultMEMBER && ResultMEMBER.length) {
                         //console.log('Result',ResultMEMBER)
                         console.log(ResultMEMBER[0].username)
                         //const log = await functions.logs(ResultMEMBER[0]._id).catch(() => {throw err});
-                        const conf = await model.getconfig_pd(req.body.agent_id).catch(() => {throw err});
+                        const conf = await model.getconfig_pd(agent_id).catch(() => {throw err});
                         const ProfilePD = await functions.ProfilePD(ResultMEMBER[0].usernamepd,conf[0]).catch(() => {throw err});
                         console.log("PD",ProfilePD)
                         if(ProfilePD.result.result.code === 0){
