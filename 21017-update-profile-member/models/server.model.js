@@ -27,7 +27,7 @@ module.exports.updatemember = (body, payload) => {
                         "user_reference": body.user_reference,
                         "promotion_status": body.promotion_status,
                         "privilege": ObjectId(body.privilege),
-                        "status": body.status,
+                        //"status": body.status,
                         "upd_date": new Date(moment().format()),
                         "upd_by": ObjectId(payload.user_id),
                         "upd_prog": "21017-update-profile-member"
