@@ -332,7 +332,7 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
    if(siplimage !== null && siplimage !== ""){
     siplimage = body.silp_image
    }
-   if(transaction_date !== null && transaction_date !== ""){
+   if(body.transaction_date !== null && body.transaction_date !== ""){
     silpdate = new Date(moment(body.transaction_date).format())
    }
     return new Promise(async (resolve, reject) => {
