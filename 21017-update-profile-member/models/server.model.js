@@ -29,7 +29,7 @@ module.exports.updatemember = (body, payload) => {
                         "privilege": ObjectId(body.privilege),
                         "status": body.status,
                         "upd_date": new Date(moment().format()),
-                        "upd_by": payload.user_id,
+                        "upd_by": ObjectId(payload.user_id),
                         "upd_prog": "21017-update-profile-member"
                     }
                 })
@@ -49,7 +49,7 @@ module.exports.updatebankmemb = (body, payload) => {
                     $set: {
                         "status": "inactive",
                         "upd_date": new Date(moment().format()),
-                        "upd_by": payload.user_id,
+                        "upd_by": ObjectId(payload.user_id),
                         "upd_prog": "21017-update-profile-member"
                     }
                 })
