@@ -18,16 +18,18 @@ module.exports.logs = (body,ip) => {
     });
 }
 
-module.exports.ProfilePD = async (username) => {
+
+
+module.exports.ProfilePD = async (username,conf) => {
     return new Promise(async (resolve, reject) => {
         let option ={
             method :"POST",
             headers:{ "content-type": "application/json" },
             body: JSON.stringify({
-                "agentUsername": "99dev",
-                "key": "KGq54x_Hx6UUwxku4gT-q",
-                "username": '99dev' + username, 
-                "web":  "gb711"  
+                "agentUsername": conf.prov_agentusername,
+                "key": conf.prov_key,
+                "username": username, 
+                "web":  conf.prov_whitelabel  
             })
             
         }
