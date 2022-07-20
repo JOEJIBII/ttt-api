@@ -6,7 +6,8 @@ module.exports.getallmember = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     console.log(JSON.parse(req.headers.payload))
     try {
-        if(req.body?.page === true && req.body?.range){
+        console.log("-----",req.body?.page)
+        if(req.body?.page !== undefined && req.body?.range !== undefined){
             let ResultMEMBER = await model.getallmember(req.body).catch(() => { throw err });
             let page_option = (await model.page_option(req.body).catch(() => { throw err }))[0];
             if (ResultMEMBER && ResultMEMBER.length) {
@@ -27,7 +28,7 @@ module.exports.getallmember = async function (req, res) {
             }
         }else{
             let ResultMEMBER = await model.getallmemb(req.body).catch(() => { throw err });
-            console.log(ResultMEMBER)
+           // console.log(ResultMEMBER)
             if (ResultMEMBER && ResultMEMBER.length) {
                 // console.log('Result',ResultMEMBER)
                 const log = await functions.logs(req.body, req.headers.host).catch(() => { throw err });

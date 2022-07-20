@@ -10,7 +10,7 @@ module.exports.getallmember = (body) => {
     console.log(body);
     let skip = 0;
     skip = (Number(body.page) - 1) * Number(body.range);
-    console.log(skip, Number(body.range) + skip)
+    //console.log(skip, Number(body.range) + skip)
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(collectionmember)
             .aggregate([
