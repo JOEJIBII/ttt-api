@@ -14,6 +14,7 @@ module.exports = async () => {
 const mainProcess = async () => {
     try {
         working = true
+        console.log("working",working)
         let tx = (await model.getBankTransaction())[0]
         if (!_.isEmpty(tx)) {
             //let deposit = require('../build/deposit.column')
