@@ -657,7 +657,9 @@ module.exports.getdeposit = (agent_id) => {
                                                 upd_by: "$upd_by",
                                                 upd_date: "$upd_date",
                                         }
-                                },
+                                },{
+                                        $sort: { _id: -1 }
+                                    }
 
                         ]).toArray()
                         .then(result => resolve(result))
@@ -1288,7 +1290,9 @@ module.exports.getwithdraw = (agent_id) => {
                                                 upd_by: "$upd_by",
                                                 upd_date: "$upd_date",
                                         }
-                                },
+                                },{
+                                        $sort: { _id: -1 }
+                                    }
 
 
                         ]).toArray()

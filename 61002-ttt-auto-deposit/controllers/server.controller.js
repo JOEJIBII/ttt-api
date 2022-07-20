@@ -80,7 +80,7 @@ const mainProcess = async () => {
                             deposit['request_date'] = new Date(moment().format())
                             deposit['approve_by'] = 'auto deposit api'
                             deposit['approve_date'] = new Date(moment().format())
-                            deposit['status'] = 'approve'
+                            deposit['status'] = 'success'
                             deposit['description'] = [{ username: 'System', note: 'ระบบสามารถทำการ matching บัญชีลูกค้าได้', note_date: new Date() }]
                             deposit['cr_date'] = new Date(moment().format())
                             deposit['upd_by'] = 'auto deposit api'
@@ -93,7 +93,7 @@ const mainProcess = async () => {
                                 await model.updaterefid(insert.insertedId, call.result.data.refId)[0]
                             }
                             console.log('Response', call)
-                            console.log('main process success (success matching), process will restart now')
+                            console.log('main process success (success matching scb2scb) , process will restart now')
                             mainProcess();
                         } else {
                             let sDate = tx['date'].split('/');
@@ -153,7 +153,7 @@ const mainProcess = async () => {
                             deposit['request_date'] = new Date(moment().format())
                             deposit['approve_by'] = 'auto deposit api'
                             deposit['approve_date'] = new Date(moment().format())
-                            deposit['status'] = 'approve'
+                            deposit['status'] = 'success'
                             deposit['description'] = [{ username: 'System', note: 'ระบบสามารถทำการ matching บัญชีลูกค้าได้', note_date: new Date() }]
                             deposit['cr_date'] = new Date(moment().format())
                             deposit['upd_by'] = 'auto deposit api'
@@ -233,7 +233,7 @@ const mainProcess = async () => {
                             deposit['request_date'] = new Date(moment().format())
                             deposit['approve_by'] = 'auto deposit api'
                             deposit['approve_date'] = new Date(moment().format())
-                            deposit['status'] = 'approve'
+                            deposit['status'] = 'success'
                             deposit['description'] = [{ username: 'System', note: 'ระบบสามารถทำการ matching บัญชีลูกค้าได้', note_date: new Date() }]
                             deposit['cr_date'] = new Date(moment().format())
                             deposit['upd_by'] = 'auto deposit api'

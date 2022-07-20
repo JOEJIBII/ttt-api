@@ -123,7 +123,7 @@ module.exports.KBANK2KBANK = (agentId, bankId, no) => {
 
 module.exports.SCB2OTH = (agentId, bankId, no) => {
     return new Promise(async (resolve, reject) => {
-        const rNo = new RegExp((no).replace('/x', '') + '$');
+        const rNo = new RegExp((no))
         await MongoDB
             .collection('memb_bank_account')
             .aggregate([{
