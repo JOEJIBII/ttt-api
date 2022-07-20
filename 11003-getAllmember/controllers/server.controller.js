@@ -8,7 +8,8 @@ module.exports.getallmember = async function (req, res) {
     try {
 
         let ResultMEMBER = await model.getallmember(req.body).catch(() => { throw err });
-        // console.log(ResultMEMBER)
+        let page_option = (await model.page_option(req.body).catch(() => { throw err }))[0];
+         console.log(ResultMEMBER)
         if (ResultMEMBER && ResultMEMBER.length) {
             // console.log('Result',ResultMEMBER)
             const log = await functions.logs(req.body, req.headers.host).catch(() => { throw err });
@@ -17,7 +18,9 @@ module.exports.getallmember = async function (req, res) {
                 message: "success",
                 result: {
                     total: ResultMEMBER.length,
-                    Member: ResultMEMBER
+                    page_option,
+                    Member: ResultMEMBER,
+
                 }
             }).end();
         } else {
