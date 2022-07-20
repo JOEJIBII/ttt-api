@@ -110,8 +110,8 @@ module.exports.getdeposit = (agent_id) => {
                                                 checked_date: "$checked_date",
                                                 approve_by: "$approve_by",
                                                 approve_date: "$approve_date",
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 }, {
                                         $lookup: {
@@ -148,8 +148,8 @@ module.exports.getdeposit = (agent_id) => {
                                                 approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date",
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 }, {
                                         $lookup: {
@@ -190,8 +190,8 @@ module.exports.getdeposit = (agent_id) => {
                                                 approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date",
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 },
                                 {
@@ -236,8 +236,8 @@ module.exports.getdeposit = (agent_id) => {
                                                 approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date",
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 },
                                 {
@@ -284,8 +284,8 @@ module.exports.getdeposit = (agent_id) => {
                                                 approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date",
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 },
                                 {
@@ -335,8 +335,8 @@ module.exports.getdeposit = (agent_id) => {
                                                 approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date",
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 },
                                 {
@@ -387,8 +387,8 @@ module.exports.getdeposit = (agent_id) => {
                                                 approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date",
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 },
                                 {
@@ -452,8 +452,8 @@ module.exports.getdeposit = (agent_id) => {
                                                                 checker_avatar: "$emp.avatar",
                                                         }]
                                                 },
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 },
                                 {
@@ -515,8 +515,8 @@ module.exports.getdeposit = (agent_id) => {
                                                                 checker_avatar: "$checked.checker_avatar",
                                                         }]
                                                 },
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 },
                                 {
@@ -580,8 +580,8 @@ module.exports.getdeposit = (agent_id) => {
                                                 },
                                                 approve_date: "$approve_date",
                                                 approve_by: "$approve_by",
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 },
                                 {
@@ -629,18 +629,33 @@ module.exports.getdeposit = (agent_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 checked: "$checked",
-                                                approve_by:
-                                                {
-                                                        approve_by: { $ifNull: ['$approve_by.approve_by', null] },
-                                                        approve_date: { $ifNull: ['$approve_by.approve_date', null] },
-                                                        approve_username: { $ifNull: ['$approve_by.approve_username', null] },
-                                                        approve_name: { $ifNull: ['$approve_by.approve_name', null] },
-                                                        approve_tel: { $ifNull: ['$approve_by.approve_tel', null] },
-                                                        approve_role: { $ifNull: ['$role.name', null] },
-                                                        approve_avatar: { $ifNull: ['$approve_by.approve_avatar', null] },
+                                                // approve_by:
+                                                // {
+                                                //         approve_by: { $ifNull: ['$approve_by.approve_by', null] },
+                                                //         approve_date: { $ifNull: ['$approve_by.approve_date', null] },
+                                                //         approve_username: { $ifNull: ['$approve_by.approve_username', null] },
+                                                //         approve_name: { $ifNull: ['$approve_by.approve_name', null] },
+                                                //         approve_tel: { $ifNull: ['$approve_by.approve_tel', null] },
+                                                //         approve_role: { $ifNull: ['$role.name', null] },
+                                                //         approve_avatar: { $ifNull: ['$approve_by.approve_avatar', null] },
+                                                // },
+                                                approve_by: {
+                                                        $cond: [{
+                                                                $eq: [{ $ifNull: ["$role.name", null] }, null]
+                                                        },
+                                                                null,
+                                                        {
+                                                                approve_by: { $ifNull: ['$approve_by.approve_by', null] },
+                                                                approve_date: { $ifNull: ['$approve_by.approve_date', null] },
+                                                                approve_username: { $ifNull: ['$approve_by.approve_username', null] },
+                                                                approve_name: { $ifNull: ['$approve_by.approve_name', null] },
+                                                                approve_tel: { $ifNull: ['$approve_by.approve_tel', null] },
+                                                                approve_role: { $ifNull: ['$role.name', null] },
+                                                                approve_avatar: { $ifNull: ['$approve_by.approve_avatar', null] },
+                                                        }]
                                                 },
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 },
 
@@ -694,8 +709,8 @@ module.exports.getwithdraw = (agent_id) => {
                                                 approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date",
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 }, {
                                         $lookup: {
@@ -730,8 +745,8 @@ module.exports.getwithdraw = (agent_id) => {
                                                 approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date",
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 }, {
                                         $lookup: {
@@ -768,8 +783,8 @@ module.exports.getwithdraw = (agent_id) => {
                                                 approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date",
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 }, {
                                         $lookup: {
@@ -810,8 +825,8 @@ module.exports.getwithdraw = (agent_id) => {
                                                 approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date",
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 }, {
                                         $lookup: {
@@ -855,8 +870,8 @@ module.exports.getwithdraw = (agent_id) => {
                                                 approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date",
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 },
                                 {
@@ -903,8 +918,8 @@ module.exports.getwithdraw = (agent_id) => {
                                                 approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date",
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 },
                                 {
@@ -954,8 +969,8 @@ module.exports.getwithdraw = (agent_id) => {
                                                 approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date",
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 },
                                 {
@@ -1006,8 +1021,8 @@ module.exports.getwithdraw = (agent_id) => {
                                                 approve_date: "$approve_date",
                                                 check_by: "$check_by",
                                                 checked_date: "$checked_date",
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 },
                                 {
@@ -1071,8 +1086,8 @@ module.exports.getwithdraw = (agent_id) => {
                                                                 checker_avatar: "$emp.avatar",
                                                         }]
                                                 },
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 },
                                 {
@@ -1134,8 +1149,8 @@ module.exports.getwithdraw = (agent_id) => {
                                                                 checker_avatar: "$checked.checker_avatar",
                                                         }]
                                                 },
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 },
                                 {
@@ -1197,8 +1212,8 @@ module.exports.getwithdraw = (agent_id) => {
                                                                 approve_avatar: "$emp.avatar",
                                                         }]
                                                 },
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 }, {
                                         $lookup: {
@@ -1245,18 +1260,33 @@ module.exports.getwithdraw = (agent_id) => {
                                                 to_bank_id: "$to_bank_id",
                                                 to_account_id: "$to_account_id",
                                                 checked: "$checked",
-                                                approve_by:
-                                                {
-                                                        approve_by: "$approve_by.approve_by",
-                                                        approve_date: "$approve_by.approve_date",
-                                                        approve_username: "$approve_by.approve_username",
-                                                        approve_name: "$approve_by.approve_name",
-                                                        approve_tel: "$approve_by.approve_tel",
-                                                        approve_role: "$role.name",
-                                                        approve_avatar: "$approve_by.approve_avatar",
+                                                // approve_by:
+                                                // {
+                                                //         approve_by: "$approve_by.approve_by",
+                                                //         approve_date: "$approve_by.approve_date",
+                                                //         approve_username: "$approve_by.approve_username",
+                                                //         approve_name: "$approve_by.approve_name",
+                                                //         approve_tel: "$approve_by.approve_tel",
+                                                //         approve_role: "$role.name",
+                                                //         approve_avatar: "$approve_by.approve_avatar",
+                                                // },
+                                                approve_by: {
+                                                        $cond: [{
+                                                                $eq: [{ $ifNull: ["$role.name", null] }, null]
+                                                        },
+                                                                null,
+                                                        {
+                                                                approve_by: "$approve_by.approve_by",
+                                                                approve_date: "$approve_by.approve_date",
+                                                                approve_username: "$approve_by.approve_username",
+                                                                approve_name: "$approve_by.approve_name",
+                                                                approve_tel: "$approve_by.approve_tel",
+                                                                approve_role: "$role.name",
+                                                                approve_avatar: "$approve_by.approve_avatar",
+                                                        }]
                                                 },
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
+                                                upd_by: "$upd_by",
+                                                upd_date: "$upd_date",
                                         }
                                 },
 
