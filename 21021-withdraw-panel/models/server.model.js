@@ -327,10 +327,10 @@ module.exports.Withrawcount = (_id, counter) => {
 
 module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, turnover, body, agent_id) => {
     console.log(payload)
-    let siplimage = null
+    let silpimage = null
    let silpdate = null
-   if(siplimage !== null && siplimage !== ""){
-    siplimage = body.silp_image
+   if(silpimage !== null && silpimage !== ""){
+    silpimage = body.silp_image
    }
    if(body.transaction_date !== null && body.transaction_date !== ""){
     silpdate = new Date(moment(body.transaction_date).format())
@@ -351,7 +351,7 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
                 to_account_id: ObjectId(member._id),
                 amount: Double(balance),
                 silp_date: silpdate,
-                silp_image: siplimage,
+                silp_image: silpimage,
                 request_by: payload.username,
                 request_date: new Date(moment().format()),
                 approve_by: null,

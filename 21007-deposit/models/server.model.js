@@ -129,10 +129,10 @@ module.exports.getagentid = (body) => {
 
 module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agentid,notes) => {
    // console.log(payload)
-   let siplimage = null
+   let silpimage = null
    let silpdate = null
-   if(siplimage !== null && siplimage !== ""){
-    siplimage = body.silp_image
+   if(silpimage !== null && silpimage !== ""){
+    silpimage = body.silp_image
    }
    if(body.transaction_date !== null && body.transaction_date !== ""){
     silpdate = new Date(moment(body.transaction_date).format())
@@ -153,7 +153,7 @@ module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agentid,notes) =
                 to_account_id: ObjectId(bankto._id),
                 amount: body.amount,
                 silp_date: silpdate,
-                silp_image: siplimage,
+                silp_image: silpimage,
                 request_by:payload.username,
                 request_date: new Date(moment().format()),
                 approve_by : null,
