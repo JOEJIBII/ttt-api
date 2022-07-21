@@ -212,7 +212,7 @@ module.exports.InsertDocdeposit = (body, payload, bankform, bankto, agent_id, me
                 request_date: new Date(moment().format()),
                 approve_by: ObjectId(payload),
                 approve_date: new Date(moment().format()),
-                status: "approve",
+                status: "success",
                 description: notes,
                 turnover_status: null,
                 turnover_date: null,
