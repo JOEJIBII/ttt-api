@@ -195,6 +195,7 @@ module.exports.InsertDocdeposit = (body, payload, bankform, bankto, agent_id, me
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('deposit')
             .insertOne({
+                channel:"คืนยอดเสีย",
                 agent_id: ObjectId(agent_id),
                 type: bankto.type,
                 sub_type: bankto.sub_type,
