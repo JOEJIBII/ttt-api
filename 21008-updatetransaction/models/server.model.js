@@ -23,7 +23,12 @@ module.exports.updateapprove = (body, payload, notes) => {
     if(body.type === "deposit"){
         status = "success"
     }else if (body.type === "withdraw"){
-        status = "approve"
+        if(body.bank_account_id === null || body.bank_account_id === ""){
+            status = "success"
+        }else{
+            status = "approve"
+        }
+       
     }
 
     return new Promise(async (resolve, reject) => {
@@ -37,7 +42,7 @@ module.exports.updateapprove = (body, payload, notes) => {
                     "from_bank_id":bank_id,
                     "from_account_id":account_id,
                     "silp_image": silpimage,
-                    "status": body.status,
+                    "status": status,
                     "description": notes,
                     "approve_by": ObjectId(payload.user_id),
                     "approve_date": new Date(moment().format()),
