@@ -578,8 +578,8 @@ module.exports.getdeposit = (agent_id) => {
                                                                 approve_avatar: "$emp.avatar",
                                                         }]
                                                 },
-                                                approve_date: "$approve_date",
-                                                approve_by: "$approve_by",
+                                                //approve_date: "$approve_date",
+                                                //approve_by: "$approve_by",
                                                 upd_by: "$upd_by",
                                                 upd_date: "$upd_date",
                                         }
