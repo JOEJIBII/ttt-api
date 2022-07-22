@@ -118,7 +118,7 @@ module.exports.withdraw = async function (req, res) {
                         res.send({ status: "202", message: 'ถอนเกินจำนวนครั้งต่อวัน ' + 'จำนวนที่ถอนของวันนี้  ' + Counter + 'ครั้ง' }).end();
                     }
                 } else
-                    res.send({ status: "202", message: 'credit ไม่พอสำหรับการถอน' }).end();
+                    res.send({ status: "202", message: 'credit ไม่พอสำหรับการถอน credit มี '+ withdraw + 'บาท' }).end();
             } else {
                 res.send({ status: "203", message: 'invalid parameter' }).end();
             }
