@@ -38,15 +38,17 @@ module.exports.withdraw = async function (req, res) {
                     let Counter = await model.counttrasaction(getagent[0].agent_id, body.memb_id).catch(() => { throw err }); 
                     let counttrasaction_suceess = await model.counttrasaction_suceess(getagent[0].agent_id, body.memb_id).catch(() => { throw err });
                     console.log("counter", Counter.length)
+                    let cout = 0
                     if(Counter.length === 0){
-                        let cout = Number(Counter.length)+1
+                        cout = Number(Counter.length)+1
                     }else{
-                        let cout = Number(Counter.length)
+                        cout = Number(Counter.length)
                     }
+                    let cout_s = 0
                     if(counttrasaction_suceess.length === 0){
-                        let cout_s = Number(counttrasaction_suceess.length)+1
+                       cout_s = Number(counttrasaction_suceess.length)+1
                     }else{
-                        let cout_s = Number(counttrasaction_suceess.length)
+                        cout_s = Number(counttrasaction_suceess.length)
                     }
                     let note = []
                     if(body.description !== null && body.description !== ""){

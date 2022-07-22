@@ -23,15 +23,17 @@ module.exports.withdraw = async function (req, res) {
                     let counter_config = withdraw_configs[0].counter
                     let Counter = await model.counttrasaction(payload.agent_id, payload.user_id).catch(() => { throw err }); counttrasaction_suceess
                     let counttrasaction_suceess = await model.counttrasaction_suceess(payload.agent_id, payload.user_id).catch(() => { throw err });
+                    let cout = 0
                     if(Counter.length === 0){
-                        let cout = Number(Counter.length)+1
+                        cout = Number(Counter.length)+1
                     }else{
-                        let cout = Number(Counter.length)
+                        cout = Number(Counter.length)
                     }
+                    let cout_s = 0
                     if(counttrasaction_suceess.length === 0){
-                        let cout_s = Number(counttrasaction_suceess.length)+1
+                        cout_s = Number(counttrasaction_suceess.length)+1
                     }else{
-                        let cout_s = Number(counttrasaction_suceess.length)
+                        cout_s = Number(counttrasaction_suceess.length)
                     }
                     let note = [{ username: "System", note: "จำนวนการถอนของวันที่"+ moment().format('YYYY-MM-DD')+" ครั้งที่ " + cout + "และจำนวนการถอนที่สำเร็จครั้งที่ " + cout_s, note_date: new Date(moment().format()) }]
                     console.log("Counter_config", Counter.length)
