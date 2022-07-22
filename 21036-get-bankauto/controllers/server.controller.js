@@ -20,4 +20,3 @@ module.exports.getallbanksauto = async function (req, res) {
         res.send({ status: "300", message: 'internal error' }).end();
     }
 }
-

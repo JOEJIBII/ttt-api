@@ -38,7 +38,7 @@ module.exports.getbankauto = (agent_id) => {
             },
             {
                 $project: {
-                    _id: 0,
+                    _id: 1,
                     account_id: "$_id",
                     agent_id: "$agent_id",
                     type: "$type",
