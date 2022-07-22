@@ -193,7 +193,8 @@ module.exports.counttrasaction = (agent_id, memb_id) => {
                             {
                                 memb_id: ObjectId(memb_id)
                             },
-                            { approve_date: { $gte: new Date(moment().format('YYYY-MM-DD')) } }
+                            { approve_date: { $gte: new Date(moment().format('YYYY-MM-DD')) } },
+                            
 
 
                         ]

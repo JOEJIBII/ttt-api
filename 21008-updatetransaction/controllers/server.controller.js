@@ -49,7 +49,7 @@ module.exports.updatetransaction = async function (req, res) {
                                 //console.log("-----------------------",getmemb[0].financial.withdraw_first_time)
                                 if (getmemb[0].financial.withdraw_first_time === null || getmemb[0].financial.withdraw_first_time === "0") {
 
-                                    await model.updateapprove(body, payload, note).catch(() => { throw err });
+                                    await model.updateapprove(body, payload, note, getdocument[0]).catch(() => { throw err });
                                     await model.update_financial_withdraw_first(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
                                     console.log(getmembpd[0].username, getconfig_pd[0])
                                     let updatemember = await model.updatemember(getdocument[0].memb_id, payload).catch(() => { throw err });

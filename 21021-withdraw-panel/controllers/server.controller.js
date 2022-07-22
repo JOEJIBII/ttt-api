@@ -41,9 +41,9 @@ module.exports.withdraw = async function (req, res) {
                     let note = []
                     if(body.description !== null && body.description !== ""){
                         note = note.concat([{ username: payload.username, note: body.description, note_date: new Date(moment().format()) }])
-                        note = note.concat([{ username: "System", note: "จำนวนการถอนของวันนี้ ครั้งที่ " + Counter.length + "และจำนวนการถอนที่สำเร็จครั้งที่ " + counttrasaction_suceess.length, note_date: new Date(moment().format()) }])
+                        note = note.concat([{ username: "System", note: "จำนวนการถอนของวันที่ "+ new Date(moment().format('YYYY-MM-DD'))+" ครั้งที่ " + Counter.length + "และจำนวนการถอนที่สำเร็จวันที่ "+new Date(moment().format('YYYY-MM-DD'))+" ครั้งที่ " + counttrasaction_suceess.length, note_date: new Date(moment().format()) }])
                     }else{
-                        note = [{ username: "System", note: "จำนวนการถอนของวันนี้ ครั้งที่ " + Counter.length + "และจำนวนการถอนที่สำเร็จครั้งที่ " + counttrasaction_suceess.length, note_date: new Date(moment().format()) }]
+                        note = [{ username: "System", note: "จำนวนการถอนของวันที่ "+ new Date(moment().format('YYYY-MM-DD'))+" ครั้งที่ " + Counter.length + "และจำนวนการถอนที่สำเร็จวันที่ "+new Date(moment().format('YYYY-MM-DD'))+" ครั้งที่ " + counttrasaction_suceess.length, note_date: new Date(moment().format()) }]
                     }
                     if (Counter.length <= counter_config) {
                         let min_config = withdraw_configs[0].min

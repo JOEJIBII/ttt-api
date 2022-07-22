@@ -227,6 +227,7 @@ module.exports.counttrasaction = (agent_id, memb_id) => {
                                 memb_id: ObjectId(memb_id)
                             },
                             { approve_date: { $gte: new Date(moment().format('YYYY-MM-DD')) } },
+                            {from_bank_name:{$ne:"bonus"}}
                         ]
                     }
                 }
@@ -249,7 +250,8 @@ module.exports.counttrasaction_suceess = (agent_id, memb_id) => {
                             {approve_date: { $gte: new Date(moment().format('YYYY-MM-DD')) } },
                             {status:"success"},
                             {status : "failed"},
-                            {status:"approve"}
+                            {status:"approve"},
+                            {from_bank_name:{$ne:"bonus"}}
                         ]
                     }
                 }

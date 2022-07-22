@@ -23,7 +23,7 @@ module.exports.updateapprove = (body, payload, notes) => {
     if(body.type === "deposit"){
         status = "success"
     }else if (body.type === "withdraw"){
-        if(body.bank_account_id === null || body.bank_account_id === ""){
+        if(body.from_bank_name === "bonus"){
             status = "success"
         }else{
             status = "approve"
