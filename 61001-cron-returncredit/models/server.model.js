@@ -72,9 +72,9 @@ module.exports.updatefiletransaction = (ID, status) => {
                 {
                     $set: {
                         status: status,
-                        upd_by: "21031-return-winloss",
+                        upd_by: "61001-cron-returncredit",
                         upd_date: new Date(moment().format()),
-                        upd_prog: "21031-return-winloss"
+                        upd_prog: "61001-cron-returncredit"
                     }
                 }, { upsert: true })
             .then(result => resolve(result))
@@ -224,10 +224,10 @@ module.exports.InsertDocdeposit = (body, payload, bankform, bankto, agent_id, me
                 lock_date: null,
                 cr_by: ObjectId(payload),
                 cr_date: new Date(moment().format()),
-                cr_prog: "61001-cron-returnwinloss",
-                upd_by: null,
-                upd_date: null,
-                upd_prog: null
+                cr_prog: "61001-cron-returncredit",
+                upd_by: ObjectId(payload),
+                upd_date: new Date(moment().format()),
+                upd_prog: "61001-cron-returncredit"
 
             })
 

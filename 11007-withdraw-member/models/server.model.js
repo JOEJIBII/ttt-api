@@ -206,6 +206,30 @@ module.exports.counttrasaction = (agent_id, memb_id) => {
 }
 
 
+module.exports.counttrasaction_suceess = (agent_id, memb_id) => {
+    // console.log(agent_id);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('withdraw')
+            .aggregate([
+                {
+                    $match: {
+                        $and: [
+                            {agent_id: ObjectId(agent_id) },
+                            {memb_id: ObjectId(memb_id)},
+                            {approve_date: { $gte: new Date(moment().format('YYYY-MM-DD')) } },
+                            {status:"success"},
+                            {status : "failed"},
+                            {status:"approve"}
+                        ]
+                    }
+                }
+            ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
+
 module.exports.Withrawcount = (_id, counter) => {
     console.log(_id)
     return new Promise(async (resolve, reject) => {
