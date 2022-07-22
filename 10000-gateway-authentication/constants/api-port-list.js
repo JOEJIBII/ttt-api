@@ -54,6 +54,7 @@ module.exports = {
         "getreturnwinlossbyid":"21033",
         "historyprocessing":"21034",
         "historymember":"21035",
+        "getallbanksauto":"21036",
 
     },
     search:{
