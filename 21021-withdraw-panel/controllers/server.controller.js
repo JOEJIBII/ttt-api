@@ -98,6 +98,7 @@ module.exports.withdraw = async function (req, res) {
                                 let suspendstatus = await functions.changestatus(member[0].mem_pd.memb_username, withdraw_configs[0]).catch(() => { throw err });
                                 let updatestatusmember = await model.updatestatusmember(payload,body.memb_id).catch(() => { throw err });
                                 if (suspendstatus.result.status === "200") {
+                                    let updatelastdeposit = await model.updatelastdeposit(getlastdeposit[0]._id).catch(() => { throw err });
                                      let OpenPO = await model.InsertDocWithdraw(payload, withdraw, member[0], getbankweb[0], note, turn,body,getagent[0].agent_id).catch(() => { throw err });
                                      if (OpenPO.insertedId !== null && OpenPO.insertedId !== '') {
                                          res.send({ status: "200", message: 'กรุณารอซักครู่ระบบกำลังตรวจสอบ TrunOver', withdraw_count: Counter.length }).end();

@@ -266,7 +266,6 @@ module.exports.counttrasaction_suceess = (agent_id, memb_id) => {
     });
 }
 
-
 module.exports.getagent_id = (memb_id) => {
     // console.log(agent_id);
     return new Promise(async (resolve, reject) => {
@@ -322,6 +321,7 @@ module.exports.getlastdeposit = (agent_id, memb_id) => {
                 },
                 {
                     $project: {
+                        _id:1,
                         ref_id: "$ref_id"
                     }
                 }
@@ -424,12 +424,36 @@ module.exports.updatestatusmember = (payload, member_id) => {
                         "status": "suspend",
                         "upd_by": ObjectId(payload.user_id),
                         "upd_date": new Date(moment().format()),
-                        "upd_prog": "11007-withdraw-member"
+                        "upd_prog": "21021-withdraw-panel"
                     }
                 })
             .then(result => resolve(result))
             .catch(error => reject(error));
 
 
+    });
+}
+
+
+module.exports.updatelastdeposit = (deposit_id) => {
+    const date = new Date(lock.lock_date)
+    const future = 5 * 60 * 1000
+    date.setTime(date.getTime() + future)
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection("deposit")
+            .updateOne({
+                _id: ObjectId(deposit_id)
+
+            },
+                {
+                    $set: {
+                        "turnover_date": new Date(moment(date).format()),
+                       // "upd_by": ObjectId(payload.user_id),
+                      //  "upd_date": new Date(moment().format()),
+                      //  "upd_prog": "11007-withdraw-member"
+                    }
+                },{upsert:true})
+            .then(result => resolve(result))
+            .catch(error => reject(error));
     });
 }
