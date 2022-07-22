@@ -61,7 +61,14 @@ module.exports.withdraw = async function (req, res) {
                             note = [{ username: "System", note: "จำนวนการถอนของวันที่ "+ moment().format('YYYY-MM-DD') +" ครั้งที่ " + cout + "และจำนวนการถอนที่สำเร็จครั้งที่ " + cout_s, note_date: new Date(moment().format()) }]
                         }
                     }else{
-                        let note = null
+                        if(body.description !== null && body.description !== ""){
+                        
+                            note = note.concat([{ username: payload.username, note: body.description, note_date: new Date(moment().format()) }])
+                            //note = note.concat([{ username: "System", note: "จำนวนการถอนของวันที่ "+ moment().format('YYYY-MM-DD') +" ครั้งที่ " + cout + "และจำนวนการถอนที่สำเร็จครั้งที่ " + cout_s, note_date: new Date(moment().format()) }])
+                        }else{
+                            note = null
+                           // note = [{ username: "System", note: "จำนวนการถอนของวันที่ "+ moment().format('YYYY-MM-DD') +" ครั้งที่ " + cout + "และจำนวนการถอนที่สำเร็จครั้งที่ " + cout_s, note_date: new Date(moment().format()) }]
+                        }
                     }
                     
                     if (Counter.length <= counter_config || sub_type === "bonus") {
