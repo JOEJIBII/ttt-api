@@ -74,7 +74,8 @@ module.exports.getbankweb = (body, agent_id) => {
                         id: 1,
                         account_number: "$account_number",
                         account_name: "$account_name",
-                        bank_id: "$bank_id"
+                        bank_id: "$bank_id",
+                        sub_type:"$sub_type"
                     }
                 },
 
@@ -112,7 +113,8 @@ module.exports.getbankweb_bonus = (agent_id) => {
                         id: 1,
                         account_number: "$account_number",
                         account_name: "$account_name",
-                        bank_id: "$bank_id"
+                        bank_id: "$bank_id",
+                        sub_type:"$sub_type"
                     }
                 },
 

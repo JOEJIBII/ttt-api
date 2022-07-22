@@ -25,6 +25,7 @@ module.exports.withdraw = async function (req, res) {
                     getbankweb = await model.getbankweb(body,getagent[0].agent_id).catch(() => { throw err });
                 }
                 console.log("getbankweb", getbankweb)
+                let sub_type = getbankweb[0].sub_type
                 let member = await model.findbankmemb(body.memb_id).catch(() => { throw err });
                 console.log("member", member)
                 let profile = await functions.ProfilePD(member[0].mem_pd.memb_username, withdraw_configs[0]).catch(() => { throw err });
@@ -33,7 +34,7 @@ module.exports.withdraw = async function (req, res) {
                 console.log("credit_balance", credit_balance)
                 let withdraw = Double(body.amount)
                 console.log("withdraw", withdraw)
-                if (withdraw <= credit_balance || body.account_withdraw === null || body.account_withdraw === "") {
+                if (withdraw <= credit_balance || sub_type === "bonus") {
                     let counter_config = withdraw_configs[0].counter
                     let Counter = await model.counttrasaction(getagent[0].agent_id, body.memb_id).catch(() => { throw err }); 
                     let counttrasaction_suceess = await model.counttrasaction_suceess(getagent[0].agent_id, body.memb_id).catch(() => { throw err });
@@ -51,13 +52,18 @@ module.exports.withdraw = async function (req, res) {
                         cout_s = Number(counttrasaction_suceess.length)
                     }
                     let note = []
-                    if(body.description !== null && body.description !== ""){
+                    if(sub_type !== "bonus"){
+                        if(body.description !== null && body.description !== ""){
                         
-                        note = note.concat([{ username: payload.username, note: body.description, note_date: new Date(moment().format()) }])
-                        note = note.concat([{ username: "System", note: "จำนวนการถอนของวันที่ "+ moment().format('YYYY-MM-DD') +" ครั้งที่ " + cout + "และจำนวนการถอนที่สำเร็จครั้งที่ " + cout_s, note_date: new Date(moment().format()) }])
+                            note = note.concat([{ username: payload.username, note: body.description, note_date: new Date(moment().format()) }])
+                            note = note.concat([{ username: "System", note: "จำนวนการถอนของวันที่ "+ moment().format('YYYY-MM-DD') +" ครั้งที่ " + cout + "และจำนวนการถอนที่สำเร็จครั้งที่ " + cout_s, note_date: new Date(moment().format()) }])
+                        }else{
+                            note = [{ username: "System", note: "จำนวนการถอนของวันที่ "+ moment().format('YYYY-MM-DD') +" ครั้งที่ " + cout + "และจำนวนการถอนที่สำเร็จครั้งที่ " + cout_s, note_date: new Date(moment().format()) }]
+                        }
                     }else{
-                        note = [{ username: "System", note: "จำนวนการถอนของวันที่ "+ moment().format('YYYY-MM-DD') +" ครั้งที่ " + cout + "และจำนวนการถอนที่สำเร็จครั้งที่ " + cout_s, note_date: new Date(moment().format()) }]
+                        let note = null
                     }
+                    
                     if (Counter.length <= counter_config) {
                         let min_config = withdraw_configs[0].min
                         let max_config = withdraw_configs[0].max
