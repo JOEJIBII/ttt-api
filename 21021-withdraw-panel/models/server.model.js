@@ -436,7 +436,7 @@ module.exports.updatestatusmember = (payload, member_id) => {
 
 
 module.exports.updatelastdeposit = (deposit_id) => {
-    const date = new Date(lock.lock_date)
+    const date = new Date()
     const future = 5 * 60 * 1000
     date.setTime(date.getTime() + future)
     return new Promise(async (resolve, reject) => {
