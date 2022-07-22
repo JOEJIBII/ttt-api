@@ -2,7 +2,8 @@ const { MongoDB } = require('../configs/connection_mongodb');
 const moment = require('moment');
 const { ObjectId, Double } = require('mongodb');
 
-module.exports.updateapprove = (body, payload, notes) => {
+module.exports.updateapprove = (body, payload, notes,doc) => {
+    console.log("doc",doc)
     let silpimage = null
     if (body.silp_image !== null && body.silp_image !== "") {
        silpimage = body.silp_image
@@ -23,7 +24,7 @@ module.exports.updateapprove = (body, payload, notes) => {
     if(body.type === "deposit"){
         status = "success"
     }else if (body.type === "withdraw"){
-        if(body.from_bank_name === "bonus"){
+        if(doc.from_bank_name === "bonus"){
             status = "success"
         }else{
             status = "approve"
