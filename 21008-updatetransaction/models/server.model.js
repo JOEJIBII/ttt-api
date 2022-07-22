@@ -3,7 +3,7 @@ const moment = require('moment');
 const { ObjectId, Double } = require('mongodb');
 
 module.exports.updateapprove = (body, payload, notes,doc) => {
-    console.log("doc***",doc)
+    console.log("doc***", doc)
     let silpimage = null
     if (body.silp_image !== null && body.silp_image !== "") {
        silpimage = body.silp_image
@@ -31,7 +31,6 @@ module.exports.updateapprove = (body, payload, notes,doc) => {
         }
        
     }
-
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(body.type)
             .updateOne({

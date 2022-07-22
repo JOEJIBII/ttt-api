@@ -61,7 +61,7 @@ module.exports.updatetransaction = async function (req, res) {
                                         credit_web: withdrawPD.result.data.agent.afterCredit
                                     }).end();
                                 } else {
-                                    await model.updateapprove(body, payload, note).catch(() => { throw err });
+                                    await model.updateapprove(body, payload, note,getdocument[0]).catch(() => { throw err });
                                     await model.update_financial_withdraw(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
                                     let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
                                     let updatemember = await model.updatemember(getdocument[0].memb_id, payload).catch(() => { throw err });
@@ -160,7 +160,7 @@ module.exports.updatetransaction = async function (req, res) {
                                     }
                                     let getmemb = await model.getmemb(body.memb_id).catch(() => { throw err });
                                     if (getmemb[0].financial.deposit_first_time === null || getmemb[0].financial.deposit_first_time === "0") {
-                                        await model.updateapprove(body, payload, note).catch(() => { throw err });
+                                        await model.updateapprove(body, payload, note, getdocument[0]).catch(() => { throw err });
                                         await model.update_financial_first(body.memb_id, getdocument[0].amount, payload).catch(() => { throw err });
                                         let updatelock = await model.updatelock(body, payload).catch(() => { throw err });
                                         let changestatus = await functions.changestatus(getmembpd[0].username, getconfig_pd[0]).catch(() => { throw err });
@@ -170,7 +170,7 @@ module.exports.updatetransaction = async function (req, res) {
                                             credit_web: depositPD.result.data.agent.afterCredit
                                         }).end();
                                     } else {
-                                        await model.updateapprove(body, payload, note).catch(() => { throw err });
+                                        await model.updateapprove(body, payload, note,getdocument[0]).catch(() => { throw err });
                                         await model.update_financial(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
                                         //await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });
                                         let updatelock = await model.updatelock(body, payload).catch(() => { throw err });

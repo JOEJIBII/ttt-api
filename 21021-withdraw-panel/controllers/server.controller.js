@@ -33,7 +33,7 @@ module.exports.withdraw = async function (req, res) {
                 console.log("credit_balance", credit_balance)
                 let withdraw = Double(body.amount)
                 console.log("withdraw", withdraw)
-                if (withdraw <= credit_balance) {
+                if (withdraw <= credit_balance || body.account_withdraw === null || body.account_withdraw === "") {
                     let counter_config = withdraw_configs[0].counter
                     let Counter = await model.counttrasaction(getagent[0].agent_id, body.memb_id).catch(() => { throw err }); 
                     let counttrasaction_suceess = await model.counttrasaction_suceess(getagent[0].agent_id, body.memb_id).catch(() => { throw err });
