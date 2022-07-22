@@ -34,7 +34,7 @@ module.exports.withdraw = async function (req, res) {
                 console.log("credit_balance", credit_balance)
                 let withdraw = Double(body.amount)
                 console.log("withdraw", withdraw)
-                if (withdraw <= credit_balance || sub_type === "bonus") {
+                if (withdraw <= credit_balance) {
                     let counter_config = withdraw_configs[0].counter
                     let Counter = await model.counttrasaction(getagent[0].agent_id, body.memb_id).catch(() => { throw err }); 
                     let counttrasaction_suceess = await model.counttrasaction_suceess(getagent[0].agent_id, body.memb_id).catch(() => { throw err });
@@ -64,11 +64,11 @@ module.exports.withdraw = async function (req, res) {
                         let note = null
                     }
                     
-                    if (Counter.length <= counter_config) {
+                    if (Counter.length <= counter_config || sub_type === "bonus") {
                         let min_config = withdraw_configs[0].min
                         let max_config = withdraw_configs[0].max
-                        if (withdraw >= min_config) {
-                            if (withdraw <= max_config) {
+                        if (withdraw >= min_config || sub_type === "bonus") {
+                            if (withdraw <= max_config || sub_type === "bonus") {
                                 let getlastdeposit = await model.getlastdeposit(getagent[0].agent_id, body.memb_id).catch(() => { throw err });
                                 let turn = Double()
                                 console.log("getlastdeposit", getlastdeposit)

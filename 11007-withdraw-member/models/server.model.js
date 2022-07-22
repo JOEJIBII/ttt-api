@@ -107,42 +107,42 @@ module.exports.findbankmemb = (id) => {
                         id: 1,
                         // name:"$name",
                         // surename:"$",
-                        memb_id:"$memb_id",
+                        memb_id: "$memb_id",
                         bank_id: "$bank_id",
                         account_name: "$account_name",
                         banking_account: "$account_number"
 
                     }
-                },{
+                }, {
                     $lookup: {
-                            from: "member_provider_account",
-                            localField: "memb_id",
-                            foreignField: "memb_id",
-                            as: "memb_pd"
+                        from: "member_provider_account",
+                        localField: "memb_id",
+                        foreignField: "memb_id",
+                        as: "memb_pd"
                     }
-            },{
-                $unwind: { path: "$memb_pd", preserveNullAndEmptyArrays: true }
-        },
-            {
-                $project: {
-                    id: 1,
-                    // name:"$name",
-                    memb_id:"$memb_id",
-                    bank_id: "$bank_id",
-                    account_name: "$account_name",
-                    banking_account: "$account_number",
-                    mem_pd: {
-                        $cond: [{
-                                $eq: [{ $ifNull: ["$memb_pd.username", null] }, null]
-                        },
-                                null,
-                        {
-                                memb_username: "$memb_pd.username",
-                        }]
+                }, {
+                    $unwind: { path: "$memb_pd", preserveNullAndEmptyArrays: true }
                 },
+                {
+                    $project: {
+                        id: 1,
+                        // name:"$name",
+                        memb_id: "$memb_id",
+                        bank_id: "$bank_id",
+                        account_name: "$account_name",
+                        banking_account: "$account_number",
+                        mem_pd: {
+                            $cond: [{
+                                $eq: [{ $ifNull: ["$memb_pd.username", null] }, null]
+                            },
+                                null,
+                            {
+                                memb_username: "$memb_pd.username",
+                            }]
+                        },
 
-                }
-            },
+                    }
+                },
             ]).toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));
@@ -194,7 +194,7 @@ module.exports.counttrasaction = (agent_id, memb_id) => {
                                 memb_id: ObjectId(memb_id)
                             },
                             { approve_date: { $gte: new Date(moment().format('YYYY-MM-DD')) } },
-                            
+
 
 
                         ]
@@ -215,12 +215,16 @@ module.exports.counttrasaction_suceess = (agent_id, memb_id) => {
                 {
                     $match: {
                         $and: [
-                            {agent_id: ObjectId(agent_id) },
-                            {memb_id: ObjectId(memb_id)},
-                            {approve_date: { $gte: new Date(moment().format('YYYY-MM-DD')) } },
-                            {status:"success"},
-                            {status : "failed"},
-                            {status:"approve"}
+                            { agent_id: ObjectId(agent_id) },
+                            { memb_id: ObjectId(memb_id) },
+                            { approve_date: { $gte: new Date(moment().format('YYYY-MM-DD')) } },
+                            { from_bank_name: { $ne: "bonus" } },
+                            {
+                                $or: [{ status: "success" }
+                                    , { status: "approve" }
+                                    , { status: "failed" },
+                                { status: "processing" }]
+                            }
                         ]
                     }
                 }
@@ -305,7 +309,7 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
         await MongoDB.collection('withdraw')
             .insertOne({
                 agent_id: ObjectId(payload.agent_id),
-                channel:"web",
+                channel: "web",
                 type: "withdraw",
                 date: new Date(moment().format()),
                 memb_id: ObjectId(payload.user_id),
@@ -355,14 +359,14 @@ module.exports.updatestatus = (payload) => {
                 _id: ObjectId(payload.user_id)
 
             },
-             {
-                $set: {
-                    "status": "suspend",
-                    "upd_by": ObjectId(payload.user_id),
-                    "upd_date": new Date(moment().format()),
-                    "upd_prog": "11007-withdraw-member"
-                }
-            })
+                {
+                    $set: {
+                        "status": "suspend",
+                        "upd_by": ObjectId(payload.user_id),
+                        "upd_date": new Date(moment().format()),
+                        "upd_prog": "11007-withdraw-member"
+                    }
+                })
             .then(result => resolve(result))
             .catch(error => reject(error));
 

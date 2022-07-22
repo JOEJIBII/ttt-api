@@ -75,7 +75,7 @@ module.exports.getbankweb = (body, agent_id) => {
                         account_number: "$account_number",
                         account_name: "$account_name",
                         bank_id: "$bank_id",
-                        sub_type:"$sub_type"
+                        sub_type: "$sub_type"
                     }
                 },
 
@@ -114,7 +114,7 @@ module.exports.getbankweb_bonus = (agent_id) => {
                         account_number: "$account_number",
                         account_name: "$account_name",
                         bank_id: "$bank_id",
-                        sub_type:"$sub_type"
+                        sub_type: "$sub_type"
                     }
                 },
 
@@ -229,7 +229,7 @@ module.exports.counttrasaction = (agent_id, memb_id) => {
                                 memb_id: ObjectId(memb_id)
                             },
                             { approve_date: { $gte: new Date(moment().format('YYYY-MM-DD')) } },
-                            {from_bank_name:{$ne:"bonus"}}
+                            { from_bank_name: { $ne: "bonus" } }
                         ]
                     }
                 }
@@ -247,13 +247,16 @@ module.exports.counttrasaction_suceess = (agent_id, memb_id) => {
                 {
                     $match: {
                         $and: [
-                            {agent_id: ObjectId(agent_id) },
-                            {memb_id: ObjectId(memb_id)},
-                            {approve_date: { $gte: new Date(moment().format('YYYY-MM-DD')) } },
-                            {status:"success"},
-                            {status : "failed"},
-                            {status:"approve"},
-                            {from_bank_name:{$ne:"bonus"}}
+                            { agent_id: ObjectId(agent_id) },
+                            { memb_id: ObjectId(memb_id) },
+                            { approve_date: { $gte: new Date(moment().format('YYYY-MM-DD')) } },
+                            { from_bank_name: { $ne: "bonus" } },
+                            {
+                                $or: [{ status: "success" }
+                                    , { status: "approve" }
+                                    , { status: "failed" },
+                                { status: "processing" }]
+                            }
                         ]
                     }
                 }
@@ -355,18 +358,18 @@ module.exports.Withrawcount = (_id, counter) => {
 module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, turnover, body, agent_id) => {
     console.log(payload)
     let silpimage = null
-   let silpdate = null
-   if(silpimage !== null && silpimage !== ""){
-    silpimage = body.silp_image
-   }
-   if(body.transaction_date !== null && body.transaction_date !== ""){
-    silpdate = new Date(moment(body.transaction_date).format())
-   }
+    let silpdate = null
+    if (silpimage !== null && silpimage !== "") {
+        silpimage = body.silp_image
+    }
+    if (body.transaction_date !== null && body.transaction_date !== "") {
+        silpdate = new Date(moment(body.transaction_date).format())
+    }
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('withdraw')
             .insertOne({
                 agent_id: ObjectId(agent_id),
-                channel:"panel",
+                channel: "panel",
                 type: "withdraw",
                 date: new Date(moment().format()),
                 memb_id: ObjectId(member.memb_id),
