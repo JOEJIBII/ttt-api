@@ -33,7 +33,7 @@ module.exports.withdraw = async function (req, res) {
                     }else{
                         let cout_s = Number(counttrasaction_suceess.length)
                     }
-                    let note = [{ username: "System", note: "จำนวนการถอนของวันที่"+ moment().format('YYYY-MM-DD') +" ครั้งที่ " + cout + "และจำนวนการถอนที่สำเร็จครั้งที่ " + cout_s, note_date: new Date(moment().format()) }]
+                    let note = [{ username: "System", note: "จำนวนการถอนของวันที่"+ moment().format('YYYY-MM-DD')+" ครั้งที่ " + cout + "และจำนวนการถอนที่สำเร็จครั้งที่ " + cout_s, note_date: new Date(moment().format()) }]
                     console.log("Counter_config", Counter.length)
                     if (Counter.length <= counter_config) {
                         let min_config = withdraw_configs[0].min
