@@ -66,7 +66,6 @@ module.exports.getbanktransaction = (account_id) => {
 
                         ])
                         .sort({ _id: -1 })
-                        .limit(20)
                         .toArray()
                         .then(result => resolve(result))
                         .catch(error => reject(error));
