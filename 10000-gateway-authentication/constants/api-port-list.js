@@ -56,6 +56,7 @@ module.exports = {
         "historymember":"21035",
         "getallbanksauto":"21036",
         "updatestatusbankauto":"21037",
+        "banktransaction":"21038",
 
     },
     search:{
