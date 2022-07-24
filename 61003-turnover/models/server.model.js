@@ -113,7 +113,7 @@ module.exports.finddeposit = (memb_id) => {
                     _id: 1,
                     deposit_id:"$_id",
                     ref_id: "$ref_id",
-                    turnover_value:"turnover_value"
+                    turnover_value:"$turnover_value"
         
         
                 }
@@ -125,6 +125,34 @@ module.exports.finddeposit = (memb_id) => {
     });
 }
 
+module.exports.findturnoverprofile = (memb_id) => {
+    // console.log(agent_id);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('memb_turnover')
+        .aggregate([
+            {
+                $match: {
+                    $and: [
+                        //{ou_id : ObjectId(payload.ou)},
+                        //{branch_id : ObjectId(payload.branch)},
+                        { memb_id: ObjectId(memb_id) },        
+                    ]
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    turnover:"$turnover"
+        
+        
+                }
+            }
+        
+        ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
 
 module.exports.update_docdeposit_turnover = (doc_id, turnover_use,status) => {
     //console.log(body);
@@ -146,6 +174,27 @@ module.exports.update_docdeposit_turnover = (doc_id, turnover_use,status) => {
     });
 }
 
+module.exports.update_docdeposit_status = (doc_id, turnover_use) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('deposit')
+            .updateOne({
+                _id: ObjectId(doc_id)
+            }, {
+                $set: {
+                    "turnover_use":turnover_use ,
+                    "turnover_status":null ,
+                    "turnover_date":null
+                }
+            }, { upsert: true }
+            )
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+
+
+    });
+}
+
 module.exports.update_docwithdraw = (doc_id) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
@@ -156,6 +205,31 @@ module.exports.update_docwithdraw = (doc_id) => {
                 $set: {
                     //"turnover_use":turnover_use ,
                     "status":"approve" ,
+                    "upd_by":"auto-turnover",
+                    "upd_date":new Date(moment().format()),
+                    "upd_prog":"61003-turnover"
+                }
+            }, { upsert: true }
+            )
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+
+
+    });
+}
+
+
+
+module.exports.update_turnover = (memb_id,turnover) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('withdraw')
+            .updateOne({
+                memb_id: ObjectId(memb_id)
+            }, {
+                $set: {
+                    //"turnover_use":turnover_use ,
+                    "turnover":Double(turnover) ,
                     "upd_by":"auto-turnover",
                     "upd_date":new Date(moment().format()),
                     "upd_prog":"61003-turnover"

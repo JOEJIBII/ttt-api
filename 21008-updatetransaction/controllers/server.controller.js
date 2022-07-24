@@ -152,6 +152,7 @@ module.exports.updatetransaction = async function (req, res) {
                                 let depositPD = await functions.depositPD(getconfig_pd[0], getmembpd[0].username, getdocument[0].amount).catch(() => { throw err });
                                 //console.log(depositPD)
                                 if (depositPD.result.code === 0) {
+                                     
                                     await model.updatecredit(getdocument[0].agent_id, depositPD.result.data.agent.afterCredit, payload).catch(() => { throw err });
                                     await model.updaterefid(body.doc_id, depositPD.result.refId, payload, body.type).catch(() => { throw err });
 
@@ -170,6 +171,9 @@ module.exports.updatetransaction = async function (req, res) {
                                             credit_web: depositPD.result.data.agent.afterCredit
                                         }).end();
                                     } else {
+                                        if(getdocument.length > 1){
+                                            let updatelastdeposit = await model.updatelastdeposit(getdocument[1]._id).catch(() => { throw err });
+                                        }
                                         await model.updateapprove(body, payload, note,getdocument[0]).catch(() => { throw err });
                                         await model.update_financial(getdocument[0].memb_id, getdocument[0].amount, payload).catch(() => { throw err });
                                         //await model.update_financial(getdocument[0].memb_id,getdocument[0].amount,payload).catch(() => { throw err });

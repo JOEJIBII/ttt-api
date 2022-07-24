@@ -45,8 +45,8 @@ module.exports.checkturnover = async (username,conf,ref_id) => {
                 "prefix":conf.prov_prefix
             })
         }
-            console.log("http://localhost" + ":" + "45009/getWinLoseByDepositID" , option)
-            await fetch("http://localhost" + ":" + "45009/getWinLoseByDepositID" , option)
+            console.log("http://taetrueteam.fun" + ":" + "45009/getWinLoseByDepositID" , option)
+            await fetch("http://taetrueteam.fun" + ":" + "45009/getWinLoseByDepositID" , option)
             .then(async res => await res.json())
             .then(result => resolve({result:result}))
             .catch(error => reject(error));

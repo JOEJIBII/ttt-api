@@ -388,6 +388,7 @@ module.exports.updatelastdeposit = (deposit_id) => {
             },
                 {
                     $set: {
+                        "turnover_status": "open",
                         "turnover_date": new Date(moment(date).format()),
                        // "upd_by": ObjectId(payload.user_id),
                       //  "upd_date": new Date(moment().format()),
