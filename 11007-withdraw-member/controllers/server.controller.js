@@ -61,14 +61,14 @@ module.exports.withdraw = async function (req, res) {
                                     }
                                 }
                                 
-                                var agent_id = pool[0].agent_id
-                                for (var i = 0; i < agent_id.length; i++) {
-                                    console.log(agent_id[i])
-                                    deposit = await model.getdeposit(agent_id[i]).catch(() => { throw err });
-                                    withdraw = await model.getwithdraw(agent_id[i]).catch(() => { throw err });
+                                // var agent_id = pool[0].agent_id
+                                // for (var i = 0; i < agent_id.length; i++) {
+                                //     console.log(agent_id[i])
+                                //     deposit = await model.getdeposit(agent_id[i]).catch(() => { throw err });
+                                //     withdraw = await model.getwithdraw(agent_id[i]).catch(() => { throw err });
 
-                                    result = deposit.concat(withdraw);
-                                }
+                                //     result = deposit.concat(withdraw);
+                                // }
                                 let suspendstatus = await functions.changestatus(member[0].mem_pd.memb_username, withdraw_configs[0]).catch(() => { throw err });
                                 let updatestatus = await model.updatestatus(payload).catch(() => { throw err });
                                 if (suspendstatus.result.status === "200") {
