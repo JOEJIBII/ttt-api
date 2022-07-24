@@ -48,7 +48,7 @@ module.exports.updatesmsinactive = (body, payload) => {
             .updateOne({ _id: ObjectId(body._id), agent_id: ObjectId(body.agent_id) },
                 {
                     $set: {
-                        bank_id: objectId(body.bank_id),
+                        //bank_id: objectId(body.bank_id),
                         // bank_auto_status:body.bank_auto_status,
                         // bank_auto_config:null,
                         sms_auto_status:body.sms_auto_status,
