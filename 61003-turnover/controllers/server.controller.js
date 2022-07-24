@@ -66,7 +66,7 @@ const mainProcess = data => {
                     
                     let turn = Double(0)
                     if (turnover_pd.result.result.code === 100033) {
-                        turn = Double(0)
+                        turn = Double(0.00)
                     } else {
                         console.log("turnover_pd", turnover_pd.result.result.data)
                         const { hdp, mixParlay, mixStep, casino, slot, card, lotto, keno, trade, poker, } = turnover_pd.result.result.data
@@ -76,7 +76,7 @@ const mainProcess = data => {
                     
                     console.log("finddeposit.turnover_value",finddeposit[i].turnover_value)
                     console.log("turn",turn)
-                    if(turn === 0.0 ){
+                    if(turn.toString() === "0" ){
                         await model.update_docwithdrawstatus(data._id,"cancel").catch(() => { throw err });
                     }else{
                         let turnover_result = Double(finddeposit[i].turnover_value) - Double(turn)

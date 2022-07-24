@@ -150,11 +150,11 @@ module.exports.updatetransaction = async function (req, res) {
                                 let getmembpd = await model.getmembpd(body.memb_id).catch(() => { throw err });
                                 let updateturnover = await model.updateturnover(body.memb_id, getdocument[0].agent_id, getdocument[0].amount, getdocument[0].description).catch(() => { throw err });
                                 let depositPD = await functions.depositPD(getconfig_pd[0], getmembpd[0].username, getdocument[0].amount).catch(() => { throw err });
-                                //console.log(depositPD)
+                                console.log(depositPD)
                                 if (depositPD.result.code === 0) {
                                      
                                     await model.updatecredit(getdocument[0].agent_id, depositPD.result.data.agent.afterCredit, payload).catch(() => { throw err });
-                                    await model.updaterefid(body.doc_id, depositPD.result.refId, payload, body.type).catch(() => { throw err });
+                                    await model.updaterefid(body.doc_id, depositPD.result.data.refId, payload, body.type).catch(() => { throw err });
 
                                     if (updateturnover.modifiedCount === 0) {
                                         await model.upsertturnover(body.memb_id, getdocument[0].agent_id, getdocument[0].amount, getdocument[0].description).catch(() => { throw err });
