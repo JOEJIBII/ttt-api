@@ -10,7 +10,7 @@ module.exports.getbankdeposit = async function (req, res) {
         let getmem = await model.getbankmemb(payload.user_id).catch(() => { throw err });
         let bankdeposit
          bankdeposit = await model.bankdepositId(payload.agent_id,getmem[0].bank_id).catch(() => { throw err });
-        if(bankdepositId.length === 0){
+        if(bankdeposit.length === 0){
              bankdeposit = await model.bankdeposit(payload.agent_id).catch(() => { throw err });
         }
         
