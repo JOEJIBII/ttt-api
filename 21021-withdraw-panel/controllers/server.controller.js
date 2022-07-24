@@ -19,8 +19,10 @@ module.exports.withdraw = async function (req, res) {
                 let withdraw_configs = await model.getwithdraw_config(getagent[0].agent_id).catch(() => { throw err });
                 console.log(withdraw_configs)
                 let getbankweb
+                
                 if (body.account_withdraw === null || body.account_withdraw === "") {
                     getbankweb = await model.getbankweb_bonus(getagent[0].agent_id).catch(() => { throw err });
+                    
                 } else {
                     getbankweb = await model.getbankweb(body, getagent[0].agent_id).catch(() => { throw err });
                 }
@@ -79,8 +81,9 @@ module.exports.withdraw = async function (req, res) {
                                 let getlastdeposit = await model.getlastdeposit(getagent[0].agent_id, body.memb_id).catch(() => { throw err });
                                 let turn = Double()
                                 console.log("getlastdeposit", getlastdeposit)
+                               // await model.updatelastdeposit(getlastdeposit[0]._id).catch(() => { throw err });
                                 if (getlastdeposit.length !== 0) {
-                                    //let updatelastdeposit = await model.updatelastdeposit(getlastdeposit[0]._id).catch(() => { throw err });
+                                    let updatelastdeposit = await model.updatelastdeposit(getlastdeposit[0]._id).catch(() => { throw err });
                                     if (getlastdeposit[0].ref_id !== null) {
                                         let checkturnover = await functions.checkturnover(member[0].mem_pd.memb_username, withdraw_configs[0], getlastdeposit[0].ref_id).catch(() => { throw err });
                                         console.log(checkturnover)

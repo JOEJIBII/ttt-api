@@ -35,6 +35,8 @@ module.exports.deposit = async function (req, res) {
             console.log("bankfrom", bankfrom)
             console.log("bankto", bankto)
             if (bankfrom.length !== 0 && bankto.length !== 0) {
+                let getlastdeposit = await model.getlastdeposit(getagentid[0].agent_id, req.body.memb_id).catch(() => { throw err });
+                let updatelastdeposit = await model.updatelastdeposit(getlastdeposit[0]._id).catch(() => { throw err });
                 let Result = await model.InsertDocdeposit(req.body, payload, bankfrom[0], bankto[0], getagentid[0],note,turnover).catch(() => { throw err });
                 if (Result.insertedId !== null && Result.insertedId !== '') {
                     const log = await functions.logs(req.body, req.headers.host).catch(() => { throw err });

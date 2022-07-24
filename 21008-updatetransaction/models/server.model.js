@@ -86,6 +86,7 @@ module.exports.getconfig_pd = (agent_id) => {
                         prov_domain: "$provider.prov_domain",
                         prov_agentusername: "$provider.prov_agentusername",
                         prov_whitelabel: "$provider.prov_whitelabel",
+                        turnover_config:"$turnover_config"
 
                     }
                 },
@@ -490,6 +491,53 @@ module.exports.update_financial_withdraw_first = (memb_id, amount, payload) => {
                 $inc: { "financial.withdraw_count": 1, "financial.withdraw_total_amount": Double(amount) }
             },
                 { upsert: true }
+            )
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+
+
+    });
+}
+
+module.exports.findlast_deposit = (memb_id) => {
+    // console.log(agent_id);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('deposit')
+            .aggregate([
+                {
+                    $match: {
+                        $and: [
+                            {
+                                memb_id: ObjectId(memb_id)
+                            },
+
+                        ]
+                    }
+                }, {
+                    $project: {
+                        _id: 1,
+                        memb_id: "$memb_id",
+                    }
+                },
+            ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
+
+module.exports.update_docdeposit_turnover = (doc_id, turnover_date) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('deposit')
+            .updateOne({
+                _id: ObjectId(doc_id)
+            }, {
+                $set: {
+                    "turnover_date":turnover_date ,
+                    "turnover_status":"open" ,
+                }
+            }, { upsert: true }
             )
             .then(result => resolve(result))
             .catch(error => reject(error));
