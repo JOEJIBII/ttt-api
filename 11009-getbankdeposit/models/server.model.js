@@ -8,8 +8,8 @@ const collectionCONFIGURATION ="configuration"
 const collectionhistory_log_api ="history_log_api"
 module.exports.bankdepositId = (agent_id,bank_id) => {
     // console.log(agent_id);
-    let query = [{}]
-    query.push({ $or: [{ username: { $regex: body.search } }, { first_name: { $regex: body.search } }] })
+    // let query = [{}]
+    // query.push({ $or: [{ username: { $regex: body.search } }, { first_name: { $regex: body.search } }] })
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('agent_bank_account')
         .aggregate([
@@ -81,8 +81,8 @@ module.exports.bankdepositId = (agent_id,bank_id) => {
 
 module.exports.bankdeposit = (agent_id) => {
     // console.log(agent_id);
-    let query = [{}]
-    query.push({ $or: [{ username: { $regex: body.search } }, { first_name: { $regex: body.search } }] })
+    // let query = [{}]
+    // query.push({ $or: [{ username: { $regex: body.search } }, { first_name: { $regex: body.search } }] })
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('agent_bank_account')
         .aggregate([
@@ -155,8 +155,8 @@ module.exports.bankdeposit = (agent_id) => {
 
 module.exports.getbankmemb = (memb_id) => {
     // console.log(agent_id);
-    let query = [{}]
-    query.push({ $or: [{ username: { $regex: body.search } }, { first_name: { $regex: body.search } }] })
+    // let query = [{}]
+    // query.push({ $or: [{ username: { $regex: body.search } }, { first_name: { $regex: body.search } }] })
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('memb_bank_account')
         .aggregate([
