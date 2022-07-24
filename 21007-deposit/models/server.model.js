@@ -1,7 +1,7 @@
 const { MongoDB } = require('../configs/connection_mongodb');
 const objectId = require('mongodb').ObjectId;
 const moment = require('moment');
-const { ObjectId } = require('mongodb');
+const { ObjectId,Double } = require('mongodb');
 module.exports.getbankfrom = (body,agentid) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
