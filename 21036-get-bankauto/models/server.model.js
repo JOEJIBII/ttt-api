@@ -76,7 +76,7 @@ module.exports.getbankauto = (agent_id) => {
                     _id: 0,
                     account_id: "$_id",
                     agent_id: "$agent_id",
-                    credit:"$credit",
+                    credit:"$a.credit",
                     web_name: "$a.name",
                     web_prefix: "$a.prefix",
                     type: "$type",
