@@ -60,7 +60,7 @@ module.exports.getbanktransaction = (account_id) => {
                                                 date: "$cr_date",
                                                 type: "$type",
                                                 amount: "$amount",
-                                                description: "$description"
+                                                description: "$msg"
                                         }
                                 },
 
