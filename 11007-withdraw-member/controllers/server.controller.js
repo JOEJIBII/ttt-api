@@ -21,7 +21,7 @@ module.exports.withdraw = async function (req, res) {
                 let withdraw = req.body.balance
                 if (withdraw <= credit_balance) {
                     let counter_config = withdraw_configs[0].counter
-                    let Counter = await model.counttrasaction(payload.agent_id, payload.user_id).catch(() => { throw err }); counttrasaction_suceess
+                    let Counter = await model.counttrasaction(payload.agent_id, payload.user_id).catch(() => { throw err });
                     let counttrasaction_suceess = await model.counttrasaction_suceess(payload.agent_id, payload.user_id).catch(() => { throw err });
                     let cout = 0
                     if (Counter.length === 0) {
