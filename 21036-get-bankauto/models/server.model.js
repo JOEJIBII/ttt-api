@@ -15,6 +15,7 @@ module.exports.getbankauto = (agent_id) => {
                 $match: {
                     $and: [
                         { agent_id: ObjectId(agent_id) },
+                        { status: "active" },
                         {
                             $or: [
                                 { bank_auto_config: { $ne: null } },
