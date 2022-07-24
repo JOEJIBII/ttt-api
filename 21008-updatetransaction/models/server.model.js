@@ -194,8 +194,6 @@ module.exports.updaterefid = (doc_id, ref_id, payload, type) => {
     });
 }
 
-
-
 module.exports.updatelock = (body, payload) => {
     console.log(payload);
     return new Promise(async (resolve, reject) => {

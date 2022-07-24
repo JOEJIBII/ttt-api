@@ -96,7 +96,6 @@ module.exports.getbanktobystatus = (agentid) => {
     });
 }
 
-
 module.exports.getagentid = (body) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
@@ -127,7 +126,7 @@ module.exports.getagentid = (body) => {
     });
 }
 
-module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agentid,notes) => {
+module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agentid,notes,turnover) => {
    // console.log(payload)
    let silpimage = null
    let silpdate = null
@@ -163,7 +162,8 @@ module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agentid,notes) =
                 description: notes,
                 turnover_status:null,
                 turnover_date:null,
-                turnover_value:null,
+                turnover_value:turnover,
+                turnover_use:null,
                 ref_id:null,
                 lock_status:"",
                 lock_by:"",
@@ -177,6 +177,37 @@ module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agentid,notes) =
 
             })
                 
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
+module.exports.getconfig_turnover = (agent_id) => {
+    // console.log(body);
+    return new Promise(async (resolve, reject) => {
+
+        await MongoDB.collection('agent')
+
+            .aggregate([
+                {
+                    $match: {
+                        $and: [
+                            //{ou_id : ObjectId(payload.ou)},
+                            //{branch_id : ObjectId(payload.branch)},
+                            {
+                                _id: ObjectId(agent_id)
+                            },
+
+                        ]
+                    }
+                },
+                {
+                    $project: {
+                        id: 1,
+                        turnover_config:"$turnover_config"
+                    }
+                },
+            ]).toArray()
             .then(result => resolve(result))
             .catch(error => reject(error));
     });

@@ -218,6 +218,7 @@ module.exports.InsertDocdeposit = (body, payload, bankform, bankto, agent_id, me
                 turnover_status: null,
                 turnover_date: null,
                 turnover_value: null,
+                turnover_use:null,
                 ref_id: ObjectId(ref_id),
                 lock_status: "",
                 lock_by: "",
@@ -291,6 +292,53 @@ module.exports.getbankmember = (memb_id, agent_id) => {
                 }
 
             ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+
+
+    });
+}
+
+module.exports.findlast_deposit = (memb_id) => {
+    // console.log(agent_id);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('deposit')
+            .aggregate([
+                {
+                    $match: {
+                        $and: [
+                            {
+                                memb_id: ObjectId(memb_id)
+                            },
+
+                        ]
+                    }
+                }, {
+                    $project: {
+                        _id: 1,
+                        memb_id: "$memb_id",
+                    }
+                },
+            ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
+
+module.exports.update_docdeposit_turnover = (doc_id, turnover_date) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('deposit')
+            .updateOne({
+                _id: ObjectId(doc_id)
+            }, {
+                $set: {
+                    "turnover_date":turnover_date ,
+                    "turnover_status":"open" ,
+                }
+            }, { upsert: true }
+            )
             .then(result => resolve(result))
             .catch(error => reject(error));
 

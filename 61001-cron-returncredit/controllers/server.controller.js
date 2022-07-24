@@ -60,10 +60,17 @@ const mainProcess = data => {
                         let getmemb_bank = await model.getbankmember(getmemb_id[0].memb_id, data.agent_id).catch(() => { throw err });
                         //console.log("getmemb_bank",getmemb_bank[0])
                         if (getmemb_bank.length > 0) {
-
+                            const date = new Date()
+                            const future = 5 * 60 * 1000
+                            date.setTime(date.getTime() + future)
+                            let find_doc = await model.findlast_deposit(getmemb_id[0].memb_id)
+                            if(find_doc.length > 0){
+                                let updatelastdoc = await model.update_docdeposit_turnover(find_doc[0]._id,date)
+                            }
                             let call = await fx.depositPD(cof[0], trasaction[i].username, trasaction[i].amount).catch(() => { throw err });
                             //console.log(call)
                             if (call.result.msg === "SUCCESS") {
+
                                 await model.updatetransaction(data._id, trasaction[i].no, "success", note,getmemb_id[0].memb_id).catch(() => { throw err });
                                 note = note.concat([{ username: "system", note: "คืนยอดเสีย", note_date: new Date(moment().format()) }])
                                 await model.InsertDocdeposit(trasaction[i], data.cr_by, getmemb_bank[0], getbankagent[0], data.agent_id, getmemb_id[0].memb_id,note,call.result.refId).catch(() => { throw err });

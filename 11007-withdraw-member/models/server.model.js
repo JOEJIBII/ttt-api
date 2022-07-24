@@ -270,6 +270,7 @@ module.exports.getlastdeposit = (agent_id, memb_id) => {
                 },
                 {
                     $project: {
+                        _id:1,
                         ref_id: "$ref_id"
                     }
                 }
@@ -371,5 +372,29 @@ module.exports.updatestatus = (payload) => {
             .catch(error => reject(error));
 
 
+    });
+}
+
+
+module.exports.updatelastdeposit = (deposit_id) => {
+    const date = new Date()
+    const future = 5 * 60 * 1000
+    date.setTime(date.getTime() + future)
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection("deposit")
+            .updateOne({
+                _id: ObjectId(deposit_id)
+
+            },
+                {
+                    $set: {
+                        "turnover_date": new Date(moment(date).format()),
+                       // "upd_by": ObjectId(payload.user_id),
+                      //  "upd_date": new Date(moment().format()),
+                      //  "upd_prog": "11007-withdraw-member"
+                    }
+                },{upsert:true})
+            .then(result => resolve(result))
+            .catch(error => reject(error));
     });
 }

@@ -333,7 +333,6 @@ module.exports.getlastdeposit = (agent_id, memb_id) => {
     });
 }
 
-
 module.exports.Withrawcount = (_id, counter) => {
     console.log(_id)
     return new Promise(async (resolve, reject) => {
@@ -434,7 +433,6 @@ module.exports.updatestatusmember = (payload, member_id) => {
     });
 }
 
-
 module.exports.updatelastdeposit = (deposit_id) => {
     const date = new Date()
     const future = 5 * 60 * 1000
@@ -448,6 +446,7 @@ module.exports.updatelastdeposit = (deposit_id) => {
                 {
                     $set: {
                         "turnover_date": new Date(moment(date).format()),
+                        "turnover_status": "open",
                        // "upd_by": ObjectId(payload.user_id),
                       //  "upd_date": new Date(moment().format()),
                       //  "upd_prog": "11007-withdraw-member"

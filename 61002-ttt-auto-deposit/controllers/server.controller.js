@@ -3,6 +3,7 @@ const _ = require('lodash')
 const moment = require('moment');
 const model = require('../models/server.model')
 const fx = require("../functions/server.function");
+const { Double } = require('mongodb');
 var working = false
 
 module.exports = async () => {
@@ -14,12 +15,12 @@ module.exports = async () => {
 const mainProcess = async () => {
     try {
         working = true
-        console.log("working",working)
+        console.log("working", working)
         let tx = (await model.getBankTransaction())[0]
         if (!_.isEmpty(tx)) {
             //let deposit = require('../build/deposit.column')
             let deposit = {
-                channel:"auto",
+                channel: "auto",
                 agent_id: null,
                 type: 'deposit',
                 sub_type: 'auto deposit',
@@ -42,6 +43,7 @@ const mainProcess = async () => {
                 turnover_status: null,
                 turnover_date: null,
                 turnover_value: null,
+                turnover_use: null,
                 ref_id: null,
                 lock_status: '',
                 lock_by: '',
@@ -76,6 +78,7 @@ const mainProcess = async () => {
                             deposit['to_bank_id'] = tx['d_bank']
                             deposit['to_account_id'] = tx['d_account']
                             deposit['amount'] = Number(tx['amount'])
+                            deposit['turnover_value'] = Double(tx['amount']) * Double(cof.turnover_config.cash_multiplier)
                             deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
                             deposit['request_date'] = new Date(moment().format())
                             deposit['approve_by'] = 'auto deposit api'
@@ -85,6 +88,13 @@ const mainProcess = async () => {
                             deposit['cr_date'] = new Date(moment().format())
                             deposit['upd_by'] = 'auto deposit api'
                             deposit['upd_date'] = new Date(moment().format())
+                            const date = new Date()
+                            const future = 5 * 60 * 1000
+                            date.setTime(date.getTime() + future)
+                            let find_doc = await model.findlast_deposit(a['memb_id'])
+                            if(find_doc.length > 0){
+                                let updatelastdoc = await model.update_docdeposit_turnover(find_doc[0]._id,date)
+                            }
                             let insert = await model.insertDeposit(deposit)
                             await model.updateTxS(tx['_id'], 'success')
                             let user = (await model.findmember_username(a['memb_id']))[0]
@@ -102,6 +112,7 @@ const mainProcess = async () => {
                             deposit['bank_transaction_id'] = tx['_id']
                             deposit['date'] = datetime
                             deposit['amount'] = Number(tx['amount'])
+                            deposit['turnover_value'] = Double(tx['amount']) * Double(cof.turnover_config.cash_multiplier)
                             deposit['to_bank_id'] = tx['d_bank']
                             deposit['to_account_id'] = tx['d_account']
                             deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
@@ -121,6 +132,7 @@ const mainProcess = async () => {
                         deposit['bank_transaction_id'] = tx['_id']
                         deposit['date'] = datetime
                         deposit['amount'] = Number(tx['amount'])
+                        deposit['turnover_value'] = Double(tx['amount']) * Double(cof.turnover_config.cash_multiplier)
                         deposit['to_bank_id'] = tx['d_bank']
                         deposit['to_account_id'] = tx['d_account']
                         deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
@@ -149,6 +161,7 @@ const mainProcess = async () => {
                             deposit['to_bank_id'] = tx['d_bank']
                             deposit['to_account_id'] = tx['d_account']
                             deposit['amount'] = Number(tx['amount'])
+                            deposit['turnover_value'] = Double(tx['amount']) * Double(cof.turnover_config.cash_multiplier)
                             deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
                             deposit['request_date'] = new Date(moment().format())
                             deposit['approve_by'] = 'auto deposit api'
@@ -158,6 +171,14 @@ const mainProcess = async () => {
                             deposit['cr_date'] = new Date(moment().format())
                             deposit['upd_by'] = 'auto deposit api'
                             deposit['upd_date'] = new Date(moment().format())
+                            const date = new Date()
+                            const future = 5 * 60 * 1000
+                            date.setTime(date.getTime() + future)
+                            let find_doc = await model.findlast_deposit(a['memb_id'])
+                            if(find_doc.length > 0){
+                                let updatelastdoc = await model.update_docdeposit_turnover(find_doc[0]._id,date)
+                            }
+                            
                             let insert = await model.insertDeposit(deposit)
                             //console.log("insert", insert)
                             await model.updateTxS(tx['_id'], 'success')
@@ -178,6 +199,7 @@ const mainProcess = async () => {
                             deposit['to_bank_id'] = tx['d_bank']
                             deposit['to_account_id'] = tx['d_account']
                             deposit['amount'] = Number(tx['amount'])
+                            deposit['turnover_value'] = Double(tx['amount']) * Double(cof.turnover_config.cash_multiplier)
                             deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
                             deposit['request_date'] = new Date(moment().format())
                             deposit['status'] = 'pending'
@@ -197,6 +219,7 @@ const mainProcess = async () => {
                         deposit['to_bank_id'] = tx['d_bank']
                         deposit['to_account_id'] = tx['d_account']
                         deposit['amount'] = Number(tx['amount'])
+                        deposit['turnover_value'] = Double(tx['amount']) * Double(cof.turnover_config.cash_multiplier)
                         deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
                         deposit['request_date'] = new Date(moment().format())
                         deposit['status'] = 'pending'
@@ -229,6 +252,7 @@ const mainProcess = async () => {
                             deposit['to_bank_id'] = findaccount_agent.to_bank_id
                             deposit['to_account_id'] = findaccount_agent.to_account_id
                             deposit['amount'] = Number(tx['amount'])
+                            deposit['turnover_value'] = Double(tx['amount']) * Double(cof.turnover_config.cash_multiplier)
                             deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
                             deposit['request_date'] = new Date(moment().format())
                             deposit['approve_by'] = 'auto deposit api'
@@ -238,6 +262,14 @@ const mainProcess = async () => {
                             deposit['cr_date'] = new Date(moment().format())
                             deposit['upd_by'] = 'auto deposit api'
                             deposit['upd_date'] = new Date(moment().format())
+                            const date = new Date()
+                            const future = 5 * 60 * 1000
+                            date.setTime(date.getTime() + future)
+                            let find_doc = await model.findlast_deposit(a['memb_id'])
+                            if(find_doc.length > 0){
+                                let updatelastdoc = await model.update_docdeposit_turnover(find_doc[0]._id,date)
+                            }
+                            
                             let insert = await model.insertDeposit(deposit)
                             await model.updateTxS(tx['_id'], 'success')
                             let user = (await model.findmember_username(a['memb_id']))[0]
@@ -255,6 +287,7 @@ const mainProcess = async () => {
                             deposit['bank_transaction_id'] = tx['_id']
                             deposit['date'] = datetime
                             deposit['amount'] = Number(tx['amount'])
+                            deposit['turnover_value'] = Double(tx['amount']) * Double(cof.turnover_config.cash_multiplier)
                             deposit['to_bank_id'] = findaccount_agent.to_bank_id
                             deposit['to_account_id'] = findaccount_agent.to_account_id
                             deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
@@ -274,6 +307,7 @@ const mainProcess = async () => {
                         deposit['bank_transaction_id'] = tx['_id']
                         deposit['date'] = datetime
                         deposit['amount'] = Number(tx['amount'])
+                        deposit['turnover_value'] = Double(tx['amount']) * Double(cof.turnover_config.cash_multiplier)
                         deposit['to_bank_id'] = findaccount_agent.to_bank_id
                         deposit['to_account_id'] = findaccount_agent.to_account_id
                         deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
@@ -293,6 +327,7 @@ const mainProcess = async () => {
                     deposit['bank_transaction_id'] = tx['_id']
                     deposit['date'] = datetime
                     deposit['amount'] = Number(tx['amount'])
+                    deposit['turnover_value'] = Double(tx['amount']) * Double(cof.turnover_config.cash_multiplier)
                     deposit['to_bank_id'] = findaccount_agent.to_bank_id
                     deposit['to_account_id'] = findaccount_agent.to_account_id
                     deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
@@ -315,6 +350,7 @@ const mainProcess = async () => {
                 deposit['bank_transaction_id'] = tx['_id']
                 deposit['date'] = datetime
                 deposit['amount'] = Number(tx['amount'])
+                deposit['turnover_value'] = Double(tx['amount']) * Double(cof.turnover_config.cash_multiplier)
                 deposit['silp_date'] = `${sDate[2]}-${sDate[1]}-${sDate[0]} ${tx['time']}:00+0700`
                 deposit['request_date'] = new Date(moment().format())
                 deposit['status'] = 'pending'
