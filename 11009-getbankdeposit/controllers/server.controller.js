@@ -7,8 +7,13 @@ module.exports.getbankdeposit = async function (req, res) {
     //console.log(JSON.parse(req.headers.payload))
     const payload = JSON.parse(req.headers.payload)
     try {
-
-        let bankdeposit = await model.bankdeposit(payload.agent_id).catch(() => { throw err });
+        let getmem = await model.getbankmemb(payload.user_id).catch(() => { throw err });
+        let bankdeposit
+         bankdeposit = await model.bankdepositId(payload.agent_id,getmem[0].bank_id).catch(() => { throw err });
+        if(bankdepositId.length === 0){
+             bankdeposit = await model.bankdeposit(payload.agent_id).catch(() => { throw err });
+        }
+        
         // console.log(bankdeposit)
         //  let responses = await functions.Mappingdata(bankdeposit[0].bank_account_deposit).catch(() => {throw err});
         
