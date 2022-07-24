@@ -16,11 +16,11 @@ module.exports.deposit = async function (req, res) {
             console.log("acc", req.body.account_deposit)
             if (req.body.account_deposit === null || req.body.account_deposit === "") {
                 bankto = await model.getbanktobystatus(getagentid[0]).catch(() => { throw err });
-                turnover = req.body * conf.turnover_config.bonus_multiplier
+                turnover = req.body.amount * conf.turnover_config.bonus_multiplier
                 console.log("getbanktobystatus", bankto)
             } else {
                 bankto = await model.getbanktobyaccount_id(req.body, getagentid[0]).catch(() => { throw err });
-                turnover = req.body * conf.turnover_config.cash_multiplier
+                turnover = req.body.amount * conf.turnover_config.cash_multiplier
                 console.log("getbanktobyaccount_id", bankto)
 
             }
