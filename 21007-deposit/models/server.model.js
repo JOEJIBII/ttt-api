@@ -162,7 +162,7 @@ module.exports.InsertDocdeposit = (body,payload,bankform,bankto,agentid,notes,tu
                 description: notes,
                 turnover_status:null,
                 turnover_date:null,
-                turnover_value:turnover,
+                turnover_value:Double(turnover),
                 turnover_use:null,
                 ref_id:null,
                 lock_status:"",

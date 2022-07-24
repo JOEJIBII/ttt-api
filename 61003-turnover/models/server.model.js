@@ -218,6 +218,29 @@ module.exports.update_docwithdraw = (doc_id) => {
     });
 }
 
+module.exports.update_docwithdrawstatus = (doc_id,status) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('withdraw')
+            .updateOne({
+                _id: ObjectId(doc_id)
+            }, {
+                $set: {
+                    //"turnover_use":turnover_use ,
+                    "status":status ,
+                    "upd_by":"auto-turnover",
+                    "upd_date":new Date(moment().format()),
+                    "upd_prog":"61003-turnover"
+                }
+            }, { upsert: true }
+            )
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+
+
+    });
+}
+
 
 
 module.exports.update_turnover = (memb_id,turnover) => {

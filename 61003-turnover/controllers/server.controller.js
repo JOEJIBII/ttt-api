@@ -100,7 +100,11 @@ const mainProcess = data => {
                         await model.update_docdeposit_turnover(finddeposit[i].deposit_id,turn,close).catch(() => { throw err });
                         //update_docdeposit_turnover
                     }
+                    await model.update_docwithdraw(finddeposit[i].deposit_id).catch(() => { throw err });
                 }
+            }else{
+                await model.update_docwithdrawstatus(data._id,"cancel").catch(() => { throw err });
+               
             }
 
             //update doc withdraw
