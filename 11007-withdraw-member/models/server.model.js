@@ -265,6 +265,9 @@ module.exports.getlastdeposit = (agent_id, memb_id) => {
                             {
                                 memb_id: ObjectId(memb_id)
                             },
+                            {
+                                status:"success"
+                            }
                         ]
                     }
                 },
