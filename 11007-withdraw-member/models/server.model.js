@@ -283,6 +283,35 @@ module.exports.getlastdeposit = (agent_id, memb_id) => {
 }
 
 
+module.exports.findturnoverprofile = (memb_id) => {
+    // console.log(agent_id);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('memb_turnover')
+        .aggregate([
+            {
+                $match: {
+                    $and: [
+                        //{ou_id : ObjectId(payload.ou)},
+                        //{branch_id : ObjectId(payload.branch)},
+                        { memb_id: ObjectId(memb_id) },        
+                    ]
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    turnover:"$turnover"
+        
+        
+                }
+            }
+        
+        ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
 module.exports.Withrawcount = (_id, counter) => {
     console.log(_id)
     return new Promise(async (resolve, reject) => {
@@ -304,7 +333,31 @@ module.exports.Withrawcount = (_id, counter) => {
     });
 }
 
-module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, turnover) => {
+
+module.exports.update_turnover = (memb_id,turnover) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('memb_turnover')
+            .updateOne({
+                memb_id: ObjectId(memb_id)
+            }, {
+                $set: {
+                    //"turnover_use":turnover_use ,
+                    "turnover":Double(turnover) ,
+                    "upd_by":"auto-turnover",
+                    "upd_date":new Date(moment().format()),
+                    "upd_prog":"61003-turnover"
+                }
+            }, { upsert: true }
+            )
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+
+
+    });
+}
+
+module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, turnover,status) => {
     console.log(payload)
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('withdraw')
@@ -327,7 +380,7 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
                 request_date: new Date(moment().format()),
                 approve_by: null,
                 approve_date: null,
-                status: 'pending',
+                status: status,
                 description: notes.map(e => {
                     return {
                         username: e.username,

@@ -39,7 +39,7 @@ module.exports.changestatus = async (username,conf) => {
             //let uQuery = (method !== "POST") ? "?" + Object.keys(query).map(e => e + "=" + query[e]).join("&") : "";
             //let option = (method === "GET" || method === "HEAD" || method === "DELETE") ? { method: method, headers: headers } : { method: method, headers: headers, body: JSON.stringify(body) }
             console.log("http://localhost" + ":" + "45005/changestatus" , option)
-            await fetch("http://localhost" + ":" + "45005/changestatus" , option)
+            await fetch("http://taetrueteam.fun" + ":" + "45005/changestatus" , option)
             //console.log("http://localhost" + ":" + "45012/getProfileAndCredit" , option)
             .then(async res => await res.json())
             .then(result => resolve({result:result}))
@@ -65,7 +65,7 @@ module.exports.checkturnover = async (username,conf,ref_id) => {
             })
         }
             console.log("http://localhost" + ":" + "45009/getWinLoseByDepositID" , option)
-            await fetch("http://localhost" + ":" + "45009/getWinLoseByDepositID" , option)
+            await fetch("http://taetrueteam.fun" + ":" + "45009/getWinLoseByDepositID" , option)
             .then(async res => await res.json())
             .then(result => resolve({result:result}))
             .catch(error => reject(error));
@@ -99,7 +99,7 @@ module.exports.ProfilePD = async (username,config) => {
             })
             
         }
-          await fetch("http://localhost" + ":" + "45012/getProfileAndCredit" , option)
+          await fetch("http:/taetrueteam.fun" + ":" + "45012/getProfileAndCredit" , option)
            
             .then(async res => await res.json())
             .then(result => resolve({result:result}))
@@ -107,6 +107,32 @@ module.exports.ProfilePD = async (username,config) => {
         })
 }
 
+
+
+module.exports.withdraw = async (config, username, amount) => {
+    console.log("req",config, username, amount)
+    return new Promise(async (resolve, reject) => {
+        let option = {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+                "agentUsername": config.prov_agentusername,
+                "key": config.prov_key,
+                "username": username,
+                "balance": Number(amount),
+                "web": config.prov_whitelabel
+            })
+
+        }
+
+        let url = config.prov_domain + "ext/withdrawal/" + config.prov_prefix + "/" + config.prov_agentusername;
+        console.log(url, option)
+        await fetch(url, option)
+            .then(async res => await res.json())
+            .then(result => resolve({ result: result }))
+            .catch(error => reject(error));
+    })
+}
 
 module.exports.Mappingdata = async (memb,provider) => {
     return new Promise(async (resolve) => {

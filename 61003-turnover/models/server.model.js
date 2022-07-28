@@ -246,7 +246,7 @@ module.exports.update_docwithdrawstatus = (doc_id,status) => {
 module.exports.update_turnover = (memb_id,turnover) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
-        await MongoDB.collection('withdraw')
+        await MongoDB.collection('memb_turnover')
             .updateOne({
                 memb_id: ObjectId(memb_id)
             }, {

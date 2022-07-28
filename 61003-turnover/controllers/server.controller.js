@@ -63,7 +63,7 @@ const mainProcess = data => {
                     console.log("finddeposit", finddeposit[i])
                     let turnover_pd = await fx.checkturnover(data.username, getconfig_pd[0], finddeposit[0].ref_id).catch(() => { throw err });
                     console.log("turnover_pd", turnover_pd)
-                    
+
                     let turn = Double(0)
                     if (turnover_pd.result.result.code === 100033) {
                         turn = Double(0.00)
@@ -73,37 +73,44 @@ const mainProcess = data => {
                         turn = Double(hdp.turn) + Double(mixParlay.turn) + Double(mixStep.turn) + Double(casino.turn) + Double(slot.turn) + Double(card.turn) + Double(lotto.turn) + Double(keno.turn) + Double(trade.turn) + Double(poker.turn)
 
                     }
-                    
-                    console.log("finddeposit.turnover_value",finddeposit[i].turnover_value)
-                    console.log("turn",turn)
-                    if(turn.toString() === "0" ){
-                        await model.update_docwithdrawstatus(data._id,"cancel").catch(() => { throw err });
-                    }else{
-                        let turnover_result = Double(finddeposit[i].turnover_value) - Double(turn)
-                    console.log("turnover_result",turnover_result)
-                    result_turnover_profile = Double()
-                    if (turnover_result > 0) {
-                        result_turnover_profile = Double(turnover_profile.turnover) - Double(turn)
-                        console.log("result_turnover_profile",result_turnover_profile)
-                    } else {
-                        result_turnover_profile = Double(turnover_profile.turnover) - Double(finddeposit[i].turnover_value)
-                        console.log("result_turnover_profile",result_turnover_profile)
-                    }
 
-                    await model.update_turnover(data.memb_id, result_turnover_profile).catch(() => { throw err });
-                    if (result_turnover_profile === 0 || result_turnover_profile < 0) {
-                        await fx.withdraw(getconfig_pd[0], data.username, data.amount).catch(() => { throw err });
-                    }
-                    if ([i] === 0) {
-                        await model.update_docdeposit_status(finddeposit[i].deposit_id, turn).catch(() => { throw err });
-                        //update_docdeposit_status
+                    console.log("finddeposit.turnover_value", finddeposit[i].turnover_value)
+                    console.log("turn", turn)
+                    if (turn.toString() === "0") {
+                        await model.update_docwithdrawstatus(data._id, "cancel").catch(() => { throw err });
+                        let changestatus = await fx.changestatus(data.username, getconfig_pd[0]).catch(() => { throw err });
                     } else {
-                        await model.update_docdeposit_turnover(finddeposit[i].deposit_id, turn, close).catch(() => { throw err });
-                        //update_docdeposit_turnover
+                        let turnover_result = Double(finddeposit[i].turnover_value) - Double(turn)
+                        console.log("turnover_result", turnover_result)
+                        result_turnover_profile = Double()
+                        if (turnover_result > 0) {
+                            result_turnover_profile = Double(turnover_profile[0].turnover) - Double(turn)
+                            console.log("result_turnover_profile", result_turnover_profile)
+                        } else {
+                            result_turnover_profile = Double(turnover_profile[0].turnover) - Double(finddeposit[i].turnover_value)
+                            console.log("result_turnover_profile", result_turnover_profile)
+                        }
+
+                        if (result_turnover_profile <= 0) {
+                            result_turnover_profile = 0
+                            await fx.withdraw(getconfig_pd[0], data.username, data.amount).catch(() => { throw err });
+                            console.log("result_turnover_profile", result_turnover_profile)
+                            await model.update_turnover(data.memb_id, result_turnover_profile).catch(() => { throw err });
+                            console.log("[i]", finddeposit[i])
+                            if (i === 0) {
+                                await model.update_docdeposit_status(finddeposit[i].deposit_id, turn).catch(() => { throw err });
+                                //update_docdeposit_status
+                            } else {
+                                await model.update_docdeposit_turnover(finddeposit[i].deposit_id, turn, close).catch(() => { throw err });
+                                //update_docdeposit_turnover
+                            }
+                            await model.update_docwithdraw(finddeposit[i].deposit_id).catch(() => { throw err });
+                            //await model.update_docdeposit_status(finddeposit[i].deposit_id, turn).catch(() => { throw err });
+                        }else{
+                            await model.update_docwithdrawstatus(data._id, "cancel").catch(() => { throw err });
+                        }
+
                     }
-                    await model.update_docwithdraw(finddeposit[i].deposit_id).catch(() => { throw err });
-                    }
-                    
                 }
             } else {
                 // await model.update_docwithdrawstatus(data._id,"cancel").catch(() => { throw err });
