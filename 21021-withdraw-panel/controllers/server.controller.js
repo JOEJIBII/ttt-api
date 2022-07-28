@@ -84,6 +84,7 @@ module.exports.withdraw = async function (req, res) {
                                // await model.updatelastdeposit(getlastdeposit[0]._id).catch(() => { throw err });
                                 if (getlastdeposit.length !== 0) {
                                     let updatelastdeposit = await model.updatelastdeposit(getlastdeposit[0]._id).catch(() => { throw err });
+                                    let findturnoverprofile = await model.findturnoverprofile(body.memb_id).catch(() => { throw err });
                                     if (getlastdeposit[0].ref_id !== null) {
                                         let checkturnover = await functions.checkturnover(member[0].mem_pd.memb_username, withdraw_configs[0], getlastdeposit[0].ref_id).catch(() => { throw err });
                                         console.log(checkturnover)
@@ -99,18 +100,27 @@ module.exports.withdraw = async function (req, res) {
 
                                     } //                     //console.log(checkturnover.result.result.data)updatestatusmember
                                 }
-                                let suspendstatus = await functions.changestatus(member[0].mem_pd.memb_username, withdraw_configs[0]).catch(() => { throw err });
-                                let updatestatusmember = await model.updatestatusmember(payload, body.memb_id).catch(() => { throw err });
-                                if (suspendstatus.result.status === "200") {
-                                    let OpenPO = await model.InsertDocWithdraw(payload, withdraw, member[0], getbankweb[0], note, turn, body, getagent[0].agent_id).catch(() => { throw err });
-                                    if (OpenPO.insertedId !== null && OpenPO.insertedId !== '') {
-                                        res.send({ status: "200", message: 'กรุณารอซักครู่ระบบกำลังตรวจสอบ TrunOver', withdraw_count: Counter.length }).end();
+                                let turnover_result = Double(findturnoverprofile[0].turnover) - Double(turn)
+                                if(turnover_result <= 0){
+                                    let updateturnover = await model.update_turnover(body.memb_id, 0).catch(() => { throw err });
+                                    let OpenPO = await model.InsertDocWithdrawapprove(payload, withdraw, member[0], getbankweb[0], note, turn, body, getagent[0].agent_id).catch(() => { throw err });
+                                    await functions.withdraw(withdraw_configs[0], member[0].mem_pd.memb_username, withdraw).catch(() => { throw err });
+                                    res.send({ status: "200", message: 'ระบบกำลังดำเนินการถอนเงิน', withdraw_count: Counter.length }).end();
+                                }else{
+                                    let suspendstatus = await functions.changestatus(member[0].mem_pd.memb_username, withdraw_configs[0]).catch(() => { throw err });
+                                    let updatestatusmember = await model.updatestatusmember(payload, body.memb_id).catch(() => { throw err });
+                                    if (suspendstatus.result.status === "200") {
+                                        let OpenPO = await model.InsertDocWithdraw(payload, withdraw, member[0], getbankweb[0], note, turn, body, getagent[0].agent_id).catch(() => { throw err });
+                                        if (OpenPO.insertedId !== null && OpenPO.insertedId !== '') {
+                                            res.send({ status: "200", message: 'กรุณารอซักครู่ระบบกำลังตรวจสอบ TrunOver', withdraw_count: Counter.length }).end();
+                                        } else {
+                                            res.send({ status: "201", message: 'ไม่สามารถสร้างใบถอนได้สำเร็จ' }).end();
+                                        }
                                     } else {
-                                        res.send({ status: "201", message: 'ไม่สามารถสร้างใบถอนได้สำเร็จ' }).end();
+                                        res.send({ status: "202", message: 'ไม่สามารถสร้างใบถอนได้สำเร็จ กรุณาลองใหม่' }).end();
                                     }
-                                } else {
-                                    res.send({ status: "202", message: 'ไม่สามารถสร้างใบถอนได้สำเร็จ กรุณาลองใหม่' }).end();
                                 }
+                                
 
                             } else {
                                 res.send({ status: "202", message: 'กรุณาถอนน้อยกว่า ' + max_config + " บาท" }).end();

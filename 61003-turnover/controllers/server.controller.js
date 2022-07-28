@@ -78,6 +78,7 @@ const mainProcess = data => {
                     console.log("turn", turn)
                     if (turn.toString() === "0") {
                         await model.update_docwithdrawstatus(data._id, "cancel").catch(() => { throw err });
+                        await model.updatestatusmember(data.memb_id).catch(() => { throw err });
                         let changestatus = await fx.changestatus(data.username, getconfig_pd[0]).catch(() => { throw err });
                     } else {
                         let turnover_result = Double(finddeposit[i].turnover_value) - Double(turn)
@@ -105,9 +106,13 @@ const mainProcess = data => {
                                 //update_docdeposit_turnover
                             }
                             await model.update_docwithdraw(data._id).catch(() => { throw err });
+                            await model.updatestatusmember(data.memb_id).catch(() => { throw err });
+                            let changestatus = await fx.changestatus(data.username, getconfig_pd[0]).catch(() => { throw err });
                             //await model.update_docdeposit_status(finddeposit[i].deposit_id, turn).catch(() => { throw err });
                         }else{
                             await model.update_docwithdrawstatus(data._id, "cancel").catch(() => { throw err });
+                            await model.updatestatusmember(data.memb_id).catch(() => { throw err });
+                            let changestatus = await fx.changestatus(data.username, getconfig_pd[0]).catch(() => { throw err });
                         }
 
                     }

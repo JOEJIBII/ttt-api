@@ -410,6 +410,62 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
     });
 }
 
+module.exports.InsertDocWithdrawapprove = (payload, balance, member, bankweb, notes, turnover, body, agent_id) => {
+    console.log(payload)
+    let silpimage = null
+    let silpdate = null
+    if (silpimage !== null && silpimage !== "") {
+        silpimage = body.silp_image
+    }
+    if (body.transaction_date !== null && body.transaction_date !== "") {
+        silpdate = new Date(moment(body.transaction_date).format())
+    }
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('withdraw')
+            .insertOne({
+                agent_id: ObjectId(agent_id),
+                channel: "panel",
+                type: "withdraw",
+                date: new Date(moment().format()),
+                memb_id: ObjectId(member.memb_id),
+                from_bank_id: ObjectId(bankweb.bank_id),
+                from_account_id: ObjectId(bankweb._id),
+                from_bank_name: bankweb.account_name,
+                member_name: member.account_name,
+                to_bank_id: ObjectId(member.bank_id),
+                to_account_id: ObjectId(member._id),
+                amount: Double(balance),
+                silp_date: silpdate,
+                silp_image: silpimage,
+                request_by: payload.username,
+                request_date: new Date(moment().format()),
+                approve_by: null,
+                approve_date: null,
+                status: 'approve',
+                description: notes.map(e => {
+                    return {
+                        username: e.username,
+                        note: e.note,
+                        note_date: e.note_date
+                    }
+                }),
+                lock_status: "",
+                lock_by: "",
+                lock_date: null,
+                cr_by: payload.user_id,
+                cr_date: new Date(moment().format()),
+                cr_prog: null,
+                upd_by: null,
+                upd_date: null,
+                upd_prog: null
+
+            })
+
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
 module.exports.updatestatusmember = (payload, member_id) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
@@ -456,3 +512,58 @@ module.exports.updatelastdeposit = (deposit_id) => {
             .catch(error => reject(error));
     });
 }
+
+
+module.exports.findturnoverprofile = (memb_id) => {
+    // console.log(agent_id);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('memb_turnover')
+        .aggregate([
+            {
+                $match: {
+                    $and: [
+                        //{ou_id : ObjectId(payload.ou)},
+                        //{branch_id : ObjectId(payload.branch)},
+                        { memb_id: ObjectId(memb_id) },        
+                    ]
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    turnover:"$turnover"
+        
+        
+                }
+            }
+        
+        ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
+
+module.exports.update_turnover = (memb_id,turnover) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('memb_turnover')
+            .updateOne({
+                memb_id: ObjectId(memb_id)
+            }, {
+                $set: {
+                    //"turnover_use":turnover_use ,
+                    "turnover":Double(turnover) ,
+                    "upd_by":"auto-turnover",
+                    "upd_date":new Date(moment().format()),
+                    "upd_prog":"61003-turnover"
+                }
+            }, { upsert: true }
+            )
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+
+
+    });
+}
+

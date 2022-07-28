@@ -108,6 +108,32 @@ module.exports.ProfilePD = async (username,config) => {
 }
 
 
+module.exports.withdraw = async (config, username, amount) => {
+    console.log("req",config, username, amount)
+    return new Promise(async (resolve, reject) => {
+        let option = {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+                "agentUsername": config.prov_agentusername,
+                "key": config.prov_key,
+                "username": username,
+                "balance": Number(amount),
+                "web": config.prov_whitelabel
+            })
+
+        }
+
+        let url = config.prov_domain + "ext/withdrawal/" + config.prov_prefix + "/" + config.prov_agentusername;
+        console.log(url, option)
+        await fetch(url, option)
+            .then(async res => await res.json())
+            .then(result => resolve({ result: result }))
+            .catch(error => reject(error));
+    })
+}
+
+
 module.exports.Mappingdata = async (memb,provider) => {
     return new Promise(async (resolve) => {
         console.log("member",memb)

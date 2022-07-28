@@ -43,7 +43,6 @@ module.exports.getconfig_pd = (agent_id) => {
     });
 }
 
-
 module.exports.findjob = () => {
     // console.log(agent_id);
     return new Promise(async (resolve, reject) => {
@@ -241,8 +240,6 @@ module.exports.update_docwithdrawstatus = (doc_id,status) => {
     });
 }
 
-
-
 module.exports.update_turnover = (memb_id,turnover) => {
     //console.log(body);
     return new Promise(async (resolve, reject) => {
@@ -259,6 +256,29 @@ module.exports.update_turnover = (memb_id,turnover) => {
                 }
             }, { upsert: true }
             )
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+
+
+    });
+}
+
+
+module.exports.updatestatusmember = (member_id) => {
+    //console.log(body);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection("member")
+            .updateOne({
+                _id: ObjectId(member_id)
+
+            },
+                {
+                    $set: {
+                        "status": "active",
+                        "upd_date": new Date(moment().format()),
+                        "upd_prog": "61003-turnover"
+                    }
+                })
             .then(result => resolve(result))
             .catch(error => reject(error));
 
