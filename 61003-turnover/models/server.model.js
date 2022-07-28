@@ -253,9 +253,9 @@ module.exports.update_turnover = (memb_id,turnover) => {
                 $set: {
                     //"turnover_use":turnover_use ,
                     "turnover":Double(turnover) ,
-                    "upd_by":"auto-turnover",
-                    "upd_date":new Date(moment().format()),
-                    "upd_prog":"61003-turnover"
+                    // "upd_by":"auto-turnover",
+                    // "upd_date":new Date(moment().format()),
+                    // "upd_prog":"61003-turnover"
                 }
             }, { upsert: true }
             )

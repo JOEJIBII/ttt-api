@@ -9,7 +9,7 @@ const fx = require("../functions/server.function");
 const model = require("../models/server.model");
 
 
-var working = false;
+var working = true;
 
 module.exports = async () => {
     new CronJob("*/10 * * * * *", async () => {
@@ -27,12 +27,12 @@ module.exports = async () => {
                         // let updatefile = await model.updatefiletransaction(findtransaction[i]._id, "processing").catch(() => { throw err });
                         await mainProcess(findjob[i]);
                     }
-                    working = false;
+                    working = true;
                 } else {
-                    working = false;
+                    working = true;
                 }
             } else {
-                working = false;
+                working = true;
             }
         } catch (error) {
             console.error("main process error on ", new Date().toISOString());
@@ -104,7 +104,7 @@ const mainProcess = data => {
                                 await model.update_docdeposit_turnover(finddeposit[i].deposit_id, turn, close).catch(() => { throw err });
                                 //update_docdeposit_turnover
                             }
-                            await model.update_docwithdraw(finddeposit[i].deposit_id).catch(() => { throw err });
+                            await model.update_docwithdraw(data._id).catch(() => { throw err });
                             //await model.update_docdeposit_status(finddeposit[i].deposit_id, turn).catch(() => { throw err });
                         }else{
                             await model.update_docwithdrawstatus(data._id, "cancel").catch(() => { throw err });
@@ -119,7 +119,7 @@ const mainProcess = data => {
             //update doc withdraw
             // ถอน credit
             //
-            resolve(false);
+            resolve(true);
         } catch (err) {
             reject(err);
         }
