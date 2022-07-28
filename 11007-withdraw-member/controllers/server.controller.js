@@ -66,6 +66,7 @@ module.exports.withdraw = async function (req, res) {
                                     let updateturnover = await model.update_turnover(payload.user_id, 0).catch(() => { throw err });
                                     let OpenPO = await model.InsertDocWithdraw(payload, withdraw, member[0], getbankweb[0], note, turn, "approve").catch(() => { throw err });
                                     await functions.withdraw(withdraw_configs[0], member[0].mem_pd.memb_username, withdraw).catch(() => { throw err });
+                                    res.send({ status: "200", message: 'ระบบกำลังดำเนินการถอนเงิน' }).end();
                                 } else {
                                     let suspendstatus = await functions.changestatus(member[0].mem_pd.memb_username, withdraw_configs[0]).catch(() => { throw err });
                                     let updatestatus = await model.updatestatus(payload).catch(() => { throw err });
