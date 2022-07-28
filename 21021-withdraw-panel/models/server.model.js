@@ -362,7 +362,8 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
         silpimage = body.silp_image
     }
     if (body.transaction_date !== null && body.transaction_date !== "") {
-        silpdate = new Date(moment(body.transaction_date).format())
+        date = new Date(body.transaction_date)
+        silpdate = new Date(moment(date).format())
     }
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('withdraw')
@@ -418,7 +419,8 @@ module.exports.InsertDocWithdrawapprove = (payload, balance, member, bankweb, no
         silpimage = body.silp_image
     }
     if (body.transaction_date !== null && body.transaction_date !== "") {
-        silpdate = new Date(moment(body.transaction_date).format())
+        date = new Date(body.transaction_date)
+        silpdate = new Date(moment(date).format())
     }
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('withdraw')

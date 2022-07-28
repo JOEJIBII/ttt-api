@@ -79,12 +79,12 @@ module.exports.withdraw = async function (req, res) {
                         if (withdraw >= min_config || sub_type === "bonus") {
                             if (withdraw <= max_config || sub_type === "bonus") {
                                 let getlastdeposit = await model.getlastdeposit(getagent[0].agent_id, body.memb_id).catch(() => { throw err });
+                                let findturnoverprofile = await model.findturnoverprofile(body.memb_id).catch(() => { throw err });
                                 let turn = Double()
                                 console.log("getlastdeposit", getlastdeposit)
                                // await model.updatelastdeposit(getlastdeposit[0]._id).catch(() => { throw err });
                                 if (getlastdeposit.length !== 0) {
                                     let updatelastdeposit = await model.updatelastdeposit(getlastdeposit[0]._id).catch(() => { throw err });
-                                    let findturnoverprofile = await model.findturnoverprofile(body.memb_id).catch(() => { throw err });
                                     if (getlastdeposit[0].ref_id !== null) {
                                         let checkturnover = await functions.checkturnover(member[0].mem_pd.memb_username, withdraw_configs[0], getlastdeposit[0].ref_id).catch(() => { throw err });
                                         console.log(checkturnover)
@@ -107,6 +107,8 @@ module.exports.withdraw = async function (req, res) {
                                     await functions.withdraw(withdraw_configs[0], member[0].mem_pd.memb_username, withdraw).catch(() => { throw err });
                                     res.send({ status: "200", message: 'ระบบกำลังดำเนินการถอนเงิน', withdraw_count: Counter.length }).end();
                                 }else{
+                                    console.log("member[0].mem_pd.memb_username",member[0].mem_pd.memb_username)
+                                    console.log("withdraw_configs[0]",withdraw_configs[0])
                                     let suspendstatus = await functions.changestatus(member[0].mem_pd.memb_username, withdraw_configs[0]).catch(() => { throw err });
                                     let updatestatusmember = await model.updatestatusmember(payload, body.memb_id).catch(() => { throw err });
                                     if (suspendstatus.result.status === "200") {
@@ -139,8 +141,8 @@ module.exports.withdraw = async function (req, res) {
         } else {
             res.send({ status: "204", message: 'พบมีรายการถอนอยู่แล้ว กรุณารอ' }).end();
         }
-    } catch (error) {
-        console.error(error);
+    } catch (err) {
+        console.error(err);
         res.send({ status: "300", message: 'internal error' }).end();
     }
 }
