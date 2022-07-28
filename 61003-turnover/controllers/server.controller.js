@@ -113,6 +113,13 @@ const mainProcess = data => {
                             await model.update_docwithdrawstatus(data._id, "cancel").catch(() => { throw err });
                             await model.updatestatusmember(data.memb_id).catch(() => { throw err });
                             let changestatus = await fx.changestatus(data.username, getconfig_pd[0]).catch(() => { throw err });
+                            if (i === 0) {
+                                await model.update_docdeposit_status(finddeposit[i].deposit_id, turn).catch(() => { throw err });
+                                //update_docdeposit_status
+                            } else {
+                                await model.update_docdeposit_turnover(finddeposit[i].deposit_id, turn, close).catch(() => { throw err });
+                                //update_docdeposit_turnover
+                            }
                         }
 
                     }
