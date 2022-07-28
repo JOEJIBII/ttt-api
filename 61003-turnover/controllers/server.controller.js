@@ -9,7 +9,7 @@ const fx = require("../functions/server.function");
 const model = require("../models/server.model");
 
 
-var working = true;
+var working = false;
 
 module.exports = async () => {
     new CronJob("*/10 * * * * *", async () => {
@@ -27,12 +27,12 @@ module.exports = async () => {
                         // let updatefile = await model.updatefiletransaction(findtransaction[i]._id, "processing").catch(() => { throw err });
                         await mainProcess(findjob[i]);
                     }
-                    working = true;
+                    working = false;
                 } else {
-                    working = true;
+                    working = false;
                 }
             } else {
-                working = true;
+                working = false;
             }
         } catch (error) {
             console.error("main process error on ", new Date().toISOString());
@@ -119,7 +119,7 @@ const mainProcess = data => {
             //update doc withdraw
             // ถอน credit
             //
-            resolve(true);
+            resolve(false);
         } catch (err) {
             reject(err);
         }
