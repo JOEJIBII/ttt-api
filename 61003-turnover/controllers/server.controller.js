@@ -9,7 +9,7 @@ const fx = require("../functions/server.function");
 const model = require("../models/server.model");
 
 
-var working = false;
+var working = true;
 
 module.exports = async () => {
     new CronJob("*/10 * * * * *", async () => {
