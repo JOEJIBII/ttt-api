@@ -16,6 +16,7 @@ module.exports = async () => {
         try {
             console.log("start")
             //working = false
+            //
             if (working !== false) {
                 console.log("working")
                 working = false
@@ -27,19 +28,23 @@ module.exports = async () => {
                         // let updatefile = await model.updatefiletransaction(findtransaction[i]._id, "processing").catch(() => { throw err });
                         await mainProcess(findjob[i]);
                     }
-                    working = true;
+                    //
+                    working = false;
                 } else {
-                    working = true;
+                    //
+                    working = false;
                 }
             } else {
-                working = true;
+                //
+                working = false;
             }
         } catch (error) {
             console.error("main process error on ", new Date().toISOString());
             console.error(error);
             working = false;
         }
-    }, null, true);
+        //
+    }, null, false);
 }
 
 const mainProcess = data => {
