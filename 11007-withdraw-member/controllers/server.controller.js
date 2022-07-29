@@ -55,7 +55,8 @@ module.exports.withdraw = async function (req, res) {
                                 let now_date = new Date(moment().format())
                                 console.log("now_date ", now_date, " :----: ", silp_date)
                                 if (silp_date <= now_date) {
-                                    note = note.concat([{ username: "System", note: "เวลาฝากล่าสุด: " + moment(silp_date).format("DD/MM/YYYY HH:mm:ss") + " บาท" , note_date: new Date(moment().format()) }])
+                                    //note = note.concat([{ username: "System", note: "เวลาฝากล่าสุด: " + new Date(moment(getlastdeposit[0].silp_date).format("DD/MM/YYYY HH:mm:ss")) + " บาท" , note_date: new Date(moment().format()) }])
+                                    note = note.concat([{ username: "System", note: "เวลาฝากล่าสุด: " + new Date(moment(getlastdeposit[0].silp_date).format()) + " บาท" , note_date: new Date(moment().format()) }])
                                     if (getlastdeposit.length !== 0) {
                                         console.log("getlastdeposit", getlastdeposit)
                                         if (getlastdeposit[0].ref_id !== null) {
