@@ -39,6 +39,8 @@ module.exports.getwithdraw_config = (body, payload) => {
                         prov_domain: "$provider.prov_domain",
                         prov_agentusername: "$provider.prov_agentusername",
                         prov_whitelabel: "$provider.prov_whitelabel",
+                        date_deposit:"$withdraw_config.date_deposit",
+                        deposit_of_deposit_percent:"$withdraw_config.deposit_of_deposit_percent"
 
                     }
                 },
@@ -274,7 +276,9 @@ module.exports.getlastdeposit = (agent_id, memb_id) => {
                 {
                     $project: {
                         _id:1,
-                        ref_id: "$ref_id"
+                        ref_id: "$ref_id",
+                        silp_date:"$silp_date",
+                        amount:"$amount"
                     }
                 }
             ])

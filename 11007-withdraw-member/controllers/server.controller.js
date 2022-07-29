@@ -43,46 +43,76 @@ module.exports.withdraw = async function (req, res) {
                         if (withdraw >= min_config) {
                             if (withdraw <= max_config) {
                                 let getlastdeposit = await model.getlastdeposit(payload.agent_id, payload.user_id).catch(() => { throw err });
+
                                 let findturnoverprofile = await model.findturnoverprofile(payload.user_id).catch(() => { throw err });
                                 let turn = Double()
-                                if (getlastdeposit.length !== 0) {
-                                    console.log("getlastdeposit", getlastdeposit)
-                                    if (getlastdeposit[0].ref_id !== null) {
-                                        let checkturnover = await functions.checkturnover(member[0].mem_pd.memb_username, withdraw_configs[0], getlastdeposit[0].ref_id).catch(() => { throw err });
-                                        //console.log(checkturnover.result.result.data)
-                                        if (checkturnover.result.result.code === 100033) {
-                                            let note = [{ username: "System", note: "ไม่พบจำนวน turnover ", note_date: new Date(moment().format()) }]
-                                        } else {
-                                            const { hdp, mixParlay, mixStep, casino, slot, card, lotto, keno, trade, poker, } = checkturnover.result.result.data
-                                            turn = Double(hdp.turn) + Double(mixParlay.turn) + Double(mixStep.turn) + Double(casino.turn) + Double(slot.turn) + Double(card.turn) + Double(lotto.turn) + Double(keno.turn) + Double(trade.turn) + Double(poker.turn)
-                                            note = note.concat([{ username: "System", note: "turnover " + turn, note_date: new Date(moment().format()) }])
-                                            const winlose = Double(hdp.wl) + Double(mixParlay.wl) + Double(mixStep.wl) + Double(casino.wl) + Double(slot.wl) + Double(card.wl) + Double(lotto.wl) + Double(keno.wl) + Double(trade.wl) + Double(poker.wl)
-                                            note = note.concat([{ username: "System", note: "winlose " + winlose, note_date: new Date(moment().format()) }])
+                                //const date = new Date()
+                                let silp_date = new Date(moment(getlastdeposit[0].silp_date).format())
+                                console.log("silp_date", silp_date)
+                                const future = withdraw_configs[0].date_deposit * 60 * 1000
+                                silp_date.setTime(silp_date.getTime() + future)
+                                console.log("silp_date + time Config", silp_date)
+                                let now_date = new Date(moment().format())
+                                console.log("now_date ", now_date, " :----: ", silp_date)
+                                if (silp_date >= now_date) {
+                                    note = note.concat([{ username: "System", note: "เวลาฝากล่าสุด: " + moment(silp_date).format("DD/MM/YYYY HH:mm:ss") + " บาท" , note_date: new Date(moment().format()) }])
+                                    if (getlastdeposit.length !== 0) {
+                                        console.log("getlastdeposit", getlastdeposit)
+                                        if (getlastdeposit[0].ref_id !== null) {
+                                            let checkturnover = await functions.checkturnover(member[0].mem_pd.memb_username, withdraw_configs[0], getlastdeposit[0].ref_id).catch(() => { throw err });
+                                            //console.log(checkturnover.result.result.data)
+                                            if (checkturnover.result.result.code === 100033) {
+                                                let note = [{ username: "System", note: "ไม่พบจำนวน turnover ", note_date: new Date(moment().format()) }]
+                                            } else {
+                                                const { hdp, mixParlay, mixStep, casino, slot, card, lotto, keno, trade, poker, } = checkturnover.result.result.data
+                                                turn = Double(hdp.turn) + Double(mixParlay.turn) + Double(mixStep.turn) + Double(casino.turn) + Double(slot.turn) + Double(card.turn) + Double(lotto.turn) + Double(keno.turn) + Double(trade.turn) + Double(poker.turn)
+                                                note = note.concat([{ username: "System", note: "turnover " + turn, note_date: new Date(moment().format()) }])
+                                                const winlose = Double(hdp.wl) + Double(mixParlay.wl) + Double(mixStep.wl) + Double(casino.wl) + Double(slot.wl) + Double(card.wl) + Double(lotto.wl) + Double(keno.wl) + Double(trade.wl) + Double(poker.wl)
+                                                note = note.concat([{ username: "System", note: "winlose " + winlose, note_date: new Date(moment().format()) }])
+                                            }
                                         }
                                     }
-                                }
-                                let turnover_result = Double(findturnoverprofile[0].turnover) - Double(turn)
-                                if (turnover_result <= 0) {
-                                    let updateturnover = await model.update_turnover(payload.user_id, 0).catch(() => { throw err });
-                                    let OpenPO = await model.InsertDocWithdraw(payload, withdraw, member[0], getbankweb[0], note, turn, "approve").catch(() => { throw err });
-                                    await functions.withdraw(withdraw_configs[0], member[0].mem_pd.memb_username, withdraw).catch(() => { throw err });
-                                    res.send({ status: "200", message: 'ระบบกำลังดำเนินการถอนเงิน' }).end();
-                                } else {
-                                    let suspendstatus = await functions.changestatus(member[0].mem_pd.memb_username, withdraw_configs[0]).catch(() => { throw err });
-                                    let updatestatus = await model.updatestatus(payload).catch(() => { throw err });
-                                    let updatelastdeposit = await model.updatelastdeposit(getlastdeposit[0]._id).catch(() => { throw err });
-                                    if (suspendstatus.result.status === "200") {
-
-                                        let OpenPO = await model.InsertDocWithdraw(payload, withdraw, member[0], getbankweb[0], note, turn, "pending").catch(() => { throw err });
-                                        if (OpenPO.insertedId !== null && OpenPO.insertedId !== '') {
-                                            res.send({ status: "200", message: 'กรุณารอซักครู่ระบบกำลังตรวจสอบ TrunOver', withdraw_count: Counter.length }).end();
-                                        } else {
-                                            res.send({ status: "201", message: 'ไม่สามารถสร้างใบถอนได้สำเร็จ' }).end();
-                                        }
+                                    let turnover_result = Double(findturnoverprofile[0].turnover) - Double(turn)
+                                    if (turnover_result <= 0) {
+                                        let updateturnover = await model.update_turnover(payload.user_id, 0).catch(() => { throw err });
+                                        let OpenPO = await model.InsertDocWithdraw(payload, withdraw, member[0], getbankweb[0], note, turn, "approve").catch(() => { throw err });
+                                        await functions.withdraw(withdraw_configs[0], member[0].mem_pd.memb_username, withdraw).catch(() => { throw err });
+                                        res.send({ status: "200", message: 'ระบบกำลังดำเนินการถอนเงิน' }).end();
                                     } else {
-                                        res.send({ status: "202", message: 'ไม่สามารถสร้างใบถอนได้สำเร็จ กรุณาลองใหม่' }).end();
+                                        let withdraw_late = Double(withdraw * withdraw_configs[0].deposit_of_deposit_percent /100)
+                                        console.log("withdraw_late",withdraw_late)
+                                        let amount_of_deposit = Double(getlastdeposit[0].amount)
+                                        console.log("amount_of_deposit",amount_of_deposit)
+                                        if(withdraw_late >= amount_of_deposit){
+                                            note = note.concat([{ username: "System", note: "ยอดฝากล่าสุด: " + amount_of_deposit + " บาท" , note_date: new Date(moment().format()) }])
+                                            note = note.concat([{ username: "System", note: "ยอดถอนคิดเปอร์เซ็นต์: " + withdraw_late + 'บาท  เปอร์เซ็นต์: ' + withdraw_configs[0].deposit_of_deposit_percent + " %", note_date: new Date(moment().format()) }])
+                                            //let updateturnover = await model.update_turnover(payload.user_id, 0).catch(() => { throw err });
+                                            let OpenPO = await model.InsertDocWithdraw(payload, withdraw, member[0], getbankweb[0], note, turn, "approve").catch(() => { throw err });
+                                            await functions.withdraw(withdraw_configs[0], member[0].mem_pd.memb_username, withdraw).catch(() => { throw err });
+                                            res.send({ status: "200", message: 'ระบบกำลังดำเนินการถอนเงิน' }).end();
+                                        }else{
+                                            note = note.concat([{ username: "System", note: "ยอดฝากล่าสุด: " + amount_of_deposit + " บาท" , note_date: new Date(moment().format()) }])
+                                            note = note.concat([{ username: "System", note: "ยอดถอนคิดเปอร์เซ็นต์: " + withdraw_late + 'บาท  เปอร์เซ็นต์: ' + withdraw_configs[0].deposit_of_deposit_percent + " %", note_date: new Date(moment().format()) }])
+                                            let suspendstatus = await functions.changestatus(member[0].mem_pd.memb_username, withdraw_configs[0]).catch(() => { throw err });
+                                            let updatestatus = await model.updatestatus(payload).catch(() => { throw err });
+                                            let updatelastdeposit = await model.updatelastdeposit(getlastdeposit[0]._id).catch(() => { throw err });
+                                            if (suspendstatus.result.status === "200") {
+    
+                                                let OpenPO = await model.InsertDocWithdraw(payload, withdraw, member[0], getbankweb[0], note, turn, "pending").catch(() => { throw err });
+                                                if (OpenPO.insertedId !== null && OpenPO.insertedId !== '') {
+                                                    res.send({ status: "200", message: 'กรุณารอซักครู่ระบบกำลังตรวจสอบ TrunOver', withdraw_count: Counter.length }).end();
+                                                } else {
+                                                    res.send({ status: "201", message: 'ไม่สามารถสร้างใบถอนได้สำเร็จ' }).end();
+                                                }
+                                            } else {
+                                                res.send({ status: "202", message: 'ไม่สามารถสร้างใบถอนได้สำเร็จ กรุณาลองใหม่' }).end();
+                                            }
+                                        }
                                     }
+                                }else{
+                                    res.send({ status: "202", message: 'สามารถถอนได้หลังเวลา ' +  silp_date }).end();
                                 }
+
                             } else {
                                 res.send({ status: "202", message: 'กรุณาถอนน้อยกว่า ' + max_config + " บาท" }).end();
                             }
