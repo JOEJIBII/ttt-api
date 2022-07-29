@@ -47,7 +47,9 @@ module.exports.getdeposit = (agent_id) => {
                                                                 //{ status: "approve" }, 
                                                                 { status: "cancel" },
                                                                 // { status: "processing" }, 
-                                                                { status: "success" }
+                                                                { status: "success" },
+                                                                { status: "failed" },
+
                                                         ]
                                                 }
                                                 ]
@@ -683,7 +685,9 @@ module.exports.getwithdraw = (agent_id) => {
                                                                 //{ status: "approve" }, 
                                                                 { status: "cancel" },
                                                                 // { status: "processing" }, 
-                                                                { status: "success" }
+                                                                { status: "success" },
+                                                                { status: "failed" },
+
                                                         ]
                                                 }
                                                 ]
