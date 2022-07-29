@@ -83,18 +83,18 @@ const mainProcess = data => {
                     } else {
                         let turnover_result = Double(finddeposit[i].turnover_value) - Double(turn)
                         console.log("turnover_result", turnover_result)
-                        result_turnover_profile = Double()
-                        if (turnover_result <= 0) {
+                        // result_turnover_profile = Double()
+                        // if (turnover_result <= 0) {
                             
-                            result_turnover_profile = Double(turnover_profile[0].turnover) - Double(turn)
-                            console.log("result_turnover_profile", result_turnover_profile)
-                        } else {
-                            result_turnover_profile =  Double(finddeposit[i].turnover_value) - Double(turnover_profile[0].turnover)
-                            console.log("result_turnover_profile", result_turnover_profile)
-                        }
+                        //     result_turnover_profile = Double(turnover_profile[0].turnover) - Double(turn)
+                        //     console.log("result_turnover_profile", result_turnover_profile)
+                        // } else {
+                        //     result_turnover_profile =  Double(finddeposit[i].turnover_value) - Double(turnover_profile[0].turnover)
+                        //     console.log("result_turnover_profile", result_turnover_profile)
+                        // }
 
-                        if (result_turnover_profile <= 0) {
-                            result_turnover_profile = 0
+                        if (turnover_result <= 0) {
+                            //result_turnover_profile = 0
                             await fx.withdraw(getconfig_pd[0], data.username, data.amount).catch(() => { throw err });
                             console.log("result_turnover_profile", result_turnover_profile)
                             await model.update_turnover(data.memb_id, result_turnover_profile).catch(() => { throw err });
