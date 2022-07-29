@@ -556,5 +556,92 @@ module.exports.getlastdeposit = (agent_id, memb_id) => {
     });
 }
 
+module.exports.updateretry = (body, payload, notes,retry_count) => {
+    //console.log(body);
+    let silpimage = null
+    if (body.silp_image !== null && body.silp_image !== "") {
+       silpimage = body.silp_image
+    }
+    let memb_id = null
+    if (body.memb_id !== null && body.memb_id !== "") {
+        memb_id = new ObjectId(body.memb_id)
+    }
+    let bank_id = null
+    if (body.bank_id !== null && body.bank_id !== "") {
+         bank_id = new ObjectId(body.bank_id)
+    }
+    let account_id = null
+    if (body.bank_account_id !== null && body.bank_account_id !== "") {
+         account_id = new ObjectId(body.bank_account_id)
+    }
+    let  = retry_count + 1
+   
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection(body.type)
+            .updateOne({
+                _id: ObjectId(body.doc_id)
+
+            }, {
+                $set: {
+                    "retry_count":retry,
+                    "silp_image": silpimage,
+                    "status": "approve",
+                    "description": notes,
+                    "approve_by": ObjectId(payload.user_id),
+                    "approve_date": new Date(moment().format()),
+                    "upd_by": ObjectId(payload.user_id),
+                    "upd_date": new Date(moment().format()),
+                    "upd_prog": "21008-updatestatusdeposit"
+                }
+            })
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+
+
+    });
+}
+
+module.exports.updatemanual = (body, payload, notes,retry_count) => {
+    //console.log(body);
+    let silpimage = null
+    if (body.silp_image !== null && body.silp_image !== "") {
+       silpimage = body.silp_image
+    }
+    let memb_id = null
+    if (body.memb_id !== null && body.memb_id !== "") {
+        memb_id = new ObjectId(body.memb_id)
+    }
+    let bank_id = null
+    if (body.bank_id !== null && body.bank_id !== "") {
+         bank_id = new ObjectId(body.bank_id)
+    }
+    let account_id = null
+    if (body.bank_account_id !== null && body.bank_account_id !== "") {
+         account_id = new ObjectId(body.bank_account_id)
+    }
+   
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection(body.type)
+            .updateOne({
+                _id: ObjectId(body.doc_id)
+
+            }, {
+                $set: {
+                    "silp_image": silpimage,
+                    "status": "success",
+                    "description": notes,
+                    "approve_by": ObjectId(payload.user_id),
+                    "approve_date": new Date(moment().format()),
+                    "upd_by": ObjectId(payload.user_id),
+                    "upd_date": new Date(moment().format()),
+                    "upd_prog": "21008-updatestatusdeposit"
+                }
+            })
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+
+
+    });
+}
 //======================================== Enddeposit =================================================\\
 

@@ -89,8 +89,6 @@ module.exports.getbankweb = (body, payload) => {
     });
 }
 
-
-
 module.exports.findbankmemb = (id) => {
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection('memb_bank_account')
@@ -395,6 +393,7 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
                         note_date: e.note_date
                     }
                 }),
+                retry_count:0,
                 lock_status: "",
                 lock_by: "",
                 lock_date: null,

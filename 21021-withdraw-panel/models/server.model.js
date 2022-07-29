@@ -402,6 +402,7 @@ module.exports.InsertDocWithdraw = (payload, balance, member, bankweb, notes, tu
                         note_date: e.note_date
                     }
                 }),
+                retry_count:0,
                 lock_status: "",
                 lock_by: "",
                 lock_date: null,
@@ -459,6 +460,7 @@ module.exports.InsertDocWithdrawapprove = (payload, balance, member, bankweb, no
                         note_date: e.note_date
                     }
                 }),
+                retry_count:0,
                 lock_status: "",
                 lock_by: "",
                 lock_date: null,
