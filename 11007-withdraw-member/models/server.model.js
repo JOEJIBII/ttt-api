@@ -437,7 +437,7 @@ module.exports.updatestatus = (payload) => {
 
 module.exports.updatelastdeposit = (deposit_id) => {
     const date = new Date()
-    const future = 5 * 60 * 1000
+    const future = 3 * 60 * 1000
     date.setTime(date.getTime() + future)
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection("deposit")

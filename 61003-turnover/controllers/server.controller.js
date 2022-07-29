@@ -16,7 +16,6 @@ module.exports = async () => {
         try {
             console.log("start")
             //working = false
-            //
             if (working !== false) {
                 console.log("working")
                 working = false
@@ -28,23 +27,19 @@ module.exports = async () => {
                         // let updatefile = await model.updatefiletransaction(findtransaction[i]._id, "processing").catch(() => { throw err });
                         await mainProcess(findjob[i]);
                     }
-                    //
-                    working = false;
+                    working = true;
                 } else {
-                    //
-                    working = false;
+                    working = true;
                 }
             } else {
-                //
-                working = false;
+                working = true;
             }
         } catch (error) {
             console.error("main process error on ", new Date().toISOString());
             console.error(error);
             working = false;
         }
-        //
-    }, null, false);
+    }, null, true);
 }
 
 const mainProcess = data => {
@@ -89,11 +84,12 @@ const mainProcess = data => {
                         let turnover_result = Double(finddeposit[i].turnover_value) - Double(turn)
                         console.log("turnover_result", turnover_result)
                         result_turnover_profile = Double()
-                        if (turnover_result > 0) {
+                        if (turnover_result <= 0) {
+                            
                             result_turnover_profile = Double(turnover_profile[0].turnover) - Double(turn)
                             console.log("result_turnover_profile", result_turnover_profile)
                         } else {
-                            result_turnover_profile = Double(turnover_profile[0].turnover) - Double(finddeposit[i].turnover_value)
+                            result_turnover_profile =  Double(finddeposit[i].turnover_value) - Double(turnover_profile[0].turnover)
                             console.log("result_turnover_profile", result_turnover_profile)
                         }
 
