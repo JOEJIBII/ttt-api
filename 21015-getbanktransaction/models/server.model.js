@@ -134,6 +134,34 @@ module.exports.bankwithdraw = (agent_id) => {
 }
 
 
+module.exports.getlimitdeposit = (agent_id) => {
+    // console.log(agent_id);
+    return new Promise(async (resolve, reject) => {
+        await MongoDB.collection('agent')
+        .aggregate([
+            {
+                $match : {
+                    $and : [
+                       
+                        { 
+                            agent_id : ObjectId(agent_id)
+                        },  
+                    ]
+                }
+            },
+            {
+                $project:{
+                    _id:1,
+                    limit_of_silp_deposit: "deposit_config.limit_of_silp_deposit"
+                }
+            }
+        ]).toArray()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
+
 
 module.exports.findConF = (body) => {
     return new Promise(async (resolve, reject) => {

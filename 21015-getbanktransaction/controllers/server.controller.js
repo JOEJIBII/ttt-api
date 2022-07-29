@@ -8,11 +8,12 @@ module.exports.getbanktrnsaction = async function (req, res) {
     const body = req.body
     try {
         let type = body.type
+        let getlimitdeposit = await model.getlimitdeposit(body.agent_id).catch(() => { throw err });
         let bankdeposit = await model.bankdeposit(body.agent_id).catch(() => { throw err });
         let bankwithdraw = await model.bankwithdraw(body.agent_id).catch(() => { throw err });
         if (type === "deposit") {
             if (bankdeposit && bankdeposit.length) {
-                res.send({ status: "200", message: "success", result: bankdeposit }).end();
+                res.send({ status: "200", message: "success", result: bankdeposit ,limit_of_silp_deposit:limit_of_silp_deposit[0]}).end();
             } else {
                 res.send({ status: "201", message: 'not found data' }).end();
             }

@@ -89,7 +89,7 @@ module.exports.withdraw = async function (req, res) {
                                 console.log("silp_date + time Config", silp_date)
                                 let now_date = new Date(moment().format())
                                 console.log("now_date ", now_date, " :----: ", silp_date)
-                                if (silp_date >= now_date) {
+                                if (silp_date <= now_date) {
                                     note = note.concat([{ username: "System", note: "เวลาฝากล่าสุด: " + moment(silp_date).format("DD/MM/YYYY HH:mm:ss") + " บาท" , note_date: new Date(moment().format()) }])
                                     if (getlastdeposit.length !== 0) {
                                         let updatelastdeposit = await model.updatelastdeposit(getlastdeposit[0]._id).catch(() => { throw err });
@@ -115,20 +115,21 @@ module.exports.withdraw = async function (req, res) {
                                         await functions.withdraw(withdraw_configs[0], member[0].mem_pd.memb_username, withdraw).catch(() => { throw err });
                                         res.send({ status: "200", message: 'ระบบกำลังดำเนินการถอนเงิน', withdraw_count: Counter.length }).end();
                                     } else {
-                                        let withdraw_late = Double(withdraw * withdraw_configs[0].deposit_of_deposit_percent /100)
+                                        let withdraw_late = Double(withdraw)
                                         console.log("withdraw_late",withdraw_late)
-                                        let amount_of_deposit = Double(getlastdeposit[0].amount)
-                                        console.log("amount_of_deposit",amount_of_deposit)
-                                        if(withdraw_late >= amount_of_deposit){
-                                            note = note.concat([{ username: "System", note: "ยอดฝากล่าสุด: " + amount_of_deposit + " บาท" , note_date: new Date(moment().format()) }])
-                                            note = note.concat([{ username: "System", note: "ยอดถอนคิดเปอร์เซ็นต์: " + withdraw_late + 'บาท  เปอร์เซ็นต์: ' + withdraw_configs[0].deposit_of_deposit_percent + " %", note_date: new Date(moment().format()) }])
+                                        let amount_of_deposit_late = Double(getlastdeposit[0].amount  * withdraw_configs[0].deposit_of_deposit_percent /100)
+                                        console.log("amount_of_deposit",amount_of_deposit_late)
+                                        if(withdraw <= amount_of_deposit_late){
+                                            note = note.concat([{ username: "System", note: "ยอดฝากล่าสุด: " + getlastdeposit[0].amount + " บาท" , note_date: new Date(moment().format()) }])
+                                            note = note.concat([{ username: "System", note: "ยอดฝากล่าสุดคิดเปอร์เซ็นต์: " + amount_of_deposit_late + 'บาท  เปอร์เซ็นต์: ' + withdraw_configs[0].deposit_of_deposit_percent + " %" , note_date: new Date(moment().format()) }])
+                                            //note = note.concat([{ username: "System", note: "ยอดถอน: " + withdraw_late + 'บาท  เปอร์เซ็นต์: ' + withdraw_configs[0].deposit_of_deposit_percent + " %", note_date: new Date(moment().format()) }])
                                            // let updateturnover = await model.update_turnover(body.memb_id, 0).catch(() => { throw err });
                                             let OpenPO = await model.InsertDocWithdrawapprove(payload, withdraw, member[0], getbankweb[0], note, turn, body, getagent[0].agent_id).catch(() => { throw err });
                                             await functions.withdraw(withdraw_configs[0], member[0].mem_pd.memb_username, withdraw).catch(() => { throw err });
                                             res.send({ status: "200", message: 'ระบบกำลังดำเนินการถอนเงิน', withdraw_count: Counter.length }).end();
                                         }else{
-                                            note = note.concat([{ username: "System", note: "ยอดฝากล่าสุด: " + amount_of_deposit + " บาท" , note_date: new Date(moment().format()) }])
-                                            note = note.concat([{ username: "System", note: "ยอดถอนคิดเปอร์เซ็นต์: " + withdraw_late + 'บาท  เปอร์เซ็นต์: ' + withdraw_configs[0].deposit_of_deposit_percent + " %", note_date: new Date(moment().format()) }])
+                                            note = note.concat([{ username: "System", note: "ยอดฝากล่าสุด: " + getlastdeposit[0].amount + " บาท" , note_date: new Date(moment().format()) }])
+                                            note = note.concat([{ username: "System", note: "ยอดฝากล่าสุดคิดเปอร์เซ็นต์: " + amount_of_deposit_late + 'บาท  เปอร์เซ็นต์: ' + withdraw_configs[0].deposit_of_deposit_percent + " %" , note_date: new Date(moment().format()) }])
                                             console.log("member[0].mem_pd.memb_username", member[0].mem_pd.memb_username)
                                             console.log("withdraw_configs[0]", withdraw_configs[0])
                                             let suspendstatus = await functions.changestatus(member[0].mem_pd.memb_username, withdraw_configs[0]).catch(() => { throw err });
