@@ -13,7 +13,7 @@ module.exports.getbanktrnsaction = async function (req, res) {
         let bankwithdraw = await model.bankwithdraw(body.agent_id).catch(() => { throw err });
         if (type === "deposit") {
             if (bankdeposit && bankdeposit.length) {
-                res.send({ status: "200", message: "success", result: bankdeposit ,limit_of_silp_deposit:limit_of_silp_deposit[0]}).end();
+                res.send({ status: "200", message: "success", result: bankdeposit ,limit_of_silp_deposit:getlimitdeposit[0].limit_of_silp_deposit}).end();
             } else {
                 res.send({ status: "201", message: 'not found data' }).end();
             }
@@ -28,7 +28,7 @@ module.exports.getbanktrnsaction = async function (req, res) {
                 if (type === "all") {
                     if (bankwithdraw.length !== 0 && bankdeposit.length !== 0) {
                         res.send({
-                            status: "200", message: "success", result: bankwithdraw.concat(bankdeposit)
+                            status: "200", message: "success", result: bankwithdraw.concat(bankdeposit),limit_of_silp_deposit:getlimitdeposit[0].limit_of_silp_deposit
                         }).end();
                     } else {
                         if (bankwithdraw.length !== 0) {

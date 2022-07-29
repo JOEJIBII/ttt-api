@@ -144,7 +144,7 @@ module.exports.getlimitdeposit = (agent_id) => {
                     $and : [
                        
                         { 
-                            agent_id : ObjectId(agent_id)
+                            _id : ObjectId(agent_id)
                         },  
                     ]
                 }
@@ -152,7 +152,7 @@ module.exports.getlimitdeposit = (agent_id) => {
             {
                 $project:{
                     _id:1,
-                    limit_of_silp_deposit: "deposit_config.limit_of_silp_deposit"
+                    limit_of_silp_deposit: "$deposit_config.limit_of_silp_deposit"
                 }
             }
         ]).toArray()
