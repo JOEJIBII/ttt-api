@@ -16,7 +16,7 @@ module.exports = async () => {
         try {
             console.log("start")
             //working = false
-            if (working !== false) {
+            if (working !== true) {
                 console.log("working")
                 working = false
                 let findjob = await model.findjob().catch(() => { throw err });
