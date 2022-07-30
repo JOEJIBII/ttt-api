@@ -13,7 +13,8 @@ module.exports = {
         "getwithdrawhistory": "11012",
         "getdeposithistory": "11014",
         "updatepassword": "11002",
-        "updatedepositdoc" : "11015"
+        "updatedepositdoc" : "11015",
+       
     },
     "panel": {
         "createuser": "21022",
@@ -58,6 +59,7 @@ module.exports = {
         "getallbanksauto":"21036",
         "updatestatusbankauto":"21037",
         "banktransaction":"21038",
+        "historyfailed":"21039"
 
     },
     search:{

@@ -45,10 +45,10 @@ module.exports.getdeposit = (agent_id) => {
                                                 }, {
                                                         $or: [
                                                                 //{ status: "approve" }, 
-                                                                { status: "cancel" },
-                                                                // { status: "processing" }, 
-                                                                { status: "success" },
-                                                               
+                                                                // { status: "cancel" },
+                                                                // // { status: "processing" }, 
+                                                                // { status: "success" },
+                                                                { status: "failed" },
 
                                                         ]
                                                 }
@@ -683,10 +683,10 @@ module.exports.getwithdraw = (agent_id) => {
                                                 }, {
                                                         $or: [
                                                                 //{ status: "approve" }, 
-                                                                { status: "cancel" },
-                                                                // { status: "processing" }, 
-                                                                { status: "success" },
-                                                               
+                                                                // { status: "cancel" },
+                                                                // // { status: "processing" }, 
+                                                                // { status: "success" },
+                                                                { status: "failed" },
 
                                                         ]
                                                 }
