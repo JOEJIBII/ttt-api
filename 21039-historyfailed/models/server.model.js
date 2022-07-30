@@ -2450,7 +2450,7 @@ module.exports.getdeposit = (agent_id) => {
                     {
                         $lookup: {
                             from: "emp_role",
-                            localField: "lock_role",
+                            localField: "lock.lock_role",
                             foreignField: "_id",
                             as: "role"
                         }
