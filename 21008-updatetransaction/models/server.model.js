@@ -574,7 +574,7 @@ module.exports.updateretry = (body, payload, notes,retry_count) => {
     if (body.bank_account_id !== null && body.bank_account_id !== "") {
          account_id = new ObjectId(body.bank_account_id)
     }
-    let  = retry_count + 1
+    let retry = retry_count + 1
    
     return new Promise(async (resolve, reject) => {
         await MongoDB.collection(body.type)
@@ -583,7 +583,7 @@ module.exports.updateretry = (body, payload, notes,retry_count) => {
 
             }, {
                 $set: {
-                    "retry_count":retry_count,
+                    "retry_count":retry,
                     "silp_image": silpimage,
                     "status": "approve",
                     "description": notes,
