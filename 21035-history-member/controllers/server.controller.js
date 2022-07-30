@@ -38,7 +38,7 @@ module.exports.historymember = async function (req, res) {
         let range = Number(body.range);
 
         // let fullResult = {
-            
+            console.log("result.slice(skip, (skip + range)).length",result.slice(skip, (skip + range)).length)
            
         // }
         if (result.slice(skip, (skip + range)).length !== 0) {
