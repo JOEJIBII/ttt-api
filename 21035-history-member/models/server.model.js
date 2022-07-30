@@ -596,54 +596,7 @@ module.exports.getdeposit = (memb_id) => {
                                         $unwind: { path: "$role", preserveNullAndEmptyArrays: true }
                                 },
 
-                                {
-                                        $project: {
-                                                id: 1,
-                                                channel: "$channel",
-                                                type: "$type",
-                                                sub_type: "$sub_type",
-                                                amount: "$amount",
-                                                request_date: "$request_date",
-                                                status: "$status",
-                                                description: "$description",
-                                                agent_id: "$agent_id",
-                                                silp_image: "$silp_image",
-                                                silp_date: "$silp_date",
-                                                web_name: "$web_name",
-                                                web_aka: "$web_aka",
-                                                web_prefix: "$web_prefix",
-                                                memb_id: "$memb_id",
-                                                memb_username: "$memb_username",
-                                                memb_status: "$memb_status",
-                                                memb_name: "$memb_name",
-                                                memb_bank: "$memb_bank",
-                                                memb_banking_th: "$memb_banking_th",
-                                                memb_banking_en: "$memb_banking_en",
-                                                memb_banking_code: "$memb_banking_code",
-                                                from_bank_id: "$from_bank_id",
-                                                from_account_id: "$from_account_id",
-                                                web_account_nameth: "$web_account_nameth",
-                                                web_account_nameen: "$web_account_nameen",
-                                                web_account_code: "$web_account_code",
-                                                web_account_name: "$web_account_name",
-                                                web_account_number: "$web_account_number",
-                                                to_bank_id: "$to_bank_id",
-                                                to_account_id: "$to_account_id",
-                                                checked: "$checked",
-                                                approve_by:
-                                                {
-                                                        approve_by: { $ifNull: ['$approve_by.approve_by', null] },
-                                                        approve_date: { $ifNull: ['$approve_by.approve_date', null] },
-                                                        approve_username: { $ifNull: ['$approve_by.approve_username', null] },
-                                                        approve_name: { $ifNull: ['$approve_by.approve_name', null] },
-                                                        approve_tel: { $ifNull: ['$approve_by.approve_tel', null] },
-                                                        approve_role: { $ifNull: ['$role.name', null] },
-                                                        approve_avatar: { $ifNull: ['$approve_by.approve_avatar', null] },
-                                                },
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
-                                        }
-                                },
+                               
 
                         ]).toArray()
                         .then(result => resolve(result))
@@ -1213,54 +1166,7 @@ module.exports.getwithdraw = (memb_id) => {
                                         $unwind: { path: "$role", preserveNullAndEmptyArrays: true }
                                 },
 
-                                {
-                                        $project: {
-                                                id: 1,
-                                                channel: "$channel",
-                                                type: "$type",
-                                                sub_type: "$sub_type",
-                                                amount: "$amount",
-                                                request_date: "$request_date",
-                                                status: "$status",
-                                                description: "$description",
-                                                agent_id: "$agent_id",
-                                                silp_image: "$silp_image",
-                                                silp_date: "$silp_date",
-                                                web_name: "$web_name",
-                                                web_aka: "$web_aka",
-                                                web_prefix: "$web_prefix",
-                                                memb_id: "$memb_id",
-                                                memb_username: "$memb_username",
-                                                memb_status: "$memb_status",
-                                                memb_name: "$memb_name",
-                                                memb_bank: "$memb_bank",
-                                                memb_banking_th: "$memb_banking_th",
-                                                memb_banking_en: "$memb_banking_en",
-                                                memb_banking_code: "$memb_banking_code",
-                                                from_bank_id: "$from_bank_id",
-                                                from_account_id: "$from_account_id",
-                                                web_account_nameth: "$web_account_nameth",
-                                                web_account_nameen: "$web_account_nameen",
-                                                web_account_code: "$web_account_code",
-                                                web_account_name: "$web_account_name",
-                                                web_account_number: "$web_account_number",
-                                                to_bank_id: "$to_bank_id",
-                                                to_account_id: "$to_account_id",
-                                                checked: "$checked",
-                                                approve_by:
-                                                {
-                                                        approve_by: "$approve_by.approve_by",
-                                                        approve_date: "$approve_by.approve_date",
-                                                        approve_username: "$approve_by.approve_username",
-                                                        approve_name: "$approve_by.approve_name",
-                                                        approve_tel: "$approve_by.approve_tel",
-                                                        approve_role: "$role.name",
-                                                        approve_avatar: "$approve_by.approve_avatar",
-                                                },
-                                                upd_by:"$upd_by",
-                                                upd_date:"$upd_date",
-                                        }
-                                },
+                               
 
 
                         ]).toArray()
