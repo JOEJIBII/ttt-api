@@ -94,9 +94,9 @@ const mainProcess = data => {
                         // }
 
                         if (turnover_result <= 0) {
-                            //result_turnover_profile = 0
+                            result_turnover_profile = 0
                             await fx.withdraw(getconfig_pd[0], data.username, data.amount).catch(() => { throw err });
-                         //   console.log("result_turnover_profile", result_turnover_profile)
+                           console.log("result_turnover_profile", result_turnover_profile)
                             await model.update_turnover(data.memb_id, result_turnover_profile).catch(() => { throw err });
                             console.log("[i]", finddeposit[i])
                             if (i === 0) {
