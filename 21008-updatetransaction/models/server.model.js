@@ -583,7 +583,7 @@ module.exports.updateretry = (body, payload, notes,retry_count) => {
 
             }, {
                 $set: {
-                    "retry_count":retry,
+                    "retry_count":retry_count,
                     "silp_image": silpimage,
                     "status": "approve",
                     "description": notes,
@@ -593,7 +593,8 @@ module.exports.updateretry = (body, payload, notes,retry_count) => {
                     "upd_date": new Date(moment().format()),
                     "upd_prog": "21008-updatestatusdeposit"
                 }
-            })
+            },{upsert: true}
+            )
             .then(result => resolve(result))
             .catch(error => reject(error));
 
