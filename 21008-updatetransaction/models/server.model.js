@@ -602,7 +602,7 @@ module.exports.updateretry = (body, payload, notes,retry_count) => {
     });
 }
 
-module.exports.updatemanual = (body, payload, notes,retry_count) => {
+module.exports.updatemanual = (body, payload, notes) => {
     //console.log(body);
     let silpimage = null
     if (body.silp_image !== null && body.silp_image !== "") {

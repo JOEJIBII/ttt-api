@@ -108,7 +108,6 @@ module.exports.updatetransaction = async function (req, res) {
                                         }).end();
                                     } else {
                                         if(body.status === "manual"){
-                                            updatemanual
                                             let getdocument = await model.getdocument(body).catch(() => { throw err });
                                             let updatemanual = await model.updatemanual(body, payload, note).catch(() => { throw err });
                                             res.send({
